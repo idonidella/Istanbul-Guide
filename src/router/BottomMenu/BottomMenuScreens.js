@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, View, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MainScreen from '../../pages/MainScreen';
+import ProfileScreen from '../../pages/Profile';
+import QrScreen from '../../pages/QrScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +22,7 @@ export default class BottomMenuScreens extends Component {
             borderTopWidth: 0,
           },
           tabBarIcon: ({ focused }) => {
-            if (route.name === 'MainScreen') {
+            if (route.name === 'Main-Screen') {
               return (
                 <View style={styles.tabIconContainer}>
                   <Image
@@ -33,7 +36,7 @@ export default class BottomMenuScreens extends Component {
                 </View>
               );
             }
-            if (route.name === 'Chat') {
+            if (route.name === 'Profile-Screen') {
               return (
                 <View style={focused ? styles.tabIconContainerActive : styles.tabIconContainer}>
                   <Image
@@ -47,7 +50,7 @@ export default class BottomMenuScreens extends Component {
                 </View>
               );
             }
-            if (route.name === 'Profile') {
+            if (route.name === 'QR-Code') {
               return (
                 <View style={focused ? styles.tabIconContainerActive : styles.tabIconContainer}>
                   <Image
@@ -66,21 +69,21 @@ export default class BottomMenuScreens extends Component {
         })}
       >
         <Tab.Screen
-          name="Chat"
+          name="QR-Code"
           options={{ unmountOnBlur: false, headerShown: false }}
-          component={ChatHistory}
-          key="chat-screen"
+          component={QrScreen}
+          key="qr-screen"
         />
         <Tab.Screen
-          name="MainScreen"
+          name="Main-Screen"
           options={{ unmountOnBlur: false, headerShown: false }}
           component={MainScreen}
           key="main-screen"
         />
         <Tab.Screen
-          name="Profile"
+          name="Profile-Screen"
           options={{ unmountOnBlur: false, headerShown: false }}
-          component={ProfilePage}
+          component={ProfileScreen}
           key="profile-screen"
         />
       </Tab.Navigator>
