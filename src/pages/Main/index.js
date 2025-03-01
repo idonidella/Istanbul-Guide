@@ -5,7 +5,7 @@ export default class MainScreen extends Component {
   render() {
     return (
       <View>
-        <Text> textInComponent </Text>
+        <Text> Main </Text>
       </View>
     )
   }

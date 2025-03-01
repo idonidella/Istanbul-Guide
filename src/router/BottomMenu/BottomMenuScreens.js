@@ -1,70 +1,54 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, View, Platform } from 'react-native';
+import { StyleSheet, Image, View, Platform, Animated } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MainScreen from '../../pages/MainScreen';
-import ProfileScreen from '../../pages/Profile';
-import QrScreen from '../../pages/QrScreen';
 
 const Tab = createBottomTabNavigator();
+
+// Pages
+import MainScreen from '../../pages/Main';
+import ProfileScreen from '../../pages/Profile';
+import QrScreen from '../../pages/QrScreen';
 
 export default class BottomMenuScreens extends Component {
   render() {
     return (
       <Tab.Navigator
-        initialRouteName="MainScreen"
+        initialRouteName="Main-Screen"
         screenOptions={({ route }) => ({
           tabBarLabel: () => null,
           tabBarStyle: {
             position: 'absolute',
-            bottom: Platform.OS === 'ios' ? 0 : 0,
-            backgroundColor: '#12101F',
-            height: Platform.OS === 'ios' ? '10%' : '7.6%',
-            borderTopWidth: 0,
+            bottom: 10,
+            backgroundColor: '#07090e',
+            height: Platform.OS === 'ios' ? 90 : 80,
+            borderRadius: 20,
+            paddingTop: 10,
           },
+
           tabBarIcon: ({ focused }) => {
+            let icon;
             if (route.name === 'Main-Screen') {
-              return (
-                <View style={styles.tabIconContainer}>
-                  <Image
-                    resizeMode='contain'
-                    // source={require('../../assets/bottomMenu/mainIcon.png')}
-                    style={[
-                      styles.maintabIcon,
-                      focused && styles.mainTabIconContainerActive
-                    ]}
-                  />
-                </View>
-              );
-            }
-            if (route.name === 'Profile-Screen') {
-              return (
-                <View style={focused ? styles.tabIconContainerActive : styles.tabIconContainer}>
-                  <Image
-                    // source={require('../../assets/bottomMenu/barcode.png')}
-                    style={[
-                      styles.tabIcon,
-                      focused && styles.activeIcon
-                    ]}
-                  />
-                  {focused && <View style={styles.activeIndicator} />}
-                </View>
-              );
+              icon = require('../../assets/bottomMenu/barcode.png');
             }
             if (route.name === 'QR-Code') {
-              return (
-                <View style={focused ? styles.tabIconContainerActive : styles.tabIconContainer}>
-                  <Image
-                    // source={require('../../assets/bottomMenu/profilecircle.png')}
-                    style={[
-                      styles.tabIcon,
-                      focused && styles.activeIcon
-                    ]}
-                  />
-                  {focused && <View style={styles.activeIndicator} />}
-                </View>
-              );
+              icon = require('../../assets/bottomMenu/qrIcon.png');
             }
-            return null;
+            if (route.name === 'Profile-Screen') {
+              icon = require('../../assets/bottomMenu/profilecircle.png');
+            }
+            return (
+              <View style={[
+                styles.tabIconContainer,
+                focused && styles.tabIconContainerActive
+              ]}>
+                <Image
+                  source={icon}
+                  style={focused ? styles.tabIconActive : styles.tabIcon}
+                  resizeMode='contain'
+                />
+                {focused && <View style={styles.activeIndicator} />}
+              </View>
+            );
           },
         })}
       >
@@ -95,46 +79,31 @@ const styles = StyleSheet.create({
   tabIconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 5,
     padding: 8,
   },
   tabIconContainerActive: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 8,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 12,
-  },
-  maintabIcon: {
-    width: 70,
-    height: 70,
-    borderWidth: 3,
-    borderColor: '#3a5c63',
-    borderRadius: 40,
-    padding: 8,
-    resizeMode: 'contain',
-    bottom: Platform.OS === 'ios' ? 10 : 16,
-  },
-  mainTabIconContainerActive: {
-    borderWidth: 2,
-    borderColor: 'white',
-    borderRadius: 40,
+    borderRadius: 16,
     padding: 8,
   },
   tabIcon: {
-    width: 28,
-    height: 28,
+    width: 33,
+    height: 33,
     resizeMode: 'contain',
   },
-  activeIcon: {
-    opacity: 1,
-    transform: [{ scale: 1.1 }],
+  tabIconActive: {
+    width: 33,
+    height: 33,
+    resizeMode: 'contain',
+    tintColor: '#FFFFFF',
   },
   activeIndicator: {
     position: 'absolute',
-    bottom: -4,
-    width: 20,
-    height: 3,
-    backgroundColor: '#fff',
-    borderRadius: 3,
-  },
+    bottom: -5,
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
+    backgroundColor: '#FFFFFF',
+  }
 });

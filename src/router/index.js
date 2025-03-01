@@ -9,6 +9,7 @@ import LoginPage from "../pages/Auth/Login/index";
 import RegisterPage from "../pages/Auth/Register/index";
 // main pages
 import MainScreen from "../pages/Main/index";
+import BottomMenuScreens from "./BottomMenu/BottomMenuScreens";
 
 
 
@@ -39,7 +40,7 @@ export default class MenuScreens extends Component {
           />
           <Stack.Screen
             name="Main-Screen"
-            component={MainScreen}
+            component={BottomMenuScreens}
             key="Main-Screen"
           />
         </Stack.Navigator>
