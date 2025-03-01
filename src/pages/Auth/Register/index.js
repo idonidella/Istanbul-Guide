@@ -5,7 +5,7 @@ export default class RegisterScreen extends Component {
   render() {
     return (
       <View>
-        <Text> textInComponent </Text>
+        <Text> Sign up ekranı </Text>
       </View>
     )
   }

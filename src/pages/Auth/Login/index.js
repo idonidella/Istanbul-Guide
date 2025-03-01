@@ -5,7 +5,7 @@ export default class LoginPage extends Component {
   render() {
     return (
       <View>
-        <Text> textInComponent </Text>
+        <Text> Sign in ekranı </Text>
       </View>
     )
   }
