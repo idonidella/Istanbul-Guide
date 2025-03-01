@@ -1,0 +1,49 @@
+import React, { Component } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+// NAVIGATOR
+const Stack = createNativeStackNavigator();
+// auths pages
+import SplashScreen from "../pages/SplashScreen/index";
+import LoginPage from "../pages/Auth/Login/index";
+import RegisterPage from "../pages/Auth/Register/index";
+// main pages
+import MainScreen from "../pages/Main/index";
+
+
+
+export default class MenuScreens extends Component {
+  render() {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Splash-Screen"
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen
+            name="Splash-Screen"
+            component={SplashScreen}
+            key="Splash-Screen"
+          />
+          <Stack.Screen
+            name="Login-Page"
+            component={LoginPage}
+            key="Login-Page"
+          />
+          <Stack.Screen
+            name="Register-Page"
+            component={RegisterPage}
+            key="Register-Page"
+          />
+          <Stack.Screen
+            name="Main-Screen"
+            component={MainScreen}
+            key="Main-Screen"
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
+}
