@@ -29,9 +29,9 @@ export default class MenuScreens extends Component {
             key="Splash-Screen"
           />
           <Stack.Screen
-            name="Login-Page"
+            name="Main-Screen"
             component={LoginPage}
-            key="Login-Page"
+            key="Main-Screen"
           />
           <Stack.Screen
             name="Register-Page"
@@ -39,9 +39,9 @@ export default class MenuScreens extends Component {
             key="Register-Page"
           />
           <Stack.Screen
-            name="Main-Screen"
+            name="Login-Page"
             component={BottomMenuScreens}
-            key="Main-Screen"
+            key="Login-Page"
           />
         </Stack.Navigator>
       </NavigationContainer>
