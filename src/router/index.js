@@ -18,7 +18,7 @@ export default class MenuScreens extends Component {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Splash-Screen"
+          initialRouteName="Main-Screen"
           screenOptions={{
             headerShown: false,
           }}

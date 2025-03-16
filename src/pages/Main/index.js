@@ -1,250 +1,205 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, Switch } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, TextInput, SafeAreaView, Dimensions } from 'react-native';
 
-export default class ProfileScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      notifications: true
-    };
-  }
-
-  toggleNotifications = () => {
-    this.setState(prevState => ({
-      notifications: !prevState.notifications
-    }));
-  }
-
+export default class TaxiBookingScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>BOSS.AI</Text>
-          <View style={styles.userInfo}>
-            <Text style={styles.welcomeText}>Hello, James</Text>
-            <Text style={styles.accountText}>Personal account</Text>
-          </View>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>TP</Text>
-          </View>
+        {/* Harita Görüntüsü (şimdilik gri arka plan) */}
+        <View style={[styles.mapContainer, {backgroundColor: '#e0e0e0'}]}>
+          <TouchableOpacity style={styles.backButton}>
+            <Text style={styles.backButtonText}>←</Text>
+          </TouchableOpacity>
         </View>
 
-        {/* Content Container with shadow */}
-        <View style={styles.contentContainer}>
-          {/* Profile Info */}
-          <View style={styles.profileInfo}>
-            <View style={styles.profileImage}>
-              <Text style={styles.profileImageText}>TM</Text>
-            </View>
-            <View style={styles.profileTextContainer}>
-              <Text style={styles.profileName}>Tanya Myroniuk</Text>
-              <Text style={styles.profileTitle}>Senior Designer</Text>
-            </View>
-          </View>
-
-          {/* Menu Items */}
-          <View style={styles.menuContainer}>
-            {/* Profile Settings */}
-            <TouchableOpacity style={styles.menuItem}>
-              <View style={[styles.iconCircle, {backgroundColor: '#E8F1FF'}]}>
-                <Text style={[styles.iconText, {color: '#3D7CFF'}]}>👤</Text>
-              </View>
-              <Text style={styles.menuText}>Profil Ayarları</Text>
-              <Text style={styles.arrowIcon}>›</Text>
-            </TouchableOpacity>
-            
-            {/* Language Options */}
-            <TouchableOpacity style={styles.menuItem}>
-              <View style={[styles.iconCircle, {backgroundColor: '#E8FFF1'}]}>
-                <Text style={[styles.iconText, {color: '#34C759'}]}>🌐</Text>
-              </View>
-              <Text style={styles.menuText}>Dil Seçenekleri</Text>
-              <View style={styles.languageContainer}>
-                <Text style={styles.languageText}>TR</Text>
-                <Text style={styles.arrowIcon}>›</Text>
-              </View>
-            </TouchableOpacity>
-
-            {/* Notifications */}
-            <View style={styles.menuItem}>
-              <View style={[styles.iconCircle, {backgroundColor: '#FFE8E8'}]}>
-                <Text style={[styles.iconText, {color: '#FF3B30'}]}>🔔</Text>
-              </View>
-              <Text style={styles.menuText}>Bildirimler</Text>
-              <Switch
-                value={this.state.notifications}
-                onValueChange={this.toggleNotifications}
-                trackColor={{ false: "#D1D1D6", true: "#34C759" }}
-                thumbColor={"#FFFFFF"}
-                style={styles.switch}
+        {/* Rezervasyon Kartı */}
+        <View style={styles.bookingCard}>
+          <Text style={styles.cardTitle}>Where can we take you ?</Text>
+          <Text style={styles.cardSubtitle}>Book a trusted local taxi for your trip</Text>
+          
+          {/* Konum Girişi */}
+          <View style={styles.locationInputContainer}>
+            <View style={styles.radioInputRow}>
+              <TouchableOpacity style={styles.radioButton} />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter Pickup location"
+                placeholderTextColor="#777"
               />
             </View>
-
-            {/* Help */}
-            <TouchableOpacity style={styles.menuItem}>
-              <View style={[styles.iconCircle, {backgroundColor: '#E8F8FF'}]}>
-                <Text style={[styles.iconText, {color: '#32ADE6'}]}>❓</Text>
-              </View>
-              <Text style={styles.menuText}>Yardım</Text>
-              <Text style={styles.arrowIcon}>›</Text>
-            </TouchableOpacity>
+            
+            <View style={styles.radioInputRow}>
+              <TouchableOpacity style={styles.radioButton} />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter destination"
+                placeholderTextColor="#777"
+              />
+            </View>
+            
+            <View style={styles.timeInputRow}>
+              <Text style={styles.clockIcon}>⏱️</Text>
+              <Text style={styles.timeText}>Tell us when</Text>
+              <View style={styles.timeUnderline}></View>
+            </View>
           </View>
+          
+          {/* Fiyatları Görüntüle Butonu */}
+          <TouchableOpacity style={styles.pricesButton}>
+            <Text style={styles.pricesButtonText}>See prices</Text>
+          </TouchableOpacity>
+        </View>
+        
+        {/* Alt Menü Barı */}
+        <View style={styles.bottomBar}>
+          <TouchableOpacity style={styles.bottomBarButton}>
+            <Text style={styles.bottomBarIcon}>♥️</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.bottomBarButton}>
+            <Text style={styles.bottomBarIcon}>🔍</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.bottomBarButton}>
+            <Text style={styles.bottomBarIcon}>👤</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
   }
 }
 
+const { width } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#fff',
   },
-  contentContainer: {
-    margin: 16,
-    borderRadius: 16,
-    overflow: 'hidden',
+  mapContainer: {
+    flex: 1,
+    position: 'relative',
+    borderRadius: 0,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 40,
+    left: 20,
+    backgroundColor: 'white',
+    borderRadius: 50,
+    padding: 8,
+    zIndex: 10,
+    width: 36,
+    height: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  backButtonText: {
+    fontSize: 24,
+    color: 'black',
+  },
+  bookingCard: {
+    backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    paddingTop: 25,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
+    position: 'absolute',
+    bottom: 60,
+    left: 0,
+    right: 0,
   },
-  header: {
-    backgroundColor: '#3D7CFF',
-    paddingTop: 50,
-    paddingBottom: 15,
-    paddingHorizontal: 20,
+  cardTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#000',
+  },
+  cardSubtitle: {
+    fontSize: 14,
+    color: '#777',
+    marginBottom: 25,
+  },
+  locationInputContainer: {
+    marginBottom: 25,
+  },
+  radioInputRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    marginBottom: 15,
   },
-  headerTitle: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    flex: 1,
-  },
-  userInfo: {
-    flex: 3,
-    alignItems: 'flex-end',
+  radioButton: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    borderWidth: 1,
+    borderColor: '#ccc',
     marginRight: 10,
   },
-  welcomeText: {
+  input: {
+    flex: 1,
+    height: 40,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+    fontSize: 16,
+    color: '#333',
+  },
+  timeInputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    paddingBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  clockIcon: {
+    fontSize: 20,
+    color: '#777',
+  },
+  timeText: {
+    fontSize: 16,
+    color: '#777',
+    marginLeft: 10,
+  },
+  timeUnderline: {
+    flex: 1,
+  },
+  pricesButton: {
+    backgroundColor: '#d600d6',
+    borderRadius: 30,
+    paddingVertical: 15,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  pricesButtonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: '600',
-  },
-  accountText: {
-    color: 'white',
-    fontSize: 12,
-    opacity: 0.8,
-  },
-  avatar: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarText: {
-    color: '#3D7CFF',
-    fontWeight: 'bold',
-    fontSize: 14,
-  },
-  profileInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    paddingVertical: 24,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5EA',
-    marginTop: -15,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  profileImage: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: '#50B4F2',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 5,
-    borderWidth: 3,
-    borderColor: 'white',
-  },
-  profileImageText: {
-    color: 'white',
-    fontSize: 24,
     fontWeight: 'bold',
   },
-  profileTextContainer: {
-    marginLeft: 15,
-  },
-  profileName: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#000',
-  },
-  profileTitle: {
-    fontSize: 14,
-    color: '#8E8E93',
-    marginTop: 2,
-  },
-  menuContainer: {
-    backgroundColor: 'white',
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-  },
-  menuItem: {
+  bottomBar: {
     flexDirection: 'row',
+    backgroundColor: '#d600d6',
+    height: 60,
+    justifyContent: 'space-around',
     alignItems: 'center',
-    paddingVertical: 18,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F2F2F7',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
-  iconCircle: {
+  bottomBarButton: {
     width: 40,
     height: 40,
-    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 15,
   },
-  iconText: {
-    fontSize: 18,
-  },
-  menuText: {
-    flex: 1,
-    fontSize: 16,
-    color: '#000',
-    fontWeight: '500',
-  },
-  arrowIcon: {
+  bottomBarIcon: {
     fontSize: 24,
-    color: '#8E8E93',
-  },
-  switch: {
-    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
-  },
-  languageContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  languageText: {
-    fontSize: 14,
-    color: '#8E8E93',
-    marginRight: 5,
-    fontWeight: '500',
+    color: 'white',
   },
 });

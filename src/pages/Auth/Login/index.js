@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, View, TextInput, TouchableOpacity, Image, ImageBackground, SafeAreaView } from 'react-native';
 
-export default class LoginPage extends Component {
+export default class LoginScreen extends Component {
   render() {
     return (
       <ImageBackground 
-        source={require('../../../assets/bottomMenu/sunset.jpeg')}
+        source={require('../../../assets/bottomMenu/star.jpg')}
         style={styles.backgroundImage}
       >
         <SafeAreaView style={styles.safeArea}>
@@ -14,36 +14,26 @@ export default class LoginPage extends Component {
             
             <Text style={styles.headerText}>Giriş yap</Text>
             
-            <Text style={styles.optionText}>Aşağıdaki seçeneklerden biriyle giriş yap</Text>
-            
-            <View style={styles.socialButtonsContainer}>
-              <TouchableOpacity style={styles.socialButton}>
-                <View style={styles.googleIconContainer}>
-                  <Text style={styles.googleText}>G</Text>
-                </View>
-              </TouchableOpacity>
-              
-              <TouchableOpacity style={styles.socialButton}>
-                <View style={styles.appleIconContainer}>
-                  <Text style={styles.appleText}>A</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            
             <Text style={styles.inputLabel}>E-posta</Text>
             <TextInput
               style={styles.input}
               placeholder="E-posta adresinizi girin"
-              placeholderTextColor="#aaa"
+              placeholderTextColor="#777"
+              keyboardType="email-address"
+              autoCapitalize="none"
             />
             
             <Text style={styles.inputLabel}>Şifre</Text>
             <TextInput
               style={styles.input}
               placeholder="Şifrenizi girin"
-              placeholderTextColor="#aaa"
+              placeholderTextColor="#777"
               secureTextEntry
             />
+            
+            <TouchableOpacity>
+              <Text style={styles.forgotPasswordText}>Şifremi Unuttum</Text>
+            </TouchableOpacity>
             
             <TouchableOpacity style={styles.loginButton}>
               <Text style={styles.loginButtonText}>Giriş Yap</Text>
@@ -73,91 +63,56 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.3)', 
     padding: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0)', // Daha şeffaf arka plan
   },
   topSpace: {
-    height: 100, // İçeriği aşağı indirmek için ekstra boşluk
+    height: 80,
   },
   headerText: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#fff',
+    color: 'white',
     marginBottom: 30,
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: {width: -1, height: 1},
-    textShadowRadius: 10,
     textAlign: 'center'
-  },
-  optionText: {
-    fontSize: 16,
-    color: '#f5f5f5',
-    marginBottom: 20,
-  },
-  socialButtonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 30,
-  },
-  socialButton: {
-    width: '48%',
-    height: 50,
-    backgroundColor: 'rgba(50, 50, 50, 0.8)',
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)'
-  },
-  googleIconContainer: {
-    width: 28,
-    height: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F44838FF',
-    borderRadius: 14,
-  },
-  googleText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  appleIconContainer: {
-    width: 28,
-    height: 28,
-    backgroundColor: '#0077ed',
-    borderRadius: 14,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  appleText: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
   },
   inputLabel: {
     fontSize: 16,
-    color: '#fff',
+    color: 'white',
     marginBottom: 8,
     fontWeight: '600',
   },
   input: {
-    backgroundColor: 'rgba(50, 50, 50, 0.8)',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)', // Hafif beyaz kutu
     height: 50,
     borderRadius: 10,
     marginBottom: 20,
     paddingHorizontal: 15,
-    color: '#fff',
+    color: '#333',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)'
+    borderColor: 'rgba(0, 0, 0, 0.1)', // İnce siyah çerçeve
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  forgotPasswordText: {
+    color: '#C2BAB8FF',
+    textAlign: 'right',
+    marginBottom: 20,
+    fontWeight: '500',
   },
   loginButton: {
-    backgroundColor: '#ff7e5f',
+    backgroundColor: '#4E4E4BFF',
     height: 50,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: 20,
     shadowColor: "#000",
     shadowOffset: {
@@ -178,10 +133,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   noAccountText: {
-    color: '#f5f5f5',
+    color: 'white',
   },
   signupText: {
-    color: '#ff7e5f',
+    color: '#C2BAB8FF',
     fontWeight: 'bold',
   },
 });

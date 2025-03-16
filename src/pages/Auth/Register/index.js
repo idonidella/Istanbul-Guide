@@ -5,7 +5,7 @@ export default class RegisterScreen extends Component {
   render() {
     return (
       <ImageBackground 
-        source={require('../../../assets/bottomMenu/sunset.jpeg')}
+        source={require('../../../assets/bottomMenu/star.jpg')}
         style={styles.backgroundImage}
       >
         <SafeAreaView style={styles.safeArea}>
@@ -14,41 +14,33 @@ export default class RegisterScreen extends Component {
             
             <Text style={styles.headerText}>Kayıt ol</Text>
             
-            <Text style={styles.optionText}>Aşağıdaki seçeneklerden biriyle kayıt olun</Text>
-            
-            <View style={styles.socialButtonsContainer}>
-              <TouchableOpacity style={styles.socialButton}>
-                <View style={styles.googleIconContainer}>
-                  <Text style={styles.googleText}>G</Text>
-                </View>
-              </TouchableOpacity>
-              
-              <TouchableOpacity style={styles.socialButton}>
-                <View style={styles.appleIconContainer}>
-                  <Text style={styles.appleText}>A</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            
             <Text style={styles.inputLabel}>Ad Soyad</Text>
             <TextInput
               style={styles.input}
               placeholder="Adınızı ve soyadınızı girin"
-              placeholderTextColor="#aaa"
+              placeholderTextColor="#777"
             />
             
             <Text style={styles.inputLabel}>E-posta</Text>
             <TextInput
               style={styles.input}
               placeholder="E-posta adresinizi girin"
-              placeholderTextColor="#aaa"
+              placeholderTextColor="#777"
             />
             
             <Text style={styles.inputLabel}>Şifre</Text>
             <TextInput
               style={styles.input}
               placeholder="Şifrenizi girin"
-              placeholderTextColor="#aaa"
+              placeholderTextColor="#777"
+              secureTextEntry
+            />
+            
+            <Text style={styles.inputLabel}>Şifre Tekrar</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Şifrenizi tekrar girin"
+              placeholderTextColor="#777"
               secureTextEntry
             />
             
@@ -80,87 +72,52 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)', 
     padding: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0)', // Daha şeffaf arka plan
   },
   topSpace: {
-    height: 100, // İçeriği aşağı indirmek için ekstra boşluk
+    height: 80,
   },
   headerText: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#fff',
+    color: 'white', // Koyu renk yazı
     marginBottom: 30,
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: {width: -1, height: 1},
-    textShadowRadius: 10,
     textAlign: 'center'
   },
   optionText: {
     fontSize: 16,
-    color: '#f5f5f5',
+    color: '#555', // Koyu renk yazı
     marginBottom: 20,
     textAlign: 'center'
   },
-  socialButtonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 30,
-  },
-  socialButton: {
-    width: '48%',
-    height: 50,
-    backgroundColor: 'rgba(50, 50, 50, 0.8)',
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)'
-  },
-  googleIconContainer: {
-    width: 28,
-    height: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F44838FF',
-    borderRadius: 14,
-  },
-  googleText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  appleIconContainer: {
-    width: 28,
-    height: 28,
-    backgroundColor: '#0077ed',
-    borderRadius: 14,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  appleText: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
+  // Sosyal buton stilleri kaldırıldı
   inputLabel: {
     fontSize: 16,
-    color: '#fff',
+    color: 'white', // Koyu renk yazı
     marginBottom: 8,
     fontWeight: '600',
   },
   input: {
-    backgroundColor: 'rgba(50, 50, 50, 0.8)',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)', // Hafif beyaz kutu
     height: 50,
     borderRadius: 10,
     marginBottom: 20,
     paddingHorizontal: 15,
-    color: '#fff',
+    color: '#333', // Koyu renk yazı
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)'
+    borderColor: 'rgba(0, 0, 0, 0.1)', // İnce siyah çerçeve
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
   registerButton: {
-    backgroundColor: '#ff7e5f',
+    backgroundColor: '#4E4E4BFF',
     height: 50,
     borderRadius: 10,
     justifyContent: 'center',
@@ -186,10 +143,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   alreadyAccountText: {
-    color: '#f5f5f5',
+    color: 'white', // Koyu renk yazı
   },
   loginText: {
-    color: '#ff7e5f',
+    color: '#C2BAB8FF',
     fontWeight: 'bold',
   },
 });
