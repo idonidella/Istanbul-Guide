@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, Switch } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, Switch, StatusBar, ScrollView } from 'react-native';
 
 export default class ProfileScreen extends Component {
   constructor(props) {
@@ -18,106 +18,109 @@ export default class ProfileScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* Üst profil kısmı */}
-        <View style={styles.profileHeader}>
+        <StatusBar barStyle="light-content" />
+        
+        {/* Üst profil kısmı - mor eğimli tasarım */}
+        <View style={styles.headerContainer}>
+          {/* Geri butonu */}
+          <TouchableOpacity style={styles.backButton}>
+            <Text style={styles.backButtonText}>←</Text>
+          </TouchableOpacity>
+          
+          {/* Profil adı */}
+          <Text style={styles.headerName}>Tanya Myroniuk</Text>
+        </View>
+        
+        {/* Eğimli alt kısım için ek katman - görseldeki gibi şekilli */}
+        <View style={styles.headerExtension}>
+          {/* İçeriği boş, sadece şekil için */}
+        </View>
+        
+        {/* Avatar - ortada, iki kısım arasında */}
+        <View style={styles.avatarWrapper}>
           <View style={styles.avatarContainer}>
-            <Text style={styles.avatarText}>TM</Text>
-          </View>
-          <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>Tanya Myroniuk</Text>
-            <Text style={styles.profileTitle}>Senior Designer</Text>
+            <Text style={styles.avatarText}>👤</Text>
           </View>
         </View>
 
-        {/* Menü öğeleri */}
-        <View style={styles.menuContainer}>
-          {/* Profil Ayarları */}
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={[styles.menuIconCircle, {backgroundColor: '#7B68EE40'}]}>
-              <Text style={styles.menuIconText}>👤</Text>
-            </View>
-            <Text style={styles.menuText}>Profil Ayarları</Text>
-            <Text style={styles.arrowIcon}>›</Text>
-          </TouchableOpacity>
-
-          {/* Dil Seçenekleri */}
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={[styles.menuIconCircle, {backgroundColor: '#7B68EE40'}]}>
-              <Text style={styles.menuIconText}>🌐</Text>
-            </View>
-            <Text style={styles.menuText}>Dil Seçenekleri</Text>
-            <View style={styles.languageContainer}>
-              <Text style={styles.languageText}>TR</Text>
+        {/* İçerik kısmı - beyaz arka plan üzerinde */}
+        <ScrollView style={styles.contentContainer}>
+          {/* Menü öğeleri */}
+          <View style={styles.menuContainer}>
+            {/* Profil Ayarları */}
+            <TouchableOpacity style={styles.menuItem}>
+              <View style={styles.infoIconContainer}>
+                <Text style={styles.infoIcon}>👤</Text>
+              </View>
+              <Text style={styles.infoText}>Profil Ayarları</Text>
               <Text style={styles.arrowIcon}>›</Text>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          {/* Bildirimler */}
-          <View style={styles.menuItem}>
-            <View style={[styles.menuIconCircle, {backgroundColor: '#7B68EE40'}]}>
-              <Text style={styles.menuIconText}>🔔</Text>
+            {/* Dil Seçenekleri */}
+            <TouchableOpacity style={styles.menuItem}>
+              <View style={styles.infoIconContainer}>
+                <Text style={styles.infoIcon}>🌐</Text>
+              </View>
+              <Text style={styles.infoText}>Dil Seçenekleri</Text>
+              <View style={styles.rightContainer}>
+                <View style={styles.languageBadge}>
+                  <Text style={styles.languageText}>TR</Text>
+                </View>
+                <Text style={styles.arrowIcon}>›</Text>
+              </View>
+            </TouchableOpacity>
+
+            {/* Bildirimler */}
+            <View style={styles.menuItem}>
+              <View style={styles.infoIconContainer}>
+                <Text style={styles.infoIcon}>🔔</Text>
+              </View>
+              <Text style={styles.infoText}>Bildirimler</Text>
+              <Switch
+                value={this.state.notifications}
+                onValueChange={this.toggleNotifications}
+                trackColor={{ false: "#DDDDDD", true: "#9c27b0" }}
+                thumbColor={"#FFFFFF"}
+                style={styles.switch}
+              />
             </View>
-            <Text style={styles.menuText}>Bildirimler</Text>
-            <Switch
-              value={this.state.notifications}
-              onValueChange={this.toggleNotifications}
-              trackColor={{ false: "#D1D1D6", true: "#7B68EE" }}
-              thumbColor={"#FFFFFF"}
-              style={styles.switch}
-            />
+
+            {/* Yardım */}
+            <TouchableOpacity style={styles.menuItem}>
+              <View style={styles.infoIconContainer}>
+                <Text style={styles.infoIcon}>❓</Text>
+              </View>
+              <Text style={styles.infoText}>Yardım</Text>
+              <Text style={styles.arrowIcon}>›</Text>
+            </TouchableOpacity>
+
+            {/* İletişim */}
+            <TouchableOpacity style={styles.menuItem}>
+              <View style={styles.infoIconContainer}>
+                <Text style={styles.infoIcon}>📧</Text>
+              </View>
+              <Text style={styles.infoText}>İletişim</Text>
+              <Text style={styles.arrowIcon}>›</Text>
+            </TouchableOpacity>
+
+            {/* Kullanım Şartları */}
+            <TouchableOpacity style={styles.menuItem}>
+              <View style={styles.infoIconContainer}>
+                <Text style={styles.infoIcon}>📝</Text>
+              </View>
+              <Text style={styles.infoText}>Kullanım Şartları</Text>
+              <Text style={styles.arrowIcon}>›</Text>
+            </TouchableOpacity>
           </View>
-
-          {/* Yardım */}
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={[styles.menuIconCircle, {backgroundColor: '#7B68EE40'}]}>
-              <Text style={styles.menuIconText}>❓</Text>
-            </View>
-            <Text style={styles.menuText}>Yardım</Text>
-            <Text style={styles.arrowIcon}>›</Text>
-          </TouchableOpacity>
-
-          {/* İletişim */}
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={[styles.menuIconCircle, {backgroundColor: '#7B68EE40'}]}>
-              <Text style={styles.menuIconText}>📧</Text>
-            </View>
-            <Text style={styles.menuText}>İletişim</Text>
-            <Text style={styles.arrowIcon}>›</Text>
-          </TouchableOpacity>
-
-          {/* Kullanım Şartları */}
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={[styles.menuIconCircle, {backgroundColor: '#7B68EE40'}]}>
-              <Text style={styles.menuIconText}>📝</Text>
-            </View>
-            <Text style={styles.menuText}>Kullanım Şartları</Text>
-            <Text style={styles.arrowIcon}>›</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Çıkış Yap butonu */}
-        <TouchableOpacity style={styles.logoutButton}>
-          <Text style={styles.logoutButtonText}>Çıkış Yap</Text>
-        </TouchableOpacity>
-
-        {/* Versiyon bilgisi */}
-        <Text style={styles.versionText}>Versiyon 1.0.0</Text>
-
-        {/* Alt Menü */}
-        <View style={styles.bottomBar}>
-          <TouchableOpacity style={styles.bottomBarButton}>
-            <Text style={styles.bottomBarIconText}>📱</Text>
-          </TouchableOpacity>
           
-          <TouchableOpacity style={styles.bottomBarButton}>
-            <Text style={styles.bottomBarIconText}>🔍</Text>
+          {/* Çıkış Yap butonu */}
+          <TouchableOpacity style={styles.editProfileButton}>
+            <Text style={styles.editProfileButtonText}>Çıkış Yap</Text>
           </TouchableOpacity>
-          
-          <TouchableOpacity style={[styles.bottomBarButton, styles.activeBottomBarButton]}>
-            <Text style={styles.bottomBarIconText}>👤</Text>
-            <View style={styles.activeIndicator} />
-          </TouchableOpacity>
-        </View>
+
+          {/* Versiyon bilgisi */}
+          <Text style={styles.versionText}>Versiyon 1.0.0</Text>
+        </ScrollView>
       </View>
     );
   }
@@ -126,134 +129,162 @@ export default class ProfileScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1F1F1F', // Koyu arka plan
-    padding: 16,
+    backgroundColor: '#FFFFFF',
   },
-  profileHeader: {
-    flexDirection: 'row',
+  // Üst kısım - mor başlık, görseldeki gibi şekilli
+  headerContainer: {
+    height: 120,
+    backgroundColor: '#9c27b0',
+    paddingTop: 45,
+    paddingHorizontal: 20,
     alignItems: 'center',
-    marginBottom: 20,
-    marginTop: 40,
+    zIndex: 1,
   },
+  // Eğimli alt kenar için ilave kısım - her iki taraf da dalgalı
+  headerExtension: {
+    height: 50,
+    backgroundColor: '#9c27b0',
+    borderBottomLeftRadius: 120, // Sol taraf da eğimli
+    borderBottomRightRadius: 120, // Sağ taraf eğimli
+    marginLeft: -20, // Sol tarafa doğru uzatmak için
+    marginRight: -20, // Sağ tarafa doğru uzatmak için
+  },
+  backButton: {
+    position: 'absolute',
+    top: 45,
+    left: 15,
+    zIndex: 10,
+  },
+  backButtonText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  headerName: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: '600',
+  },
+  // Avatar için dış beyaz konteyner
+  avatarWrapper: {
+    position: 'absolute',
+    top: 125,
+    alignSelf: 'center',
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  // Avatar için iç konteyner - mor insan ikonu
   avatarContainer: {
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: '#FF7F50', // Koyu turuncu avatar
+    backgroundColor: '#F2F2F2', // Açık gri arka plan
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 16,
   },
   avatarText: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
-    color: 'white',
+    color: '#9c27b0', // Mor renk
   },
-  profileInfo: {
+  // İçerik kısmı
+  contentContainer: {
     flex: 1,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 20,
+    paddingTop: 50, // Avatar için boşluk
   },
-  profileName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  profileTitle: {
-    fontSize: 16,
-    color: '#CCCCCC',
-    marginTop: 4,
-  },
+  // Menü öğeleri
   menuContainer: {
     marginBottom: 20,
+    marginTop: 10,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 16,
-    paddingHorizontal: 12,
-    backgroundColor: '#2D2D2D', // Menü öğesi arka planı
-    borderRadius: 12,
-    marginBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F2F2F2',
   },
-  menuIconCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+  infoIconContainer: {
+    width: 24,
+    height: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: 15,
   },
-  menuIconText: {
-    fontSize: 18,
-  },
-  menuText: {
-    flex: 1,
+  infoIcon: {
     fontSize: 16,
-    color: 'white',
+    color: '#9c27b0',
+  },
+  infoText: {
+    flex: 1,
+    fontSize: 15,
+    color: '#333333',
   },
   arrowIcon: {
     fontSize: 18,
     color: '#AAAAAA',
   },
-  languageContainer: {
+  rightContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
+  languageBadge: {
+    backgroundColor: '#F2F2F2',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
+    marginRight: 10,
+  },
   languageText: {
     fontSize: 14,
-    color: '#AAAAAA',
-    marginRight: 8,
+    color: '#333333',
+    fontWeight: '500',
   },
   switch: {
     transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
   },
-  logoutButton: {
-    backgroundColor: '#7B68EE', // Mor çıkış butonu
-    borderRadius: 12,
-    paddingVertical: 16,
+  // Profil düzenleme/Çıkış butonu
+  editProfileButton: {
+    height: 50,
+    backgroundColor: '#9c27b0',
+    borderRadius: 25,
     alignItems: 'center',
-    marginBottom: 16,
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 20,
+    shadowColor: "#9c27b0",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 6,
   },
-  logoutButtonText: {
+  editProfileButtonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   versionText: {
     color: '#888888',
     fontSize: 12,
     textAlign: 'center',
-    marginBottom: 60,
-  },
-  bottomBar: {
-    flexDirection: 'row',
-    backgroundColor: '#2D2D2D',
-    borderRadius: 30,
-    height: 60,
-    position: 'absolute',
-    bottom: 20,
-    left: 16,
-    right: 16,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  bottomBarButton: {
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-  },
-  activeBottomBarButton: {
-    position: 'relative',
-  },
-  activeIndicator: {
-    position: 'absolute',
-    bottom: 6,
-    width: 5,
-    height: 5,
-    borderRadius: 2.5,
-    backgroundColor: '#7B68EE', // Mor aktif gösterge
-  },
-  bottomBarIconText: {
-    fontSize: 24,
-  },
+    marginBottom: 20,
+  }
 });
