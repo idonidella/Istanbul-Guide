@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, TextInput, SafeAreaView, Dimensions, Image, ScrollView } from 'react-native';
+import Headers from '../../components/Headers';
 
 export default class TaxiBookingScreen extends Component {
   render() {
     return (
       <SafeAreaView style={styles.safeArea}>
         <ScrollView style={styles.safeArea} contentContainerStyle={{paddingBottom: 100}}> 
+          {/* <Headers/> */}
           <View style={styles.container}>
             <View>
               <Image
@@ -50,7 +52,6 @@ export default class TaxiBookingScreen extends Component {
   }
 }
 
-const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {

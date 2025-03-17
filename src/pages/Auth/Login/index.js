@@ -35,13 +35,13 @@ export default class LoginScreen extends Component {
               <Text style={styles.forgotPasswordText}>Şifremi Unuttum</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity style={styles.loginButton}>
+            <TouchableOpacity style={styles.loginButton} onPress={() => this.props.navigation.navigate('Main')}>
               <Text style={styles.loginButtonText}>Giriş Yap</Text>
             </TouchableOpacity>
             
             <View style={styles.signupContainer}>
               <Text style={styles.noAccountText}>Hesabınız yok mu? </Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('Register-Page')}>
                 <Text style={styles.signupText}>Kayıt ol</Text>
               </TouchableOpacity>
             </View>

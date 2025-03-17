@@ -19,15 +19,7 @@ export default class ProfileScreen extends Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="#1F1F1F" />
-        
-        {/* Üst profil kısmı - mor eğimli tasarım */}
-        <View style={styles.headerContainer}>
-          {/* Geri butonu */}
-          <TouchableOpacity style={styles.backButton}>
-            <Text style={styles.backButtonText}>←</Text>
-          </TouchableOpacity>
-          
-          {/* Profil adı */}
+        <View style={styles.headerContainer}>    
           <Text style={styles.headerName}>Tanya Myroniuk</Text>
         </View>
         
@@ -114,7 +106,7 @@ export default class ProfileScreen extends Component {
           </View>
           
           {/* Çıkış Yap butonu */}
-          <TouchableOpacity style={styles.editProfileButton}>
+          <TouchableOpacity style={styles.editProfileButton} onPress={() => this.props.navigation.navigate('Login-Page')}>
             <Text style={styles.editProfileButtonText}>Çıkış Yap</Text>
           </TouchableOpacity>
 
@@ -138,7 +130,6 @@ const styles = StyleSheet.create({
     paddingTop: 45,
     paddingHorizontal: 20,
     alignItems: 'center',
-    zIndex: 1,
   },
   // Eğimli alt kenar için ilave kısım - her iki taraf da dalgalı
   headerExtension: {

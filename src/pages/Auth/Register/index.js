@@ -4,30 +4,30 @@ import { Text, StyleSheet, View, TextInput, TouchableOpacity, Image, ImageBackgr
 export default class RegisterScreen extends Component {
   render() {
     return (
-      <ImageBackground 
+      <ImageBackground
         source={require('../../../assets/bottomMenu/star.jpg')}
         style={styles.backgroundImage}
       >
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.container}>
             <View style={styles.topSpace} />
-            
+
             <Text style={styles.headerText}>Kayıt ol</Text>
-            
+
             <Text style={styles.inputLabel}>Ad Soyad</Text>
             <TextInput
               style={styles.input}
               placeholder="Adınızı ve soyadınızı girin"
               placeholderTextColor="#777"
             />
-            
+
             <Text style={styles.inputLabel}>E-posta</Text>
             <TextInput
               style={styles.input}
               placeholder="E-posta adresinizi girin"
               placeholderTextColor="#777"
             />
-            
+
             <Text style={styles.inputLabel}>Şifre</Text>
             <TextInput
               style={styles.input}
@@ -35,7 +35,6 @@ export default class RegisterScreen extends Component {
               placeholderTextColor="#777"
               secureTextEntry
             />
-            
             <Text style={styles.inputLabel}>Şifre Tekrar</Text>
             <TextInput
               style={styles.input}
@@ -43,11 +42,9 @@ export default class RegisterScreen extends Component {
               placeholderTextColor="#777"
               secureTextEntry
             />
-            
-            <TouchableOpacity style={styles.registerButton}>
+            <TouchableOpacity style={styles.registerButton} onPress={() => this.props.navigation.navigate('Main')}>
               <Text style={styles.registerButtonText}>Hesap Oluştur</Text>
             </TouchableOpacity>
-            
             <View style={styles.loginContainer}>
               <Text style={styles.alreadyAccountText}>Zaten hesabınız var mı? </Text>
               <TouchableOpacity>
