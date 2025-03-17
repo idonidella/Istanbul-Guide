@@ -8,7 +8,6 @@ import SplashScreen from "../pages/SplashScreen/index";
 import LoginPage from "../pages/Auth/Login/index";
 import RegisterPage from "../pages/Auth/Register/index";
 // main pages
-import MainScreen from "../pages/Main/index";
 import BottomMenuScreens from "./BottomMenu/BottomMenuScreens";
 
 
@@ -18,7 +17,7 @@ export default class MenuScreens extends Component {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Login-Page"
+          initialRouteName="Main"
           screenOptions={{
             headerShown: false,
           }}
@@ -29,7 +28,7 @@ export default class MenuScreens extends Component {
             key="Splash-Screen"
           />
           <Stack.Screen
-            name="Main-Screen"
+            name="Login-Page"
             component={LoginPage}
             key="Main-Screen"
           />
@@ -39,7 +38,7 @@ export default class MenuScreens extends Component {
             key="Register-Page"
           />
           <Stack.Screen
-            name="Login-Page"
+            name="Main"
             component={BottomMenuScreens}
             key="Login-Page"
           />
