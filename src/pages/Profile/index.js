@@ -18,7 +18,7 @@ export default class ProfileScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" />
+        <StatusBar barStyle="light-content" backgroundColor="#1F1F1F" />
         
         {/* Üst profil kısmı - mor eğimli tasarım */}
         <View style={styles.headerContainer}>
@@ -43,7 +43,7 @@ export default class ProfileScreen extends Component {
           </View>
         </View>
 
-        {/* İçerik kısmı - beyaz arka plan üzerinde */}
+        {/* İçerik kısmı - koyu arka plan üzerinde */}
         <ScrollView style={styles.contentContainer}>
           {/* Menü öğeleri */}
           <View style={styles.menuContainer}>
@@ -79,7 +79,7 @@ export default class ProfileScreen extends Component {
               <Switch
                 value={this.state.notifications}
                 onValueChange={this.toggleNotifications}
-                trackColor={{ false: "#DDDDDD", true: "#9c27b0" }}
+                trackColor={{ false: "#3A3A3A", true: "#8A56FF" }}
                 thumbColor={"#FFFFFF"}
                 style={styles.switch}
               />
@@ -129,12 +129,12 @@ export default class ProfileScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1F1F1F', // Koyu arka plan
   },
   // Üst kısım - mor başlık, görseldeki gibi şekilli
   headerContainer: {
     height: 120,
-    backgroundColor: '#9c27b0',
+    backgroundColor: '#8A56FF', // Gofit mor rengi
     paddingTop: 45,
     paddingHorizontal: 20,
     alignItems: 'center',
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   // Eğimli alt kenar için ilave kısım - her iki taraf da dalgalı
   headerExtension: {
     height: 50,
-    backgroundColor: '#9c27b0',
+    backgroundColor: '#8A56FF', // Gofit mor rengi
     borderBottomLeftRadius: 120, // Sol taraf da eğimli
     borderBottomRightRadius: 120, // Sağ taraf eğimli
     marginLeft: -20, // Sol tarafa doğru uzatmak için
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: 'white',
+    backgroundColor: '#272727', // Koyu gri arka plan
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 2,
@@ -182,28 +182,28 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 5,
   },
-  // Avatar için iç konteyner - mor insan ikonu
+  // Avatar için iç konteyner
   avatarContainer: {
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: '#F2F2F2', // Açık gri arka plan
+    backgroundColor: '#333333', // Koyu gri arka plan
     justifyContent: 'center',
     alignItems: 'center',
   },
   avatarText: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: '#9c27b0', // Mor renk
+    color: '#8A56FF', // Mor renk
   },
   // İçerik kısmı
   contentContainer: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1F1F1F', // Koyu arka plan
     paddingHorizontal: 20,
     paddingTop: 50, // Avatar için boşluk
   },
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#F2F2F2',
+    borderBottomColor: '#333333', // Koyu çizgi
   },
   infoIconContainer: {
     width: 24,
@@ -228,23 +228,23 @@ const styles = StyleSheet.create({
   },
   infoIcon: {
     fontSize: 16,
-    color: '#9c27b0',
+    color: '#8A56FF', // Mor renk
   },
   infoText: {
     flex: 1,
     fontSize: 15,
-    color: '#333333',
+    color: '#FFFFFF', // Beyaz metin
   },
   arrowIcon: {
     fontSize: 18,
-    color: '#AAAAAA',
+    color: '#777777', // Gri ok
   },
   rightContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   languageBadge: {
-    backgroundColor: '#F2F2F2',
+    backgroundColor: '#333333', // Koyu gri arka plan
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 8,
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
   },
   languageText: {
     fontSize: 14,
-    color: '#333333',
+    color: '#FFFFFF', // Beyaz metin
     fontWeight: '500',
   },
   switch: {
@@ -261,13 +261,13 @@ const styles = StyleSheet.create({
   // Profil düzenleme/Çıkış butonu
   editProfileButton: {
     height: 50,
-    backgroundColor: '#9c27b0',
+    backgroundColor: '#8A56FF', // Gofit mor rengi
     borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 10,
     marginBottom: 20,
-    shadowColor: "#9c27b0",
+    shadowColor: "#8A56FF",
     shadowOffset: {
       width: 0,
       height: 3,
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   versionText: {
-    color: '#888888',
+    color: '#777777', // Gri metin
     fontSize: 12,
     textAlign: 'center',
     marginBottom: 20,

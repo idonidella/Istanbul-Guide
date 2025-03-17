@@ -5,8 +5,8 @@ export default class TaxiBookingScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* Harita Görüntüsü (şimdilik gri arka plan) */}
-        <View style={[styles.mapContainer, {backgroundColor: '#e0e0e0'}]}>
+        {/* Harita Görüntüsü (şimdilik koyu arka plan) */}
+        <View style={[styles.mapContainer, {backgroundColor: '#272727'}]}>
           <TouchableOpacity style={styles.backButton}>
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
@@ -74,7 +74,7 @@ const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#1F1F1F', // Koyu arka plan
   },
   mapContainer: {
     flex: 1,
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 40,
     left: 20,
-    backgroundColor: 'white',
+    backgroundColor: '#272727', // Koyu arka plan
     borderRadius: 50,
     padding: 8,
     zIndex: 10,
@@ -96,17 +96,17 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     fontSize: 24,
-    color: 'black',
+    color: 'white', // Beyaz metin
   },
   bookingCard: {
-    backgroundColor: 'white',
+    backgroundColor: '#272727', // Koyu arka plan
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
     paddingTop: 25,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 5,
     position: 'absolute',
@@ -118,11 +118,11 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 8,
-    color: '#000',
+    color: '#FFFFFF', // Beyaz metin
   },
   cardSubtitle: {
     fontSize: 14,
-    color: '#777',
+    color: '#AAAAAA', // Açık gri metin
     marginBottom: 25,
   },
   locationInputContainer: {
@@ -138,16 +138,16 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 9,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#8A56FF', // Mor çerçeve
     marginRight: 10,
   },
   input: {
     flex: 1,
     height: 40,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#333333', // Koyu çizgi
     fontSize: 16,
-    color: '#333',
+    color: '#FFFFFF', // Beyaz metin
   },
   timeInputRow: {
     flexDirection: 'row',
@@ -155,22 +155,22 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#333333', // Koyu çizgi
   },
   clockIcon: {
     fontSize: 20,
-    color: '#777',
+    color: '#8A56FF', // Mor ikon
   },
   timeText: {
     fontSize: 16,
-    color: '#777',
+    color: '#AAAAAA', // Açık gri metin
     marginLeft: 10,
   },
   timeUnderline: {
     flex: 1,
   },
   pricesButton: {
-    backgroundColor: '#d600d6',
+    backgroundColor: '#8A56FF', // Mor buton
     borderRadius: 30,
     paddingVertical: 15,
     alignItems: 'center',
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   },
   bottomBar: {
     flexDirection: 'row',
-    backgroundColor: '#d600d6',
+    backgroundColor: '#6236FF', // Koyu mor
     height: 60,
     justifyContent: 'space-around',
     alignItems: 'center',

@@ -31,7 +31,7 @@ export default function QRCodeVisualScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Enter URL or text"
-                  placeholderTextColor="#999"
+                  placeholderTextColor="#666"
                   autoCapitalize="none"
                 />
               </View>
@@ -41,7 +41,7 @@ export default function QRCodeVisualScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Enter a description"
-                  placeholderTextColor="#999"
+                  placeholderTextColor="#666"
                 />
               </View>
               
@@ -74,24 +74,24 @@ export default function QRCodeVisualScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f0fc', // Light purple background
+    backgroundColor: '#1F1F1F', // Koyu arka plan
   },
   scrollContent: {
     flexGrow: 1,
     padding: 20,
-    paddingBottom: 80, // Add space for bottom bar
+    paddingBottom: 80, // Alt bar için alan ekle
   },
   cardContainer: {
     flex: 1,
     justifyContent: 'center',
   },
   card: {
-    backgroundColor: 'white',
+    backgroundColor: '#272727', // Koyu kart arka planı
     borderRadius: 15,
     padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 5,
   },
@@ -100,36 +100,36 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
-    color: '#333',
+    color: '#FFFFFF', // Beyaz başlık
   },
   qrContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 20,
     padding: 15,
-    backgroundColor: 'white',
+    backgroundColor: '#2A2A2A', // Biraz daha açık gri
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#eee',
+    borderColor: '#333333', // Koyu kenarlık
   },
   qrPlaceholder: {
     width: 200,
     height: 200,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#333333', // Koyu QR arka planı
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: '#444444', // Biraz daha açık kenarlık
     alignItems: 'center',
     justifyContent: 'center',
   },
   qrPlaceholderText: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#888',
+    color: '#8A56FF', // Mor metin
   },
   qrLabel: {
     marginTop: 15,
     fontSize: 16,
-    color: '#666',
+    color: '#CCCCCC', // Açık gri metin
     fontWeight: '500',
   },
   form: {
@@ -142,20 +142,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 8,
     fontWeight: '500',
-    color: '#333',
+    color: '#FFFFFF', // Beyaz etiket
   },
   input: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#333333', // Koyu input arka planı
     height: 50,
     borderRadius: 10,
     paddingHorizontal: 15,
     borderWidth: 1,
-    borderColor: '#eee',
+    borderColor: '#444444', // Biraz daha açık kenarlık
     fontSize: 16,
-    color: '#333',
+    color: '#FFFFFF', // Beyaz metin
   },
   generateButton: {
-    backgroundColor: '#9c27b0', // Purple color
+    backgroundColor: '#8A56FF', // Gofit mor rengi
     height: 50,
     borderRadius: 10,
     justifyContent: 'center',
@@ -173,12 +173,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 60,
-    backgroundColor: 'white',
+    backgroundColor: '#6236FF', // Koyu mor alt çubuk
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: '#444444', // Biraz daha açık kenarlık
   },
   bottomBarButton: {
     width: 50,
@@ -188,5 +188,6 @@ const styles = StyleSheet.create({
   },
   bottomBarIcon: {
     fontSize: 24,
+    color: '#FFFFFF', // Beyaz ikon
   },
 });
