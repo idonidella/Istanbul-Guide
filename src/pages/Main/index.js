@@ -59,13 +59,13 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    backgroundColor: '#1F1F1F',
+    backgroundColor: '#2A2438', 
   },
   mapImage: {
     width: "100%",
   },
   bookingCard: {
-    backgroundColor: '#272727',
+    backgroundColor: '#382e48', 
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
@@ -99,16 +99,16 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 9,
     borderWidth: 1,
-    borderColor: '#8A56FF', // Mor çerçeve
+    borderColor: '#7B68EE', 
     marginRight: 10,
   },
   input: {
     flex: 1,
     height: 40,
     borderBottomWidth: 1,
-    borderBottomColor: '#333333', // Koyu çizgi
+    borderBottomColor: '#3d3352',
     fontSize: 16,
-    color: '#FFFFFF', // Beyaz metin
+    color: '#FFFFFF', 
   },
   timeInputRow: {
     flexDirection: 'row',
@@ -116,22 +116,22 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#333333', // Koyu çizgi
+    borderBottomColor: '#3d3352', 
   },
   clockIcon: {
     fontSize: 20,
-    color: '#8A56FF', // Mor ikon
+    color: '#7B68EE', 
   },
   timeText: {
     fontSize: 16,
-    color: '#AAAAAA', // Açık gri metin
+    color: '#AAAAAA', 
     marginLeft: 10,
   },
   timeUnderline: {
     flex: 1,
   },
   pricesButton: {
-    backgroundColor: '#8A56FF', // Mor buton
+    backgroundColor: '#7B68EE', 
     borderRadius: 30,
     paddingVertical: 15,
     alignItems: 'center',

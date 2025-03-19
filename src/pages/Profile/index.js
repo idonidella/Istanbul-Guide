@@ -18,9 +18,9 @@ export default class ProfileScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="#1F1F1F" />
+        <StatusBar barStyle="light-content" backgroundColor="#2A2438" />
         <View style={styles.headerContainer}>    
-          <Text style={styles.headerName}>Tanya Myroniuk</Text>
+          {/* Üst kısımda herhangi bir içerik yok */}
         </View>
         
         {/* Eğimli alt kısım için ek katman - görseldeki gibi şekilli */}
@@ -28,11 +28,12 @@ export default class ProfileScreen extends Component {
           {/* İçeriği boş, sadece şekil için */}
         </View>
         
-        {/* Avatar - ortada, iki kısım arasında */}
-        <View style={styles.avatarWrapper}>
-          <View style={styles.avatarContainer}>
-            <Text style={styles.avatarText}>👤</Text>
+        {/* Profil ikonu ve isim, renk geçişinde */}
+        <View style={styles.profileInfoContainer}>
+          <View style={styles.profileIconContainer}>
+            <Text style={styles.profileIcon}>👤</Text>
           </View>
+          <Text style={styles.headerName}>Tanya Myroniuk</Text>
         </View>
 
         {/* İçerik kısmı - koyu arka plan üzerinde */}
@@ -71,7 +72,7 @@ export default class ProfileScreen extends Component {
               <Switch
                 value={this.state.notifications}
                 onValueChange={this.toggleNotifications}
-                trackColor={{ false: "#3A3A3A", true: "#8A56FF" }}
+                trackColor={{ false: "#3A3A3A", true: "#7B68EE" }}
                 thumbColor={"#FFFFFF"}
                 style={styles.switch}
               />
@@ -109,9 +110,6 @@ export default class ProfileScreen extends Component {
           <TouchableOpacity style={styles.editProfileButton} onPress={() => this.props.navigation.navigate('Login-Page')}>
             <Text style={styles.editProfileButtonText}>Çıkış Yap</Text>
           </TouchableOpacity>
-
-          {/* Versiyon bilgisi */}
-          <Text style={styles.versionText}>Versiyon 1.0.0</Text>
         </ScrollView>
       </View>
     );
@@ -121,121 +119,99 @@ export default class ProfileScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1F1F1F', // Koyu arka plan
+    backgroundColor: '#2A2438', 
   },
-  // Üst kısım - mor başlık, görseldeki gibi şekilli
+ 
   headerContainer: {
-    height: 120,
-    backgroundColor: '#8A56FF', // Gofit mor rengi
-    paddingTop: 45,
-    paddingHorizontal: 20,
-    alignItems: 'center',
+    height: 100,
+    backgroundColor: '#7B68EE', 
   },
-  // Eğimli alt kenar için ilave kısım - her iki taraf da dalgalı
+
   headerExtension: {
     height: 50,
-    backgroundColor: '#8A56FF', // Gofit mor rengi
-    borderBottomLeftRadius: 120, // Sol taraf da eğimli
-    borderBottomRightRadius: 120, // Sağ taraf eğimli
-    marginLeft: -20, // Sol tarafa doğru uzatmak için
-    marginRight: -20, // Sağ tarafa doğru uzatmak için
+    backgroundColor: '#7B68EE', 
+    borderBottomLeftRadius: 120, 
+    borderBottomRightRadius: 120, 
+    marginLeft: -10, 
+    marginRight: -10, 
   },
-  backButton: {
+
+  profileInfoContainer: {
     position: 'absolute',
-    top: 45,
-    left: 15,
+    top: 110,
+    left: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
     zIndex: 10,
   },
-  backButtonText: {
-    color: 'white',
-    fontSize: 24,
-    fontWeight: 'bold',
+
+  profileIconContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#3d3352',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+    borderWidth: 2,
+    borderColor: '#7B68EE',
   },
+
+  profileIcon: {
+    fontSize: 24,
+    color: '#7B68EE', 
+  },
+
   headerName: {
     color: 'white',
     fontSize: 20,
     fontWeight: '600',
   },
-  // Avatar için dış beyaz konteyner
-  avatarWrapper: {
-    position: 'absolute',
-    top: 125,
-    alignSelf: 'center',
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#272727', // Koyu gri arka plan
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 2,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  // Avatar için iç konteyner
-  avatarContainer: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: '#333333', // Koyu gri arka plan
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarText: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: '#8A56FF', // Mor renk
-  },
-  // İçerik kısmı
+ 
   contentContainer: {
     flex: 1,
-    backgroundColor: '#1F1F1F', // Koyu arka plan
+    backgroundColor: '#2A2438', 
     paddingHorizontal: 20,
-    paddingTop: 50, // Avatar için boşluk
+    paddingTop: 40, 
   },
-  // Menü öğeleri
+
   menuContainer: {
-    marginBottom: 20,
-    marginTop: 10,
+    marginBottom: 30,
+    marginTop: 30,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#333333', // Koyu çizgi
+    borderBottomColor: '#3d3352', 
   },
   infoIconContainer: {
     width: 24,
     height: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 15,
+    marginRight: 20,
   },
   infoIcon: {
     fontSize: 16,
-    color: '#8A56FF', // Mor renk
+    color: '#7B68EE', 
   },
   infoText: {
     flex: 1,
-    fontSize: 15,
-    color: '#FFFFFF', // Beyaz metin
+    fontSize: 18,
+    color: '#FFFFFF', 
   },
   arrowIcon: {
-    fontSize: 18,
-    color: '#777777', // Gri ok
+    fontSize: 20,
+    color: '#777777', 
   },
   rightContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   languageBadge: {
-    backgroundColor: '#333333', // Koyu gri arka plan
+    backgroundColor: '#3d3352', 
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 8,
@@ -243,39 +219,24 @@ const styles = StyleSheet.create({
   },
   languageText: {
     fontSize: 14,
-    color: '#FFFFFF', // Beyaz metin
+    color: '#FFFFFF', 
     fontWeight: '500',
   },
   switch: {
     transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
   },
-  // Profil düzenleme/Çıkış butonu
   editProfileButton: {
     height: 50,
-    backgroundColor: '#8A56FF', // Gofit mor rengi
+    backgroundColor: '#7B68EE', 
     borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-    shadowColor: "#8A56FF",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 6,
+    marginTop: 25,
+    marginBottom: 30,
   },
   editProfileButtonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
   },
-  versionText: {
-    color: '#777777', // Gri metin
-    fontSize: 12,
-    textAlign: 'center',
-    marginBottom: 20,
-  }
 });

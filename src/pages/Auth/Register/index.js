@@ -1,149 +1,147 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, View, TextInput, TouchableOpacity, Image, ImageBackground, SafeAreaView } from 'react-native';
+import { Text, StyleSheet, View, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
 
 export default class RegisterScreen extends Component {
+  state = {
+    showPassword: false,
+    showConfirmPassword: false
+  }
+
   render() {
     return (
-      <ImageBackground
-        source={require('../../../assets/bottomMenu/star.jpg')}
-        style={styles.backgroundImage}
-      >
+      <View style={styles.backgroundContainer}>
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.container}>
-            <View style={styles.topSpace} />
-
+            {/* Register Header */}
             <Text style={styles.headerText}>Kayıt ol</Text>
-
+            
+            {/* Ad Soyad Input */}
             <Text style={styles.inputLabel}>Ad Soyad</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Adınızı ve soyadınızı girin"
-              placeholderTextColor="#777"
-            />
-
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Adınızı ve soyadınızı girin"
+                placeholderTextColor="#999"
+                autoCapitalize="words"
+              />
+            </View>
+            
+            {/* Email Input */}
             <Text style={styles.inputLabel}>E-posta</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="E-posta adresinizi girin"
-              placeholderTextColor="#777"
-            />
-
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="E-posta adresinizi girin"
+                placeholderTextColor="#999"
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+            </View>
+            
+            {/* Password Input */}
             <Text style={styles.inputLabel}>Şifre</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Şifrenizi girin"
-              placeholderTextColor="#777"
-              secureTextEntry
-            />
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Şifrenizi girin"
+                placeholderTextColor="#999"
+                secureTextEntry={!this.state.showPassword}
+              />
+            </View>
+            
+            {/* Confirm Password Input */}
             <Text style={styles.inputLabel}>Şifre Tekrar</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Şifrenizi tekrar girin"
-              placeholderTextColor="#777"
-              secureTextEntry
-            />
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Şifrenizi tekrar girin"
+                placeholderTextColor="#999"
+                secureTextEntry={!this.state.showConfirmPassword}
+              />
+            </View>
+            
+            {/* Register Button */}
             <TouchableOpacity style={styles.registerButton} onPress={() => this.props.navigation.navigate('Main')}>
               <Text style={styles.registerButtonText}>Hesap Oluştur</Text>
             </TouchableOpacity>
+            
+            {/* Login Option */}
             <View style={styles.loginContainer}>
-              <Text style={styles.alreadyAccountText}>Zaten hesabınız var mı? </Text>
-              <TouchableOpacity>
-                <Text style={styles.loginText}>Giriş yap</Text>
+              <Text style={styles.haveAccountText}>Zaten hesabınız var mı? </Text>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('Login-Page')}>
+                <Text style={styles.loginText}>Giriş Yap</Text>
               </TouchableOpacity>
             </View>
           </View>
         </SafeAreaView>
-      </ImageBackground>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  backgroundImage: {
+  backgroundContainer: {
     flex: 1,
     width: '100%',
     height: '100%',
+    backgroundColor: '#2A2438', 
   },
   safeArea: {
     flex: 1,
   },
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0)', // Daha şeffaf arka plan
-  },
-  topSpace: {
-    height: 80,
+    padding: 50,
+    paddingTop: 70,
   },
   headerText: {
-    fontSize: 32,
+    fontSize: 35,
     fontWeight: 'bold',
-    color: 'white', // Koyu renk yazı
-    marginBottom: 30,
+    color: 'white',
+    marginBottom: 50,
     textAlign: 'center'
   },
-  optionText: {
-    fontSize: 16,
-    color: '#555', // Koyu renk yazı
-    marginBottom: 20,
-    textAlign: 'center'
-  },
-  // Sosyal buton stilleri kaldırıldı
   inputLabel: {
-    fontSize: 16,
-    color: 'white', // Koyu renk yazı
-    marginBottom: 8,
-    fontWeight: '600',
+    fontSize: 20,
+    color: 'white',
+    marginBottom: 10,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#C2BAB8',
+    marginBottom: 30,
+    height: 40,
   },
   input: {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)', // Hafif beyaz kutu
-    height: 50,
-    borderRadius: 10,
-    marginBottom: 20,
-    paddingHorizontal: 15,
-    color: '#333', // Koyu renk yazı
-    borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.1)', // İnce siyah çerçeve
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    flex: 1,
+    color: 'white',
+    paddingHorizontal: 10,
   },
   registerButton: {
-    backgroundColor: '#4E4E4BFF',
+    backgroundColor: '#7B68EE', 
     height: 50,
-    borderRadius: 10,
+    borderRadius: 25, 
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 20,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    marginTop: 25,
+    marginBottom: 30,
   },
   registerButtonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   loginContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  alreadyAccountText: {
-    color: 'white', // Koyu renk yazı
+  haveAccountText: {
+    color: 'white',
   },
   loginText: {
-    color: '#C2BAB8FF',
+    color: '#7B68EE', 
     fontWeight: 'bold',
   },
 });

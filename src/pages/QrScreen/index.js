@@ -6,7 +6,8 @@ import {
   TextInput, 
   TouchableOpacity,
   SafeAreaView,
-  ScrollView
+  ScrollView,
+  Image
 } from 'react-native';
 
 export default function QRCodeVisualScreen() {
@@ -18,33 +19,16 @@ export default function QRCodeVisualScreen() {
             <Text style={styles.title}>QR Code</Text>
             
             <View style={styles.qrContainer}>
-              {/* QR kod görseli yerine basit bir placeholder */}
-              <View style={styles.qrPlaceholder}>
-                <Text style={styles.qrPlaceholderText}>QR</Text>
-              </View>
+              {/* Gerçek QR kod görseli */}
+              <Image 
+                source={require('C:/Users/Ahsen/Desktop/Istanbul-Guide/src/assets/qr/sample-qr.png')}
+                style={styles.qrImage}
+                resizeMode="contain"
+              />
               <Text style={styles.qrLabel}>My QR Code</Text>
             </View>
             
             <View style={styles.form}>
-              <View style={styles.inputGroup}>
-                <Text style={styles.inputLabel}>Link/Text</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter URL or text"
-                  placeholderTextColor="#666"
-                  autoCapitalize="none"
-                />
-              </View>
-              
-              <View style={styles.inputGroup}>
-                <Text style={styles.inputLabel}>Label/Description</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter a description"
-                  placeholderTextColor="#666"
-                />
-              </View>
-              
               <TouchableOpacity style={styles.generateButton}>
                 <Text style={styles.generateButtonText}>Generate QR Code</Text>
               </TouchableOpacity>
@@ -52,21 +36,6 @@ export default function QRCodeVisualScreen() {
           </View>
         </View>
       </ScrollView>
-      
-      {/* Bottom Navigation Bar */}
-      <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.bottomBarButton}>
-          <Text style={styles.bottomBarIcon}>🏠</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.bottomBarButton}>
-          <Text style={styles.bottomBarIcon}>🔍</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.bottomBarButton}>
-          <Text style={styles.bottomBarIcon}>👤</Text>
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 }
@@ -74,19 +43,19 @@ export default function QRCodeVisualScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1F1F1F', // Koyu arka plan
+    backgroundColor: '#2A2438', 
   },
   scrollContent: {
     flexGrow: 1,
     padding: 20,
-    paddingBottom: 80, // Alt bar için alan ekle
+    paddingBottom: 80, 
   },
   cardContainer: {
     flex: 1,
     justifyContent: 'center',
   },
   card: {
-    backgroundColor: '#272727', // Koyu kart arka planı
+    backgroundColor: '#382e48', 
     borderRadius: 15,
     padding: 20,
     shadowColor: '#000',
@@ -100,36 +69,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
-    color: '#FFFFFF', // Beyaz başlık
+    color: '#FFFFFF', 
   },
   qrContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 20,
     padding: 15,
-    backgroundColor: '#2A2A2A', // Biraz daha açık gri
+    backgroundColor: '#302942', 
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#333333', // Koyu kenarlık
+    borderColor: '#3d3352', 
   },
-  qrPlaceholder: {
+  qrImage: {
     width: 200,
     height: 200,
-    backgroundColor: '#333333', // Koyu QR arka planı
-    borderWidth: 1,
-    borderColor: '#444444', // Biraz daha açık kenarlık
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  qrPlaceholderText: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#8A56FF', // Mor metin
+    backgroundColor: 'white', 
+    padding: 10,
+    borderRadius: 5,
   },
   qrLabel: {
     marginTop: 15,
     fontSize: 16,
-    color: '#CCCCCC', // Açık gri metin
+    color: '#CCCCCC', 
     fontWeight: '500',
   },
   form: {
@@ -142,22 +104,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 8,
     fontWeight: '500',
-    color: '#FFFFFF', // Beyaz etiket
+    color: '#FFFFFF', 
   },
   input: {
-    backgroundColor: '#333333', // Koyu input arka planı
+    backgroundColor: 'rgba(255, 255, 255, 0.1)', 
     height: 50,
     borderRadius: 10,
     paddingHorizontal: 15,
     borderWidth: 1,
-    borderColor: '#444444', // Biraz daha açık kenarlık
+    borderColor: '#3d3352', 
     fontSize: 16,
-    color: '#FFFFFF', // Beyaz metin
+    color: '#FFFFFF', 
   },
   generateButton: {
-    backgroundColor: '#8A56FF', // Gofit mor rengi
+    backgroundColor: '#7B68EE', 
     height: 50,
-    borderRadius: 10,
+    borderRadius: 25, 
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
@@ -173,12 +135,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 60,
-    backgroundColor: '#6236FF', // Koyu mor alt çubuk
+    backgroundColor: '#7B68EE', 
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     borderTopWidth: 1,
-    borderTopColor: '#444444', // Biraz daha açık kenarlık
+    borderTopColor: '#3d3352',
   },
   bottomBarButton: {
     width: 50,
@@ -188,6 +150,6 @@ const styles = StyleSheet.create({
   },
   bottomBarIcon: {
     fontSize: 24,
-    color: '#FFFFFF', // Beyaz ikon
+    color: '#FFFFFF', 
   },
 });
