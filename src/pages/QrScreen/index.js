@@ -21,7 +21,7 @@ export default function QRCodeVisualScreen() {
             <View style={styles.qrContainer}>
               {/* Gerçek QR kod görseli */}
               <Image 
-                source={require('C:/Users/Ahsen/Desktop/Istanbul-Guide/src/assets/qr/sample-qr.png')}
+                source={require('../../assets/qr/sample-qr.png')}
                 style={styles.qrImage}
                 resizeMode="contain"
               />

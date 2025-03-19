@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, View, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Text, StyleSheet, View, TextInput, TouchableOpacity, SafeAreaView, Image } from 'react-native';
 
 export default class LoginScreen extends Component {
   state = {
@@ -11,6 +11,15 @@ export default class LoginScreen extends Component {
       <View style={styles.backgroundContainer}>
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.container}>
+            {/* Logo */}
+            <View style={styles.logoContainer}>
+              <Image
+                source={require('../../../assets/logo/logo.png')}
+                style={styles.logo}
+                resizeMode="contain"
+              />
+            </View>
+            
             {/* Login Header */}
             <Text style={styles.headerText}>Giriş Yap</Text>
             
@@ -76,14 +85,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 50,
-    paddingTop: 150,
+    paddingTop: 70, // Azaltıldı, logo için yer açmak amacıyla
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 50,
+  },
+  logo: {
+    width: 250,
+    height: 80,
   },
   headerText: {
     fontSize: 35,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 80,
-    textAlign: 'center'
+    textAlign: 'left'
   },
   inputLabel: {
     fontSize: 20,
