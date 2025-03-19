@@ -19,11 +19,7 @@ export default class LoginScreen extends Component {
                 resizeMode="contain"
               />
             </View>
-            
-            {/* Login Header */}
             <Text style={styles.headerText}>Giriş Yap</Text>
-            
-            {/* Email Input */}
             <Text style={styles.inputLabel}>E-Posta Adresi</Text>
             <View style={styles.inputContainer}>
               <TextInput
@@ -34,9 +30,9 @@ export default class LoginScreen extends Component {
                 autoCapitalize="none"
               />
             </View>
-            
-            {/* Password Input */}
-            <Text style={styles.inputLabel}>Şifre</Text>
+            <View style={{marginTop:13}}>
+              <Text style={styles.inputLabel}>Şifre</Text>
+            </View>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
@@ -45,20 +41,14 @@ export default class LoginScreen extends Component {
                 secureTextEntry={!this.state.showPassword}
               />
             </View>
-            
-            {/* Forgot Password */}
             <View style={styles.forgotPasswordContainer}>
               <TouchableOpacity>
                 <Text style={styles.forgotPasswordText}>Şifremi Unuttum?</Text>
               </TouchableOpacity>
             </View>
-            
-            {/* Login Button */}
             <TouchableOpacity style={styles.loginButton} onPress={() => this.props.navigation.navigate('Main')}>
               <Text style={styles.loginButtonText}>Giriş Yap</Text>
             </TouchableOpacity>
-            
-            {/* Sign Up */}
             <View style={styles.signupContainer}>
               <Text style={styles.noAccountText}>Hesabınız yok mu? </Text>
               <TouchableOpacity onPress={() => this.props.navigation.navigate('Register-Page')}>
@@ -77,33 +67,32 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    backgroundColor: '#2A2438', 
+    backgroundColor: '#2A2438',
   },
   safeArea: {
     flex: 1,
   },
   container: {
     flex: 1,
-    padding: 50,
-    paddingTop: 70, // Azaltıldı, logo için yer açmak amacıyla
+    padding: 30,
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 50,
+    marginBottom: 30,
   },
   logo: {
-    width: 250,
-    height: 80,
+    width: 300,
+    height: 110,
   },
   headerText: {
-    fontSize: 35,
+    fontSize: 32,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 80,
+    marginBottom: 60,
     textAlign: 'left'
   },
   inputLabel: {
-    fontSize: 20,
+    fontSize: 18,
     color: 'white',
     marginBottom: 20,
   },
@@ -125,16 +114,16 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   forgotPasswordText: {
-    color: '#7B68EE', 
+    color: '#7B68EE',
     fontWeight: '500',
   },
   loginButton: {
-    backgroundColor: '#7B68EE', 
+    backgroundColor: '#7B68EE',
     height: 50,
-    borderRadius: 25, 
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 30,
+    marginVertical: 20,
   },
   loginButtonText: {
     color: '#fff',
@@ -144,12 +133,13 @@ const styles = StyleSheet.create({
   signupContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    marginVertical: 30,
   },
   noAccountText: {
     color: 'white',
   },
   signupText: {
-    color: '#7B68EE', 
+    color: '#7B68EE',
     fontWeight: 'bold',
   },
 });

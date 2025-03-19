@@ -18,10 +18,8 @@ export default class BottomMenuScreens extends Component {
           tabBarLabel: () => null,
           tabBarStyle: {
             position: 'absolute',
-            bottom: 10,
             backgroundColor: '#07090e',
-            height: Platform.OS === 'ios' ? 90 : 80,
-            borderRadius: 20,
+            height: Platform.OS === 'ios' ? 100 : 100,
             paddingTop: 10,
           },
 
@@ -88,13 +86,13 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   tabIcon: {
-    width: 33,
-    height: 33,
+    width: 27,
+    height: 27,
     resizeMode: 'contain',
   },
   tabIconActive: {
-    width: 33,
-    height: 33,
+    width: 27,
+    height: 27,
     resizeMode: 'contain',
     tintColor: '#FFFFFF',
   },

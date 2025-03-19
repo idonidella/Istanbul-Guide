@@ -19,15 +19,15 @@ export default class ProfileScreen extends Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="#2A2438" />
-        <View style={styles.headerContainer}>    
+        <View style={styles.headerContainer}>
           {/* Üst kısımda herhangi bir içerik yok */}
         </View>
-        
+
         {/* Eğimli alt kısım için ek katman - görseldeki gibi şekilli */}
         <View style={styles.headerExtension}>
           {/* İçeriği boş, sadece şekil için */}
         </View>
-        
+
         {/* Profil ikonu ve isim, renk geçişinde */}
         <View style={styles.profileInfoContainer}>
           <View style={styles.profileIconContainer}>
@@ -36,8 +36,7 @@ export default class ProfileScreen extends Component {
           <Text style={styles.headerName}>Tanya Myroniuk</Text>
         </View>
 
-        {/* İçerik kısmı - koyu arka plan üzerinde */}
-        <ScrollView style={styles.contentContainer}>
+        <ScrollView style={styles.contentContainer} contentContainerStyle={{ paddingBottom: 200 }}>
           {/* Menü öğeleri */}
           <View style={styles.menuContainer}>
             {/* Profil Ayarları */}
@@ -105,11 +104,12 @@ export default class ProfileScreen extends Component {
               <Text style={styles.arrowIcon}>›</Text>
             </TouchableOpacity>
           </View>
-          
-          {/* Çıkış Yap butonu */}
-          <TouchableOpacity style={styles.editProfileButton} onPress={() => this.props.navigation.navigate('Login-Page')}>
-            <Text style={styles.editProfileButtonText}>Çıkış Yap</Text>
-          </TouchableOpacity>
+
+          <View style={{width: "88%", alignSelf: 'center'}}>
+            <TouchableOpacity style={styles.editProfileButton} onPress={() => this.props.navigation.navigate('Login-Page')}>
+              <Text style={styles.editProfileButtonText}>Çıkış Yap</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </View>
     );
@@ -119,21 +119,21 @@ export default class ProfileScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2A2438', 
+    backgroundColor: '#2A2438',
   },
- 
+
   headerContainer: {
     height: 100,
-    backgroundColor: '#7B68EE', 
+    backgroundColor: '#7B68EE',
   },
 
   headerExtension: {
     height: 50,
-    backgroundColor: '#7B68EE', 
-    borderBottomLeftRadius: 120, 
-    borderBottomRightRadius: 120, 
-    marginLeft: -10, 
-    marginRight: -10, 
+    backgroundColor: '#7B68EE',
+    borderBottomLeftRadius: 120,
+    borderBottomRightRadius: 120,
+    marginLeft: -10,
+    marginRight: -10,
   },
 
   profileInfoContainer: {
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
 
   profileIcon: {
     fontSize: 24,
-    color: '#7B68EE', 
+    color: '#7B68EE',
   },
 
   headerName: {
@@ -167,24 +167,23 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
   },
- 
+
   contentContainer: {
     flex: 1,
-    backgroundColor: '#2A2438', 
-    paddingHorizontal: 20,
-    paddingTop: 40, 
+    marginTop: 20,
   },
-
   menuContainer: {
     marginBottom: 30,
     marginTop: 30,
+    width: "85%",
+    alignSelf: 'center',
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#3d3352', 
+    borderBottomColor: '#3d3352',
   },
   infoIconContainer: {
     width: 24,
@@ -195,23 +194,23 @@ const styles = StyleSheet.create({
   },
   infoIcon: {
     fontSize: 16,
-    color: '#7B68EE', 
+    color: '#7B68EE',
   },
   infoText: {
     flex: 1,
     fontSize: 18,
-    color: '#FFFFFF', 
+    color: '#FFFFFF',
   },
   arrowIcon: {
     fontSize: 20,
-    color: '#777777', 
+    color: '#777777',
   },
   rightContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   languageBadge: {
-    backgroundColor: '#3d3352', 
+    backgroundColor: '#3d3352',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 8,
@@ -219,7 +218,7 @@ const styles = StyleSheet.create({
   },
   languageText: {
     fontSize: 14,
-    color: '#FFFFFF', 
+    color: '#FFFFFF',
     fontWeight: '500',
   },
   switch: {
@@ -227,7 +226,7 @@ const styles = StyleSheet.create({
   },
   editProfileButton: {
     height: 50,
-    backgroundColor: '#7B68EE', 
+    backgroundColor: '#7B68EE',
     borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
