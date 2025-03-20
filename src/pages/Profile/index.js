@@ -33,7 +33,7 @@ export default class ProfileScreen extends Component {
           <View style={styles.profileIconContainer}>
             <Text style={styles.profileIcon}>👤</Text>
           </View>
-          <Text style={styles.headerName}>Tanya Myroniuk</Text>
+          <Text style={styles.headerName}>Ahsen Arslan</Text>
         </View>
 
         <ScrollView style={styles.contentContainer} contentContainerStyle={{ paddingBottom: 200 }}>
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   headerName: {
     color: 'white',
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: '900',
   },
 
   contentContainer: {
