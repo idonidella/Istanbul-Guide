@@ -1,13 +1,65 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, Switch, StatusBar, ScrollView } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, Switch, StatusBar, ScrollView, ActivityIndicator, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notifications: true
+      notifications: true,
+      username: 'Yükleniyor...',
+      loading: true
     };
   }
+
+  componentDidMount() {
+    // Komponent yüklendiğinde kullanıcı bilgilerini çek
+    this.getUserData();
+  }
+
+  getUserData = async () => {
+    try {
+      this.setState({ loading: true });
+      
+      // AsyncStorage'dan kullanıcı bilgilerini çek
+      const userDataJson = await AsyncStorage.getItem('userData');
+      
+      if (userDataJson) {
+        const userData = JSON.parse(userDataJson);
+        this.setState({ 
+          username: userData.username || 'Kullanıcı',
+          loading: false
+        });
+      } else {
+        // Kullanıcı verisi bulunamadı
+        this.setState({
+          username: 'Kullanıcı',
+          loading: false
+        });
+        console.log('Kullanıcı bilgileri bulunamadı');
+      }
+    } catch (error) {
+      console.error('Kullanıcı bilgileri yüklenirken hata oluştu:', error);
+      this.setState({ 
+        username: 'Kullanıcı',
+        loading: false
+      });
+    }
+  };
+
+  handleLogout = async () => {
+    try {
+      // AsyncStorage'dan token ve kullanıcı bilgilerini sil
+      await AsyncStorage.removeItem('userToken');
+      await AsyncStorage.removeItem('userData');
+      
+      // Login sayfasına yönlendir
+      this.props.navigation.navigate('Login-Page');
+    } catch (error) {
+      console.error('Çıkış yaparken hata oluştu:', error);
+      Alert.alert('Hata', 'Çıkış yapılırken bir sorun oluştu');
+    }
+  };
 
   toggleNotifications = () => {
     this.setState(prevState => ({
@@ -33,7 +85,11 @@ export default class ProfileScreen extends Component {
           <View style={styles.profileIconContainer}>
             <Text style={styles.profileIcon}>👤</Text>
           </View>
-          <Text style={styles.headerName}>Tanya Myroniuk</Text>
+          {this.state.loading ? (
+            <ActivityIndicator size="small" color="#FFFFFF" />
+          ) : (
+            <Text style={styles.headerName}>{this.state.username}</Text>
+          )}
         </View>
 
         <ScrollView style={styles.contentContainer} contentContainerStyle={{ paddingBottom: 200 }}>
@@ -106,7 +162,10 @@ export default class ProfileScreen extends Component {
           </View>
 
           <View style={{width: "88%", alignSelf: 'center'}}>
-            <TouchableOpacity style={styles.editProfileButton} onPress={() => this.props.navigation.navigate('Login-Page')}>
+            <TouchableOpacity 
+              style={styles.editProfileButton} 
+              onPress={this.handleLogout}
+            >
               <Text style={styles.editProfileButtonText}>Çıkış Yap</Text>
             </TouchableOpacity>
           </View>

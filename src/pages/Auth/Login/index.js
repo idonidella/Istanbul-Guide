@@ -1,12 +1,60 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, View, TextInput, TouchableOpacity, SafeAreaView, Image } from 'react-native';
+import { Text, StyleSheet, View, TextInput, TouchableOpacity, SafeAreaView, Image, Alert, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { authService } from '../../../networking/api';
 
 export default class LoginScreen extends Component {
   state = {
-    showPassword: false
+    email: '',
+    password: '',
+    showPassword: false,
+    loading: false
   }
 
+  handleLogin = async () => {
+    const { email, password } = this.state;
+    
+    // Form validasyonu
+    if (!email || !password) {
+      Alert.alert('Hata', 'Lütfen e-posta ve şifrenizi girin');
+      return;
+    }
+    
+    // Email formatı kontrolü
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert('Hata', 'Geçerli bir e-posta adresi girin');
+      return;
+    }
+    
+    this.setState({ loading: true });
+    
+    try {
+      // API'ye giriş isteği gönderme
+      const response = await authService.login({
+        email,
+        password,
+      });
+      
+      this.setState({ loading: false });
+      
+      // Token'ı ve kullanıcı bilgilerini kaydet
+      await AsyncStorage.setItem('userToken', response.token);
+      await AsyncStorage.setItem('userData', JSON.stringify(response.user));
+      
+      // Ana ekrana yönlendir
+      this.props.navigation.navigate('Main');
+    } catch (error) {
+      this.setState({ loading: false });
+      Alert.alert('Giriş Hatası', error.message);
+    }
+  }
+
+
   render() {
+
+    const { loading } = this.state;
+
     return (
       <View style={styles.backgroundContainer}>
         <SafeAreaView style={styles.safeArea}>
@@ -28,6 +76,8 @@ export default class LoginScreen extends Component {
                 placeholderTextColor="#999"
                 keyboardType="email-address"
                 autoCapitalize="none"
+                value={this.state.email}
+                onChangeText={(text) => this.setState({ email: text })}
               />
             </View>
             <View style={{marginTop:13}}>
@@ -39,6 +89,8 @@ export default class LoginScreen extends Component {
                 placeholder="Şifre"
                 placeholderTextColor="#999"
                 secureTextEntry={!this.state.showPassword}
+                value={this.state.password}
+                onChangeText={(text) => this.setState({ password: text })}
               />
             </View>
             <View style={styles.forgotPasswordContainer}>
@@ -46,9 +98,20 @@ export default class LoginScreen extends Component {
                 <Text style={styles.forgotPasswordText}>Şifremi Unuttum?</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.loginButton} onPress={() => this.props.navigation.navigate('Main')}>
-              <Text style={styles.loginButtonText}>Giriş Yap</Text>
+
+            <TouchableOpacity 
+              style={styles.loginButton} 
+              onPress={this.handleLogin}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={styles.loginButtonText}>Giriş Yap</Text>
+              )}
             </TouchableOpacity>
+
+
             <View style={styles.signupContainer}>
               <Text style={styles.noAccountText}>Hesabınız yok mu? </Text>
               <TouchableOpacity onPress={() => this.props.navigation.navigate('Register-Page')}>

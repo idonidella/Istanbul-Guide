@@ -1,13 +1,71 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, View, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Text, StyleSheet, View, TextInput, TouchableOpacity, SafeAreaView, Alert, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// API servisi importu - networking klasörünüzde oluşturmanız gerekiyor
+import { authService } from '../../../networking/api';
 
 export default class RegisterScreen extends Component {
   state = {
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
     showPassword: false,
-    showConfirmPassword: false
+    showConfirmPassword: false,
+    loading: false
   }
 
+  handleRegister = async () => {
+    const { name, email, password, confirmPassword } = this.state;
+    
+    // Form validasyonu
+    if (!name || !email || !password || !confirmPassword) {
+      Alert.alert('Hata', 'Lütfen tüm alanları doldurun');
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      Alert.alert('Hata', 'Şifreler eşleşmiyor');
+      return;
+    }
+    
+    // Email formatı kontrolü
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert('Hata', 'Geçerli bir e-posta adresi girin');
+      return;
+    }
+    
+    this.setState({ loading: true });
+    
+    try {
+      // Ad Soyad'dan username oluşturma
+      const username = name.replace(/\s+/g, '').toLowerCase();
+      
+      // API'ye kayıt isteği gönderme
+      await authService.register({
+        username,
+        email,
+        password,
+      });
+      
+      this.setState({ loading: false });
+      
+      Alert.alert(
+        'Başarılı',
+        'Hesabınız başarıyla oluşturuldu. Şimdi giriş yapabilirsiniz.',
+        [{ text: 'Tamam', onPress: () => this.props.navigation.navigate('Login-Page') }]
+      );
+    } catch (error) {
+      this.setState({ loading: false });
+      Alert.alert('Kayıt Hatası', error.message);
+    }
+  }
+
+
   render() {
+    const { loading } = this.state;
     return (
       <View style={styles.backgroundContainer}>
         <SafeAreaView style={styles.safeArea}>
@@ -23,6 +81,8 @@ export default class RegisterScreen extends Component {
                 placeholder="Adınızı ve soyadınızı girin"
                 placeholderTextColor="#999"
                 autoCapitalize="words"
+                value={this.state.name}
+                onChangeText={(text) => this.setState({ name: text })}
               />
             </View>
             
@@ -35,6 +95,8 @@ export default class RegisterScreen extends Component {
                 placeholderTextColor="#999"
                 keyboardType="email-address"
                 autoCapitalize="none"
+                value={this.state.email}
+                onChangeText={(text) => this.setState({ email: text })}
               />
             </View>
             
@@ -46,6 +108,8 @@ export default class RegisterScreen extends Component {
                 placeholder="Şifrenizi girin"
                 placeholderTextColor="#999"
                 secureTextEntry={!this.state.showPassword}
+                value={this.state.password}
+                onChangeText={(text) => this.setState({ password: text })}
               />
             </View>
             
@@ -57,12 +121,22 @@ export default class RegisterScreen extends Component {
                 placeholder="Şifrenizi tekrar girin"
                 placeholderTextColor="#999"
                 secureTextEntry={!this.state.showConfirmPassword}
+                value={this.state.confirmPassword}
+                onChangeText={(text) => this.setState({ confirmPassword: text })}
               />
             </View>
             
             {/* Register Button */}
-            <TouchableOpacity style={styles.registerButton} onPress={() => this.props.navigation.navigate('Main')}>
-              <Text style={styles.registerButtonText}>Hesap Oluştur</Text>
+            <TouchableOpacity 
+              style={styles.registerButton} 
+              onPress={this.handleRegister}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={styles.registerButtonText}>Hesap Oluştur</Text>
+              )}
             </TouchableOpacity>
             
             {/* Login Option */}
