@@ -15,7 +15,7 @@ import BottomMenuScreens from "./BottomMenu/BottomMenuScreens";
 export default class MenuScreens extends Component {
   render() {
     return (
-      <NavigationContainer>
+      <NavigationContainer> 
         <Stack.Navigator
           initialRouteName="Splash-Screen"
           screenOptions={{

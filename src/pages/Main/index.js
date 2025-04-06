@@ -6,8 +6,10 @@ export default class TaxiBookingScreen extends Component {
   render() {
     return (
       <SafeAreaView style={styles.safeArea}>
-        <ScrollView style={styles.safeArea} contentContainerStyle={{paddingBottom: 100}}> 
-          {/* <Headers/> */}
+        <ScrollView style={styles.safeArea} contentContainerStyle={{ paddingBottom: 100 }}>
+          <Headers
+            navigation={this.props.navigation}
+          />
           <View style={styles.container}>
             <View>
               <Image
@@ -59,15 +61,14 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    backgroundColor: '#2A2438', 
+    backgroundColor: '#2A2438',
   },
   mapImage: {
     width: "100%",
+    height: 320,
   },
   bookingCard: {
-    backgroundColor: '#382e48', 
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    backgroundColor: '#382e48',
     padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -2 },
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 9,
     borderWidth: 1,
-    borderColor: '#7B68EE', 
+    borderColor: '#7B68EE',
     marginRight: 10,
   },
   input: {
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#3d3352',
     fontSize: 16,
-    color: '#FFFFFF', 
+    color: '#FFFFFF',
   },
   timeInputRow: {
     flexDirection: 'row',
@@ -116,26 +117,26 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#3d3352', 
+    borderBottomColor: '#3d3352',
   },
   clockIcon: {
     fontSize: 20,
-    color: '#7B68EE', 
+    color: '#7B68EE',
   },
   timeText: {
     fontSize: 16,
-    color: '#AAAAAA', 
+    color: '#AAAAAA',
     marginLeft: 10,
   },
   timeUnderline: {
     flex: 1,
   },
   pricesButton: {
-    backgroundColor: '#7B68EE', 
+    backgroundColor: '#7B68EE',
     borderRadius: 30,
     paddingVertical: 15,
     alignItems: 'center',
-    marginTop: 10,
+    marginVertical: 20,
   },
   pricesButtonText: {
     color: 'white',

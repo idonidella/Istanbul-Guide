@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   headerName: {
     color: 'white',
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: '900',
   },
 
   contentContainer: {

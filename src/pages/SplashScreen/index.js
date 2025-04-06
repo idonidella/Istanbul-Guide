@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  Image, 
-  StatusBar, 
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  StatusBar,
   Dimensions
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,26 +12,26 @@ import LinearGradient from 'react-native-linear-gradient';
 const { width, height } = Dimensions.get('window');
 
 const SplashScreen = ({ navigation }) => {
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.replace('Login-Page');
     }, 3000);
-    
+
     return () => clearTimeout(timer);
   }, []);
-  
+
   return (
     <View style={styles.container}>
       <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
       <LinearGradient
-        colors={['#1e3c72', '#2a5298']}
+        colors={['#382e48', '#2a5298', '#382e48']}
         style={styles.background}
       />
       <View style={styles.logoContainer}>
-        <Text style={styles.title}>ISTANBUL GUIDE</Text>
+        <Image style={styles.logo} source={require("../../assets/logo/logo-Photoroom.png")} />
         <Text style={styles.subtitle}>Discover the city with QR</Text>
-      </View>     
+      </View>
       <View style={styles.footer}>
         <Text style={styles.footerText}>Tüm Hakları Saklıdır</Text>
       </View>
@@ -55,6 +55,11 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 50,
+  },
+  logo: {
+    height: 130,
+    width: 300,
   },
   title: {
     fontSize: 28,
@@ -75,7 +80,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     position: 'absolute',
-    bottom: 40,
+    bottom: 60,
     alignItems: 'center',
   },
   footerText: {
