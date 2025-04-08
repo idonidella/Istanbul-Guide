@@ -11,26 +11,16 @@ class User {
     }
   }
 
-  static async findByUsername(username) {
-    try {
-      const [rows] = await db.execute('SELECT * FROM users WHERE username = ?', [username]);
-      return rows[0];
-    } catch (error) {
-      throw error;
-    }
-  }
-
   static async create(userData) {
     try {
-      const { username, email, password } = userData;
-      
-      // Hash the password
+      const { firstname, lastname, email, password } = userData;
+
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
 
       const [result] = await db.execute(
-        'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-        [username, email, hashedPassword]
+        'INSERT INTO users (firstname, lastname, email, password) VALUES (?, ?, ?, ?)',
+        [firstname, lastname, email, hashedPassword]
       );
 
       return result.insertId;
