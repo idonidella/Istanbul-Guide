@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, View, TextInput, TouchableOpacity, SafeAreaView, Alert, ActivityIndicator } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import store from '../../../store';
 
 // API servisi importu - networking klasörünüzde oluşturmanız gerekiyor
 import { authService } from '../../../networking/api';
 
 export default class RegisterScreen extends Component {
   state = {
-    name: '',
+    firstname: '',
+    lastname: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -17,41 +18,34 @@ export default class RegisterScreen extends Component {
   }
 
   handleRegister = async () => {
-    const { name, email, password, confirmPassword } = this.state;
-    
+    this.setState({ loading: true });
+    const { firstname, lastname, email, password, confirmPassword } = this.state;
     // Form validasyonu
-    if (!name || !email || !password || !confirmPassword) {
+    if (!firstname || !lastname || !email || !password || !confirmPassword) {
       Alert.alert('Hata', 'Lütfen tüm alanları doldurun');
       return;
     }
-    
     if (password !== confirmPassword) {
       Alert.alert('Hata', 'Şifreler eşleşmiyor');
       return;
     }
-    
     // Email formatı kontrolü
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       Alert.alert('Hata', 'Geçerli bir e-posta adresi girin');
       return;
     }
-    
-    this.setState({ loading: true });
-    
     try {
-      // Ad Soyad'dan username oluşturma
-      const username = name.replace(/\s+/g, '').toLowerCase();
-      
-      // API'ye kayıt isteği gönderme
-      await authService.register({
-        username,
+      const { firstname, lastname, email, password } = this.state;
+      const response = await authService.register({
+        firstname,
+        lastname,
         email,
         password,
       });
-      
       this.setState({ loading: false });
-      
+      console.log("efe register", response.data.data);
+      await store.signIn(response.data.data);
       Alert.alert(
         'Başarılı',
         'Hesabınız başarıyla oluşturuldu. Şimdi giriş yapabilirsiniz.',
@@ -70,22 +64,30 @@ export default class RegisterScreen extends Component {
       <View style={styles.backgroundContainer}>
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.container}>
-            {/* Register Header */}
             <Text style={styles.headerText}>Kayıt ol</Text>
-            
-            {/* Ad Soyad Input */}
-            <Text style={styles.inputLabel}>Ad Soyad</Text>
+            <Text style={styles.inputLabel}>Ad</Text>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Adınızı ve soyadınızı girin"
+                placeholder="Adınızı girin"
                 placeholderTextColor="#999"
                 autoCapitalize="words"
                 value={this.state.name}
-                onChangeText={(text) => this.setState({ name: text })}
+                onChangeText={(text) => this.setState({ firstname: text })}
               />
             </View>
-            
+            <Text style={styles.inputLabel}>Soyad</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Soyadınızı girin"
+                placeholderTextColor="#999"
+                autoCapitalize="words"
+                value={this.state.name}
+                onChangeText={(text) => this.setState({ lastname: text })}
+              />
+            </View>
+
             {/* Email Input */}
             <Text style={styles.inputLabel}>E-posta</Text>
             <View style={styles.inputContainer}>
@@ -99,7 +101,7 @@ export default class RegisterScreen extends Component {
                 onChangeText={(text) => this.setState({ email: text })}
               />
             </View>
-            
+
             {/* Password Input */}
             <Text style={styles.inputLabel}>Şifre</Text>
             <View style={styles.inputContainer}>
@@ -112,7 +114,7 @@ export default class RegisterScreen extends Component {
                 onChangeText={(text) => this.setState({ password: text })}
               />
             </View>
-            
+
             {/* Confirm Password Input */}
             <Text style={styles.inputLabel}>Şifre Tekrar</Text>
             <View style={styles.inputContainer}>
@@ -125,10 +127,10 @@ export default class RegisterScreen extends Component {
                 onChangeText={(text) => this.setState({ confirmPassword: text })}
               />
             </View>
-            
+
             {/* Register Button */}
-            <TouchableOpacity 
-              style={styles.registerButton} 
+            <TouchableOpacity
+              style={styles.registerButton}
               onPress={this.handleRegister}
               disabled={loading}
             >
@@ -138,7 +140,7 @@ export default class RegisterScreen extends Component {
                 <Text style={styles.registerButtonText}>Hesap Oluştur</Text>
               )}
             </TouchableOpacity>
-            
+
             {/* Login Option */}
             <View style={styles.loginContainer}>
               <Text style={styles.haveAccountText}>Zaten hesabınız var mı? </Text>
@@ -158,7 +160,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    backgroundColor: '#2A2438', 
+    backgroundColor: '#2A2438',
   },
   safeArea: {
     flex: 1,
@@ -166,13 +168,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 50,
-    paddingTop: 70,
   },
   headerText: {
     fontSize: 35,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 50,
+    marginBottom: 35,
     textAlign: 'center'
   },
   inputLabel: {
@@ -194,9 +195,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   registerButton: {
-    backgroundColor: '#7B68EE', 
+    backgroundColor: '#7B68EE',
     height: 50,
-    borderRadius: 25, 
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 25,
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   loginText: {
-    color: '#7B68EE', 
+    color: '#7B68EE',
     fontWeight: 'bold',
   },
 });

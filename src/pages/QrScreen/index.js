@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,17 +6,40 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
-  Image
+  Image,
+  Alert
 } from 'react-native';
 
+import AxiosInstance from '../../networking/AxiosInstance';
+import store from '../../store';
 import Headers from '../../components/Headers';
 
-export default function QRCodeVisualScreen({navigation}) {
+export default function QRCodeVisualScreen({ navigation }) {
+  const [qrCode] = useState('qr_halickopru_5001'); // Test için sabit QR
+
+
+
+  const getPlaceByQrCode = async (qrCode) => {
+    try {
+      const token = store.auth.data.token;
+      const response = await AxiosInstance.get('/places/qr', {
+        params: { code: qrCode },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+     Alert.alert('QR kod ile yapı getirme yanıtı:', JSON.stringify(response.data));
+      console.log('QR kod ile yapı getirme yanıtı:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error("QR kod ile yapı getirme hatası:", error);
+      throw error;
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <Headers
-      navigation={navigation}
-      />
+      <Headers navigation={navigation} />
       <ScrollView style={styles.scrollContent}>
         <View style={styles.cardContainer}>
           <View style={styles.card}>
@@ -30,7 +53,7 @@ export default function QRCodeVisualScreen({navigation}) {
               <Text style={styles.qrLabel}>My QR Code</Text>
             </View>
             <View style={styles.form}>
-              <TouchableOpacity style={styles.generateButton}>
+              <TouchableOpacity style={styles.generateButton} onPress={() => getPlaceByQrCode(qrCode)}>
                 <Text style={styles.generateButtonText}>Generate QR Code</Text>
               </TouchableOpacity>
             </View>
@@ -47,7 +70,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2A2438',
   },
   scrollContent: {
-    flex:1,
+    flex: 1,
     paddingBottom: 80,
   },
   cardContainer: {
@@ -98,25 +121,6 @@ const styles = StyleSheet.create({
   },
   form: {
     marginTop: 10,
-  },
-  inputGroup: {
-    marginBottom: 15,
-  },
-  inputLabel: {
-    fontSize: 16,
-    marginBottom: 8,
-    fontWeight: '500',
-    color: '#FFFFFF',
-  },
-  input: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    height: 50,
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    borderWidth: 1,
-    borderColor: '#3d3352',
-    fontSize: 16,
-    color: '#FFFFFF',
   },
   generateButton: {
     backgroundColor: '#7B68EE',

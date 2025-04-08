@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Text, StyleSheet, View, TextInput, TouchableOpacity, SafeAreaView, Image, Alert, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authService } from '../../../networking/api';
+import AxiosInstance from '../../../networking/AxiosInstance';
+import store from '../../../store';
 
 export default class LoginScreen extends Component {
   state = {
@@ -13,39 +15,29 @@ export default class LoginScreen extends Component {
 
   handleLogin = async () => {
     const { email, password } = this.state;
-    
-    // Form validasyonu
     if (!email || !password) {
       Alert.alert('Hata', 'Lütfen e-posta ve şifrenizi girin');
       return;
     }
-    
-    // Email formatı kontrolü
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       Alert.alert('Hata', 'Geçerli bir e-posta adresi girin');
       return;
     }
-    
     this.setState({ loading: true });
-    
     try {
-      // API'ye giriş isteği gönderme
       const response = await authService.login({
         email,
         password,
       });
-      
       this.setState({ loading: false });
-      
-      // Token'ı ve kullanıcı bilgilerini kaydet
-      await AsyncStorage.setItem('userToken', response.token);
-      await AsyncStorage.setItem('userData', JSON.stringify(response.user));
-      
-      // Ana ekrana yönlendir
+      console.log('Login response:', response.data.data);
+      store.signIn(response.data.data);
       this.props.navigation.navigate('Main');
     } catch (error) {
       this.setState({ loading: false });
+      console.log('Error SELAM:',);
+      console.log('Registering user with data:', AxiosInstance);
       Alert.alert('Giriş Hatası', error.message);
     }
   }
@@ -80,7 +72,7 @@ export default class LoginScreen extends Component {
                 onChangeText={(text) => this.setState({ email: text })}
               />
             </View>
-            <View style={{marginTop:13}}>
+            <View style={{ marginTop: 13 }}>
               <Text style={styles.inputLabel}>Şifre</Text>
             </View>
             <View style={styles.inputContainer}>
@@ -99,8 +91,8 @@ export default class LoginScreen extends Component {
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity 
-              style={styles.loginButton} 
+            <TouchableOpacity
+              style={styles.loginButton}
               onPress={this.handleLogin}
               disabled={loading}
             >

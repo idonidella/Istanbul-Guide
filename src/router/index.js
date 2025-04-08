@@ -9,13 +9,15 @@ import LoginPage from "../pages/Auth/Login/index";
 import RegisterPage from "../pages/Auth/Register/index";
 // main pages
 import BottomMenuScreens from "./BottomMenu/BottomMenuScreens";
+//profile
+import ProfileSettingsScreen from "../pages/Profile/ProfileSettingsScreen";
 
 
 
 export default class MenuScreens extends Component {
   render() {
     return (
-      <NavigationContainer> 
+      <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Splash-Screen"
           screenOptions={{
@@ -41,6 +43,11 @@ export default class MenuScreens extends Component {
             name="Main"
             component={BottomMenuScreens}
             key="Login-Page"
+          />
+          <Stack.Screen
+            name="Profile-Settings-Screen"
+            component={ProfileSettingsScreen}
+            key="Profile-Settings-Screen"
           />
         </Stack.Navigator>
       </NavigationContainer>
