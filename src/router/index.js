@@ -9,6 +9,7 @@ import LoginPage from "../pages/Auth/Login/index";
 import RegisterPage from "../pages/Auth/Register/index";
 // main pages
 import BottomMenuScreens from "./BottomMenu/BottomMenuScreens";
+import TopTurizmAreas from "../pages/Main/TopTurizmAreas/index";
 //profile
 import ProfileSettingsScreen from "../pages/Profile/ProfileSettingsScreen";
 
@@ -43,6 +44,11 @@ export default class MenuScreens extends Component {
             name="Main"
             component={BottomMenuScreens}
             key="Login-Page"
+          />
+           <Stack.Screen
+            name="Top-Turizm-Areas"
+            component={TopTurizmAreas}
+            key="Top-Turizm-Areas"
           />
           <Stack.Screen
             name="Profile-Settings-Screen"

@@ -13,22 +13,22 @@ import {
 const { width } = Dimensions.get('window');
 
 const sliderImages = [
-  require('../../assets/slider/ayasofya.png'),
-  require('../../assets/slider/topkapisarayi.png'),
-  require('../../assets/slider/galatakulesi.png'),
-  require('../../assets/slider/sultanahmetcamii.png'),
-  require('../../assets/slider/dolmabahcesarayi.png'),
-  require('../../assets/slider/kizkulesi.png'),
-  require('../../assets/slider/kapalicarsi.png'),
-  require('../../assets/slider/yerebatansarnaci.png'),
-  require('../../assets/slider/taksimmeydani.png'),
-  require('../../assets/slider/pierrelotitepesi.png'),
+  { id: '1', name: 'Ayasofya', source: require('../../assets/slider/ayasofya.png') },
+  { id: '2', name: 'Topkapı Sarayı', source: require('../../assets/slider/topkapisarayi.png') },
+  { id: '3', name: 'Galata Kulesi', source: require('../../assets/slider/galatakulesi.png') },
+  { id: '4', name: 'Sultanahmet Cami', source: require('../../assets/slider/sultanahmetcami.png') },
+  { id: '5', name: 'Dolmabahçe Sarayı', source: require('../../assets/slider/dolmabahcesarayi.png') },
+  { id: '6', name: 'Kız Kulesi', source: require('../../assets/slider/kizkulesi.png') },
+  { id: '7', name: 'Kapalı Çarşı', source: require('../../assets/slider/kapalicarsi.png') },
+  { id: '8', name: 'Yerebatan Sarnıcı', source: require('../../assets/slider/yerebatansarnaci.png') },
+  { id: '9', name: 'Taksim Meydanı', source: require('../../assets/slider/taksimmeydani.png') },
+  { id: '10', name: 'Pierre Loti Tepesi', source: require('../../assets/slider/pierrelotitepesi.png') },
 ];
 
 const menuItems = [
+  { title: 'En Çok Beğenilenler', icon: require('../../assets/main/like.png') },
   { title: 'Senin için Önerilen', icon: require('../../assets/main/recommended.png') },
   { title: 'Harita', icon: require('../../assets/main/map.png') },
-  { title: 'En Çok Beğenilenler', icon: require('../../assets/main/like.png') },
   { title: 'Bana En Yakın Turizm Yapıları', icon: require('../../assets/main/nearby.png') },
 ];
 
@@ -54,6 +54,14 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
+  // Resme tıklandığında detay sayfasına yönlendirme fonksiyonu
+  const handleImagePress = (id, name) => {
+    navigation.navigate('Top-Turizm-Areas', {
+      attractionId: id,
+      attractionName: name
+    });
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -68,30 +76,35 @@ const HomeScreen = ({ navigation }) => {
             decelerationRate="fast"
           >
             {sliderImages.map((image, index) => (
-              <View key={index} style={styles.sliderImageContainer}>
+              <TouchableOpacity
+                key={index}
+                style={styles.sliderImageContainer}
+                onPress={() => handleImagePress(image.id, image.name)}
+                activeOpacity={0.9}
+              >
                 <Image
-                  source={image}
+                  source={image.source}
                   style={styles.sliderImage}
                 />
-              </View>
+                <View style={styles.imageOverlay}>
+                  <Text style={styles.imageName}>{image.name}</Text>
+                </View>
+              </TouchableOpacity>
             ))}
           </ScrollView>
-          
-          <View style={styles.paginationContainer}>
-            {sliderImages.map((_, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.paginationDot,
-                  index === activeIndex && styles.paginationDotActive
-                ]}
-              />
-            ))}
-          </View>
         </View>
-
+        <View style={styles.paginationContainer}>
+          {sliderImages.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.paginationDot,
+                index === activeIndex && styles.paginationDotActive
+              ]}
+            />
+          ))}
+        </View>
         <Text style={styles.sectionTitle}>İstanbul'u Keşfet</Text>
-        
         <View style={styles.menuContainer}>
           {menuItems.map((item, index) => (
             <TouchableOpacity
@@ -144,27 +157,44 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
+  imageOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    padding: 10,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+  imageName: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginLeft: 7,
+  },
   paginationContainer: {
     flexDirection: 'row',
-    position: 'absolute',
-    bottom: 15,
-    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 8,
   },
   paginationDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    width: 10,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    marginHorizontal: 3,
   },
   paginationDotActive: {
-    backgroundColor: '#FFFFFF',
     width: 12,
-    height: 8,
-    borderRadius: 4,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#ffffff',
   },
   sectionTitle: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#FFFFFF',
     alignSelf: 'flex-start',
@@ -181,13 +211,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 16,
-    padding: 16,
+    padding: 8,
     marginVertical: 8,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    borderWidth: 3,
+    borderColor: "white",
   },
   iconContainer: {
     width: 50,
@@ -199,8 +226,8 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   menuIcon: {
-    width: 28,
-    height: 28,
+    width: 35,
+    height: 35,
     resizeMode: 'contain',
   },
   menuText: {
