@@ -1,4 +1,5 @@
 {
     "i18next.i18nPaths": "/Users/efekanefe/Desktop/Istanbul-Guide/ios/Pods/RCT-Folly/folly/lang,/Users/efekanefe/Desktop/Istanbul-Guide/ios/Pods/Headers/Private/RCT-Folly/folly/lang,/Users/efekanefe/Desktop/Istanbul-Guide/ios/Pods/Headers/Public/RCT-Folly/folly/lang",
-    "postman.settings.dotenv-detection-notification-visibility": false
+    "postman.settings.dotenv-detection-notification-visibility": false,
+    "java.configuration.updateBuildConfiguration": "disabled"
 }

@@ -10,6 +10,10 @@ import RegisterPage from "../pages/Auth/Register/index";
 // main pages
 import BottomMenuScreens from "./BottomMenu/BottomMenuScreens";
 import TopTurizmAreas from "../pages/Main/TopTurizmAreas/index";
+import Map from "../pages/Main/Map/index";
+import VisitedPlace from "../pages/Main/VisitedPlace/index";
+import RecommendedPlaces from "../pages/Main/Recommend/index";
+import Favorites from "../pages/Main/Favorites/index";
 //profile
 import ProfileSettingsScreen from "../pages/Profile/ProfileSettingsScreen";
 
@@ -45,10 +49,30 @@ export default class MenuScreens extends Component {
             component={BottomMenuScreens}
             key="Login-Page"
           />
-           <Stack.Screen
+          <Stack.Screen
             name="Top-Turizm-Areas"
             component={TopTurizmAreas}
             key="Top-Turizm-Areas"
+          />
+          <Stack.Screen
+            name="Map-Page"
+            component={Map}
+            key="Map"
+          />
+          <Stack.Screen
+            name="Visited-Place"
+            component={VisitedPlace}
+            key="VisitedPlace"
+          />
+          <Stack.Screen
+            name="Recommended-Places"
+            component={RecommendedPlaces}
+            key="RecommendedPlaces"
+          />
+          <Stack.Screen
+            name="Favorites-Screen"
+            component={Favorites}
+            key="Favorites"
           />
           <Stack.Screen
             name="Profile-Settings-Screen"

@@ -91,6 +91,10 @@ android {
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+            // storeFile file('istanbulguide.keystore')
+            // storePassword 'Efekan.efe2020'
+            // keyAlias 'my-key-alias'
+            // keyPassword 'Efekan.efe2020'
         }
           release {
             storeFile file('istanbulguide.keystore')
@@ -116,6 +120,7 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+    implementation "com.google.android.gms:play-services-maps:18.1.0"
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

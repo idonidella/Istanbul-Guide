@@ -28,7 +28,7 @@ const attractionData = {
         longitude: 28.980175,
     },
     images: [
-        require('../../../assets/slider/ayasofya.png'),
+        require('../../../assets/slider/ayasofya.jpg'),
     ]
 };
 

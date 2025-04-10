@@ -13,23 +13,23 @@ import {
 const { width } = Dimensions.get('window');
 
 const sliderImages = [
-  { id: '1', name: 'Ayasofya', source: require('../../assets/slider/ayasofya.png') },
-  { id: '2', name: 'Topkapı Sarayı', source: require('../../assets/slider/topkapisarayi.png') },
-  { id: '3', name: 'Galata Kulesi', source: require('../../assets/slider/galatakulesi.png') },
-  { id: '4', name: 'Sultanahmet Cami', source: require('../../assets/slider/sultanahmetcami.png') },
-  { id: '5', name: 'Dolmabahçe Sarayı', source: require('../../assets/slider/dolmabahcesarayi.png') },
-  { id: '6', name: 'Kız Kulesi', source: require('../../assets/slider/kizkulesi.png') },
-  { id: '7', name: 'Kapalı Çarşı', source: require('../../assets/slider/kapalicarsi.png') },
-  { id: '8', name: 'Yerebatan Sarnıcı', source: require('../../assets/slider/yerebatansarnaci.png') },
-  { id: '9', name: 'Taksim Meydanı', source: require('../../assets/slider/taksimmeydani.png') },
-  { id: '10', name: 'Pierre Loti Tepesi', source: require('../../assets/slider/pierrelotitepesi.png') },
+  { id: '1', name: 'Ayasofya', source: require('../../assets/slider/ayasofya.jpg') },
+  { id: '2', name: 'Topkapı Sarayı', source: require('../../assets/slider/topkapisarayi.jpg') },
+  { id: '3', name: 'Galata Kulesi', source: require('../../assets/slider/galatakulesi.jpg') },
+  { id: '4', name: 'Sultanahmet Cami', source: require('../../assets/slider/sultanahmetcami.jpg') },
+  { id: '5', name: 'Dolmabahçe Sarayı', source: require('../../assets/slider/dolmabahcesarayi.jpg') },
+  { id: '6', name: 'Kız Kulesi', source: require('../../assets/slider/kizkulesi.jpg') },
+  { id: '7', name: 'Kapalı Çarşı', source: require('../../assets/slider/kapalicarsi.jpg') },
+  { id: '8', name: 'Yerebatan Sarnıcı', source: require('../../assets/slider/yerebatansarnaci.jpg') },
+  { id: '9', name: 'Taksim Meydanı', source: require('../../assets/slider/taksimmeydani.jpg') },
+  { id: '10', name: 'Pierre Loti Tepesi', source: require('../../assets/slider/pierrelotitepesi.jpg') },
 ];
 
 const menuItems = [
-  { title: 'En Çok Beğenilenler', icon: require('../../assets/main/like.png') },
-  { title: 'Senin için Önerilen', icon: require('../../assets/main/recommended.png') },
-  { title: 'Harita', icon: require('../../assets/main/map.png') },
-  { title: 'Bana En Yakın Turizm Yapıları', icon: require('../../assets/main/nearby.png') },
+  { title: 'Favorileriniz', icon: require('../../assets/main/like.png') , navigate: 'Favorites-Screen'},
+  { title: 'Senin için Önerilen', icon: require('../../assets/main/recommended.png'), navigate: 'Recommended-Places'},
+  { title: 'Harita', icon: require('../../assets/main/map.png'), navigate: 'Map-Page'},
+  { title: 'Son Ziyaret Edilen Yerler', icon: require('../../assets/main/nearby.png') , navigate: 'Visited-Place'},
 ];
 
 const HomeScreen = ({ navigation }) => {
@@ -110,7 +110,7 @@ const HomeScreen = ({ navigation }) => {
             <TouchableOpacity
               key={index}
               style={styles.menuCard}
-              onPress={() => navigation.navigate(item.title)}
+              onPress={() => navigation.navigate(item.navigate)}
               activeOpacity={0.7}
             >
               <View style={styles.iconContainer}>
