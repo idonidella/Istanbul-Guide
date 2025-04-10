@@ -3,7 +3,6 @@ import { StatusBar, View } from 'react-native';
 import Navigator from './src/router/index';
 
 class App extends Component {
-  
 
   render() {
     return (

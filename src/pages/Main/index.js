@@ -1,146 +1,212 @@
-import React, { Component } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, TextInput, SafeAreaView, Dimensions, Image, ScrollView } from 'react-native';
-import Headers from '../../components/Headers';
+import React, { useRef, useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  Image,
+  Dimensions,
+  TouchableOpacity
+} from 'react-native';
 
-export default class TaxiBookingScreen extends Component {
-  render() {
-    return (
-      <SafeAreaView style={styles.safeArea}>
-        <ScrollView style={styles.safeArea} contentContainerStyle={{ paddingBottom: 100 }}>
-          <Headers
-            navigation={this.props.navigation}
-          />
-          <View style={styles.container}>
-            <View>
-              <Image
-                source={require('../../assets/main/map.jpeg')}
-                style={styles.mapImage}
-              />
-            </View>
-            <View style={styles.bookingCard}>
-              <Text style={styles.cardTitle}>Where can we take you ?</Text>
-              <Text style={styles.cardSubtitle}>Book a trusted local taxi for your trip</Text>
-              <View style={styles.locationInputContainer}>
-                <View style={styles.radioInputRow}>
-                  <TouchableOpacity style={styles.radioButton} />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter Pickup location"
-                    placeholderTextColor="#777"
-                  />
-                </View>
-                <View style={styles.radioInputRow}>
-                  <TouchableOpacity style={styles.radioButton} />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter destination"
-                    placeholderTextColor="#777"
-                  />
-                </View>
-                <View style={styles.timeInputRow}>
-                  <Text style={styles.clockIcon}>⏱️</Text>
-                  <Text style={styles.timeText}>Tell us when</Text>
-                  <View style={styles.timeUnderline}></View>
-                </View>
+const { width } = Dimensions.get('window');
+
+const sliderImages = [
+  require('../../assets/slider/ayasofya.png'),
+  require('../../assets/slider/topkapisarayi.png'),
+  require('../../assets/slider/galatakulesi.png'),
+  require('../../assets/slider/sultanahmetcamii.png'),
+  require('../../assets/slider/dolmabahcesarayi.png'),
+  require('../../assets/slider/kizkulesi.png'),
+  require('../../assets/slider/kapalicarsi.png'),
+  require('../../assets/slider/yerebatansarnaci.png'),
+  require('../../assets/slider/taksimmeydani.png'),
+  require('../../assets/slider/pierrelotitepesi.png'),
+];
+
+const menuItems = [
+  { title: 'Senin için Önerilen', icon: require('../../assets/main/recommended.png') },
+  { title: 'Harita', icon: require('../../assets/main/map.png') },
+  { title: 'En Çok Beğenilenler', icon: require('../../assets/main/like.png') },
+  { title: 'Bana En Yakın Turizm Yapıları', icon: require('../../assets/main/nearby.png') },
+];
+
+const HomeScreen = ({ navigation }) => {
+  const scrollRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const nextIndex = (activeIndex + 1) % sliderImages.length;
+      scrollRef.current?.scrollTo({ x: nextIndex * width, animated: true });
+      setActiveIndex(nextIndex);
+    }, 4500);
+
+    return () => clearInterval(interval);
+  }, [activeIndex]);
+
+  const handleSliderScroll = (event) => {
+    const contentOffsetX = event.nativeEvent.contentOffset.x;
+    const newIndex = Math.round(contentOffsetX / width);
+    if (newIndex !== activeIndex) {
+      setActiveIndex(newIndex);
+    }
+  };
+
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.sliderWrapper}>
+          <ScrollView
+            horizontal
+            pagingEnabled
+            ref={scrollRef}
+            showsHorizontalScrollIndicator={false}
+            style={styles.sliderContainer}
+            onMomentumScrollEnd={handleSliderScroll}
+            decelerationRate="fast"
+          >
+            {sliderImages.map((image, index) => (
+              <View key={index} style={styles.sliderImageContainer}>
+                <Image
+                  source={image}
+                  style={styles.sliderImage}
+                />
               </View>
-              <TouchableOpacity style={styles.pricesButton}>
-                <Text style={styles.pricesButtonText}>See prices</Text>
-              </TouchableOpacity>
-            </View>
+            ))}
+          </ScrollView>
+          
+          <View style={styles.paginationContainer}>
+            {sliderImages.map((_, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.paginationDot,
+                  index === activeIndex && styles.paginationDotActive
+                ]}
+              />
+            ))}
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-}
+        </View>
 
+        <Text style={styles.sectionTitle}>İstanbul'u Keşfet</Text>
+        
+        <View style={styles.menuContainer}>
+          {menuItems.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.menuCard}
+              onPress={() => navigation.navigate(item.title)}
+              activeOpacity={0.7}
+            >
+              <View style={styles.iconContainer}>
+                <Image source={item.icon} style={styles.menuIcon} />
+              </View>
+              <Text style={styles.menuText}>{item.title}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+export default HomeScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   safeArea: {
     flex: 1,
     backgroundColor: '#2A2438',
   },
-  mapImage: {
-    width: "100%",
-    height: 320,
+  container: {
+    alignItems: 'center',
+    paddingBottom: 40,
   },
-  bookingCard: {
-    backgroundColor: '#382e48',
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 5,
+  sliderWrapper: {
+    width: '100%',
+    height: 250,
+    position: 'relative',
   },
-  cardTitle: {
+  sliderContainer: {
+    width: '100%',
+    height: 250,
+  },
+  sliderImageContainer: {
+    width,
+    height: 250,
+    position: 'relative',
+  },
+  sliderImage: {
+    width: width,
+    height: 250,
+    resizeMode: 'cover',
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+  paginationContainer: {
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 15,
+    alignSelf: 'center',
+  },
+  paginationDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginHorizontal: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+  },
+  paginationDotActive: {
+    backgroundColor: '#FFFFFF',
+    width: 12,
+    height: 8,
+    borderRadius: 4,
+  },
+  sectionTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 8,
     color: '#FFFFFF',
-  },
-  cardSubtitle: {
-    fontSize: 14,
-    color: '#AAAAAA',
-    marginBottom: 25,
-  },
-  locationInputContainer: {
-    marginBottom: 25,
-  },
-  radioInputRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    alignSelf: 'flex-start',
+    marginLeft: 20,
+    marginTop: 25,
     marginBottom: 15,
   },
-  radioButton: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    borderWidth: 1,
-    borderColor: '#7B68EE',
-    marginRight: 10,
+  menuContainer: {
+    width: '92%',
+    marginTop: 5,
   },
-  input: {
-    flex: 1,
-    height: 40,
-    borderBottomWidth: 1,
-    borderBottomColor: '#3d3352',
-    fontSize: 16,
-    color: '#FFFFFF',
-  },
-  timeInputRow: {
+  menuCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
-    paddingBottom: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#3d3352',
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 16,
+    padding: 16,
+    marginVertical: 8,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
-  clockIcon: {
-    fontSize: 20,
-    color: '#7B68EE',
-  },
-  timeText: {
-    fontSize: 16,
-    color: '#AAAAAA',
-    marginLeft: 10,
-  },
-  timeUnderline: {
-    flex: 1,
-  },
-  pricesButton: {
-    backgroundColor: '#7B68EE',
-    borderRadius: 30,
-    paddingVertical: 15,
+  iconContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 12,
+    backgroundColor: '#F5F5F5',
+    justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 20,
+    marginRight: 16,
   },
-  pricesButtonText: {
-    color: 'white',
+  menuIcon: {
+    width: 28,
+    height: 28,
+    resizeMode: 'contain',
+  },
+  menuText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
+    color: '#333',
+    flex: 1,
   },
 });
