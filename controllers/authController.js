@@ -1,9 +1,9 @@
 const User = require('../models/userModel');
+const db = require('../config/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-// Kullanıcı kaydı
 // Kullanıcı kaydı
 exports.register = async (req, res) => {
   try {
@@ -57,6 +57,48 @@ exports.register = async (req, res) => {
   } catch (error) {
     console.error('Kayıt hatası:', error);
     res.status(500).json({ message: 'Sunucu hatası oluştu' });
+  }
+};
+
+// Kullanıcı çıkışı sonrası token iptal etme
+exports.signOut = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(400).json({ message: 'Token bulunamadı' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    await db.execute('INSERT INTO revoked_tokens (token) VALUES (?)', [token]);
+    console.log('Token iptal edildi ÇIKIŞ YAPILDI:', token);
+    res.status(200).json({ message: 'Oturum başarıyla sonlandırıldı' });
+  } catch (error) {
+    console.error('Sign out hatası:', error);
+    res.status(500).json({ message: 'Sunucu hatası oluştu' });
+  }
+};
+
+//uygulama otomatik "beni hatırla" isteği için 
+exports.checkSession = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const token = req.token;
+    const [revoked] = await db.execute('SELECT id FROM revoked_tokens WHERE token = ?', [token]);
+
+    if (revoked.length > 0) {
+      return res.status(401).json({ message: 'Token iptal edilmiş' });
+    }
+
+    const [rows] = await db.execute('SELECT firstname, lastname, email FROM users WHERE id = ?', [userId]);
+    const user = rows[0];
+    console.log('Kullanıcı bilgileri check-session endpointi kullanıcıya dönen bilgiler:', user);
+    res.status(200).json({
+      message: 'Oturum aktif',
+      data: user
+    });
+  } catch (error) {
+    console.error('Session kontrol hatası:', error);
+    res.status(500).json({ message: 'Sunucu hatası' });
   }
 };
 
