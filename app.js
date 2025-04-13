@@ -4,6 +4,9 @@ require('dotenv').config();
 const authRoutes = require('./routes/authRoutes');
 const placeRoutes = require('./routes/placeRoutes');
 const userRoutes = require('./routes/userRoutes');
+const favoritesRoutes = require('./routes/favoritesRoutes');
+
+
 const app = express();
 
 // Middleware
@@ -14,6 +17,7 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/places', placeRoutes);
 app.use('/user', userRoutes);
+app.use('/favorites', favoritesRoutes);
 
 
 

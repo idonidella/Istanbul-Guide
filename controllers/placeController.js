@@ -47,3 +47,20 @@ exports.getPlaceByQrCode = async (req, res) => {
     res.status(500).json({ message: 'Sunucu hatası oluştu' });
   }
 };
+
+exports.getPlaceById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [rows] = await db.execute('SELECT * FROM places WHERE id = ?', [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Yer bulunamadı' });
+    }
+
+    res.status(200).json(rows[0]);
+  } catch (error) {
+    console.error('Yer getirme hatası:', error);
+    res.status(500).json({ message: 'Sunucu hatası' });
+  }
+};
