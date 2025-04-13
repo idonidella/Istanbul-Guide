@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -7,69 +7,72 @@ import {
     TouchableOpacity,
     SafeAreaView,
     FlatList,
-    TextInput
+    TextInput,
+    Alert,
+    ActivityIndicator,
 } from 'react-native';
+import { favoriteService } from '../../../networking/api';
+import store from '../../../store';
 
-// Örnek favori yerler verileri
-const favoriteAttractions = [
-    {
-        id: '1',
-        name: 'Ayasofya (Hagia Sophia)',
-        address: 'Sultan Ahmet, Ayasofya Meydanı No:1, 34122 Fatih/İstanbul',
-        rating: 4.8,
-        image: require('../../../assets/slider/ayasofya.jpg')
-    },
-    {
-        id: '2',
-        name: 'Topkapı Sarayı',
-        address: 'Cankurtaran, 34122 Fatih/İstanbul',
-        rating: 4.7,
-        image: require('../../../assets/slider/topkapisarayi.jpg')
-    },
-    {
-        id: '3',
-        name: 'Galata Kulesi',
-        address: 'Bereketzade, Galata Kulesi, 34421 Beyoğlu/İstanbul',
-        rating: 4.6,
-        image: require('../../../assets/slider/galatakulesi.jpg') 
-    },
-];
+const imageMap = {
+    'Ayasofya': require('../../../assets/slider/ayasofya.jpg'),
+    'Topkapı Sarayı': require('../../../assets/slider/topkapisarayi.jpg'),
+    'Galata Kulesi': require('../../../assets/slider/galatakulesi.jpg'),
+    'Sultanahmet Cami': require('../../../assets/slider/sultanahmetcami.jpg'),
+    'Dolmabahçe Sarayı': require('../../../assets/slider/dolmabahcesarayi.jpg'),
+    'Kız Kulesi': require('../../../assets/slider/kizkulesi.jpg'),
+    'Kapalı Çarşı': require('../../../assets/slider/kapalicarsi.jpg'),
+    'Yerebatan Sarnıcı': require('../../../assets/slider/yerebatansarnaci.jpg'),
+    'Taksim Meydanı': require('../../../assets/slider/taksimmeydani.jpg'),
+    'Pierre Loti Tepesi': require('../../../assets/slider/pierrelotitepesi.jpg'),
+};
 
 const UserFavorites = ({ navigation }) => {
     const [searchQuery, setSearchQuery] = useState('');
-    
-    const goBack = () => {
-        navigation.goBack();
+    const [favorites, setFavorites] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const token = store.auth.data?.token;
+
+    useEffect(() => {
+        fetchFavorites();
+    }, []);
+
+    const fetchFavorites = async () => {
+        try {
+            setLoading(true);
+            const data = await favoriteService.getFavorites(token);
+            setFavorites(data);
+        } catch (error) {
+            console.log("Favoriler alınamadı", error);
+        } finally {
+            setLoading(false);
+        }
     };
-    
+
+    const goBack = () => navigation.goBack();
+
     const handleAttractionPress = (attractionId) => {
-        navigation.navigate('AttractionDetail', { attractionId });
+        navigation.navigate('Top-Turizm-Areas', { attractionId });
     };
     
     const removeFavorite = async (attractionId) => {
-        // Backend istek kodunuzu buraya ekleyebilirsiniz
-        // Örnek: await removeFavoriteAPI(attractionId);
-        
-        // UI güncellemesi burada yapılacak
-        console.log(`Attraction ${attractionId} removed from favorites`);
+        try {
+            await favoriteService.removeFavorite(attractionId, token);
+            fetchFavorites();
+        } catch (error) {
+            Alert.alert('Hata', 'Favoriden çıkarılamadı');
+        }
     };
-    
+
     const renderFavoriteItem = ({ item }) => (
         <TouchableOpacity 
             style={styles.favoriteItem}
             onPress={() => handleAttractionPress(item.id)}
         >
-            <Image source={item.image} style={styles.attractionImage} />
+            <Image source={imageMap[item.name] || imageMap['Ayasofya']} style={styles.attractionImage} />
             <View style={styles.overlayContainer}>
                 <View style={styles.infoContainer}>
                     <Text style={styles.attractionName}>{item.name}</Text>
-                    <Text style={styles.attractionAddress}>{item.address}</Text>
-                    <View style={styles.ratingContainer}>
-                        <Text style={styles.stars}>
-                            {"⭐️⭐️⭐️⭐️⭐️".slice(0, Math.floor(item.rating))}
-                        </Text>
-                        <Text style={styles.ratingText}>{item.rating}</Text>
-                    </View>
                 </View>
                 <TouchableOpacity 
                     style={styles.favoriteButton}
@@ -81,6 +84,10 @@ const UserFavorites = ({ navigation }) => {
         </TouchableOpacity>
     );
 
+    const filteredFavorites = favorites.filter(item =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.header}>
@@ -89,7 +96,7 @@ const UserFavorites = ({ navigation }) => {
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>Favoriler</Text>
             </View>
-            
+
             <View style={styles.searchContainer}>
                 <View style={styles.searchInputContainer}>
                     <Text style={styles.searchIcon}>🔍</Text>
@@ -100,19 +107,37 @@ const UserFavorites = ({ navigation }) => {
                         value={searchQuery}
                         onChangeText={setSearchQuery}
                     />
-                    <TouchableOpacity style={styles.filterIcon}>
-                        <Image source={require("../../../assets/global/goBack.png")} style={{ width: 20, height: 20 }} />
-                    </TouchableOpacity>
                 </View>
             </View>
-            
-            <FlatList
-                data={favoriteAttractions}
-                renderItem={renderFavoriteItem}
-                keyExtractor={item => item.id}
-                contentContainerStyle={styles.listContainer}
-                showsVerticalScrollIndicator={false}
-            />
+
+            {loading ? (
+                <ActivityIndicator style={{ marginTop: 50 }} size="large" color="#7B68EE" />
+            ) : filteredFavorites.length === 0 ? (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+                    <Text style={{ fontSize: 16, color: '#444', textAlign: 'center', marginBottom: 12 }}>
+                        Henüz favori eklemediniz.
+                    </Text>
+                    <TouchableOpacity
+                        onPress={fetchFavorites}
+                        style={{
+                            paddingHorizontal: 20,
+                            paddingVertical: 10,
+                            backgroundColor: '#7B68EE',
+                            borderRadius: 20,
+                        }}
+                    >
+                        <Text style={{ color: '#FFF', fontWeight: 'bold' }}>Yeniden Yükle</Text>
+                    </TouchableOpacity>
+                </View>
+            ) : (
+                <FlatList
+                    data={filteredFavorites}
+                    renderItem={renderFavoriteItem}
+                    keyExtractor={item => item.id.toString()}
+                    contentContainerStyle={styles.listContainer}
+                    showsVerticalScrollIndicator={false}
+                />
+            )}
         </SafeAreaView>
     );
 };
@@ -131,7 +156,6 @@ const styles = StyleSheet.create({
         paddingTop: 40,
         paddingBottom: 25,
         paddingHorizontal: 16,
-        
     },
     backButton: {
         justifyContent: 'center',
@@ -165,9 +189,6 @@ const styles = StyleSheet.create({
         height: 44,
         fontSize: 16,
         color: '#333333',
-    },
-    filterIcon: {
-        padding: 6,
     },
     listContainer: {
         padding: 12,
@@ -210,18 +231,6 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: '#FFFFFF',
         marginBottom: 8,
-    },
-    ratingContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    stars: {
-        marginRight: 8,
-    },
-    ratingText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#FFFFFF',
     },
     favoriteButton: {
         justifyContent: 'center',

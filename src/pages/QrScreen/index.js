@@ -15,7 +15,7 @@ import store from '../../store';
 import Headers from '../../components/Headers';
 
 export default function QRCodeVisualScreen({ navigation }) {
-  const [qrCode] = useState('qr_halickopru_5001'); // Test için sabit QR
+  const [qrCode] = useState('qr_topkapi_2020'); // Test için sabit QR
 
 
 
@@ -28,14 +28,19 @@ export default function QRCodeVisualScreen({ navigation }) {
           Authorization: `Bearer ${token}`
         }
       });
-     Alert.alert('QR kod ile yapı getirme yanıtı:', JSON.stringify(response.data));
-      console.log('QR kod ile yapı getirme yanıtı:', response.data);
-      return response.data;
+  
+      const place = response.data;
+      if (place && place.id) {
+        navigation.navigate('Top-Turizm-Areas', { attractionId: place.id });
+      } else {
+        Alert.alert("Geçersiz QR", "Yapı bulunamadı.");
+      }
     } catch (error) {
       console.error("QR kod ile yapı getirme hatası:", error);
-      throw error;
+      Alert.alert('Hata', 'QR kod geçersiz veya sunucu hatası oluştu.');
     }
   };
+  
 
   return (
     <SafeAreaView style={styles.container}>

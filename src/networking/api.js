@@ -2,82 +2,91 @@ import AxiosInstance from "./AxiosInstance";
 
 export const authService = {
   register: async (userData) => {
-    try {
-      console.log('GİRİŞ YAPILAN BASE URL:', AxiosInstance.defaults.baseURL);  
-      const response = await AxiosInstance.post('/auth/signup', userData);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await AxiosInstance.post('/auth/signup', userData);
+    return response.data;
   },
 
   login: async (credentials) => {
-    try {
-      console.log('GİRİŞ YAPILAN BASE URL:', AxiosInstance.defaults.baseURL);  
-      const response = await AxiosInstance.post('/auth/signin', credentials);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  getPlaceByQrCode: async (qrCode, token) => {
-    try {
-      const response = await AxiosInstance.get('/places/qr', {
-        params: { code: qrCode },
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      return response.data;
-    } catch (error) {
-      console.error("QR kod ile yapı getirme hatası:", error);
-      throw error;
-    }
+    const response = await AxiosInstance.post('/auth/signin', credentials);
+    return response.data;
   },
 
   updateName: async (firstname, lastname, token) => {
+    const response = await AxiosInstance.put('/user/update-name', { firstname, lastname }, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  },
+
+  checkSession: async (token) => {
+    const response = await AxiosInstance.get('/auth/check-session', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  },
+
+  signOut: async (token) => {
+    const response = await AxiosInstance.post('/auth/signout', {}, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  },
+};
+
+export const placeService = {
+  getPlaceByQrCode: async (qrCode, token) => {
+    const response = await AxiosInstance.get('/places/qr', {
+      params: { code: qrCode },
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  },
+
+  getPlaceById: async (id, token) => {
+    const response = await AxiosInstance.get(`/places/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  },
+};
+
+export const favoriteService = {
+  toggleFavorite: async (placeId, token) => {
     try {
-      const response = await AxiosInstance.put('/user/update-name',
-        { firstname, lastname },
+      const response = await AxiosInstance.post(
+        '/favorites/toggle',
+        { placeId },
         {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       return response.data;
     } catch (error) {
-      console.error("İsim güncelleme hatası:", error);
+      console.error("toggleFavorite Hatası:", error.response?.data || error.message);
       throw error;
     }
+  },
+  
+  checkFavorite: async (placeId, token) => {
+    const response = await AxiosInstance.get(`/favorites/check/${placeId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
   },
 
-  signOut: async (token) => {
-    try {
-      const response = await AxiosInstance.post('/auth/signout', {}, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      return response.data;
-    } catch (error) {
-      console.error("Çıkış işlemi hatası:", error);
-      throw error;
-    }
+  getFavorites: async (token) => {
+    const response = await AxiosInstance.get('/favorites', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
   },
 
-  checkSession: async (token) => {
-    try {
-      const response = await AxiosInstance.get('/auth/check-session', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      return response.data;
-    } catch (error) {
-      console.error("Session kontrol hatası:", error);
-      throw error;
-    }
-  },
+  removeFavorite: async (placeId, token) => {
+    const response = await AxiosInstance.delete(`/favorites/${placeId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  }
 };
