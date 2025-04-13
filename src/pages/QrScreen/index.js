@@ -7,19 +7,60 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
-  Alert
+  Alert,
 } from 'react-native';
+
+import {
+  Camera,
+  useCameraDevice,
+  useCodeScanner,
+} from 'react-native-vision-camera';
 
 import AxiosInstance from '../../networking/AxiosInstance';
 import store from '../../store';
 import Headers from '../../components/Headers';
+import { isEmulatorSync } from 'react-native-device-info';
 
 export default function QRCodeVisualScreen({ navigation }) {
-  const [qrCode] = useState('qr_topkapi_2020'); // Test için sabit QR
+  const [isScanning, setIsScanning] = useState(false);
+  const [hasPermission, setHasPermission] = useState(false);
+  const device = useCameraDevice('back');
 
+  const codeScanner = useCodeScanner({
+    codeTypes: ['qr'],
+    onCodeScanned: async (codes) => {
+      const code = codes[0]?.value;
+      if (code) {
+        setIsScanning(false);
+        await handleQrScan(code);
+      }
+    }
+  });
 
+  useEffect(() => {
+    const requestCameraPermission = async () => {
+      try {
+        const permission = await Camera.requestCameraPermission();
+        setHasPermission(permission === "granted");
+      } catch (error) {
+        console.error("Kamera izni alınamadı:", error);
+        Alert.alert("HATA", "Kamera izni alınamadı");
+      }
+    };
+    requestCameraPermission();
+  }, []);
 
-  const getPlaceByQrCode = async (qrCode) => {
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      setIsScanning(false);
+    });
+  
+    return unsubscribe;
+  }, [navigation]);
+  
+
+  // QR kodu backend'e gönder
+  const handleQrScan = async (qrCode) => {
     try {
       const token = store.auth.data.token;
       const response = await AxiosInstance.get('/places/qr', {
@@ -28,18 +69,48 @@ export default function QRCodeVisualScreen({ navigation }) {
           Authorization: `Bearer ${token}`
         }
       });
-  
+
       const place = response.data;
       if (place && place.id) {
         navigation.navigate('Top-Turizm-Areas', { attractionId: place.id });
       } else {
-        Alert.alert("Geçersiz QR", "Yapı bulunamadı.");
+        Alert.alert('Geçersiz QR', 'Yapı bulunamadı.');
       }
     } catch (error) {
-      console.error("QR kod ile yapı getirme hatası:", error);
+      console.error('QR kod ile yapı getirme hatası:', error);
       Alert.alert('Hata', 'QR kod geçersiz veya sunucu hatası oluştu.');
     }
   };
+
+  const handleStartScan = async () => {
+    if (isEmulatorSync()) {
+      Alert.alert(
+        'Emülatör Uyarısı',
+        'Kamera emülatörde kullanılamaz. Örnek için Ayasofya sayfasına yönlendiriliyorsunuz.',
+        [
+          {
+            text: 'Tamam',
+            onPress: () => handleQrScan('qr_ayasofya_1010'),
+          }
+        ]
+      );
+      return;
+    }
+    if (!hasPermission) {
+      const newPermission = await Camera.requestCameraPermission();
+      if (newPermission !== 'granted') {
+        Alert.alert('Hata', 'Kamera izni verilmedi.');
+        return;
+      }
+      setHasPermission(true); 
+    }
+    if (!device) {
+      Alert.alert('Hata', 'Kamera cihazı bulunamadı.');
+      return;
+    }
+    setIsScanning(true);
+  };
+  
   
 
   return (
@@ -58,13 +129,36 @@ export default function QRCodeVisualScreen({ navigation }) {
               <Text style={styles.qrLabel}>My QR Code</Text>
             </View>
             <View style={styles.form}>
-              <TouchableOpacity style={styles.generateButton} onPress={() => getPlaceByQrCode(qrCode)}>
+              <TouchableOpacity style={styles.generateButton} onPress={handleStartScan}>
                 <Text style={styles.generateButtonText}>Generate QR Code</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
       </ScrollView>
+
+      {isScanning && device && hasPermission && (
+        <>
+          <Camera
+            style={[StyleSheet.absoluteFill, { zIndex: 1 }]}
+            device={device}
+            isActive={true}
+            codeScanner={codeScanner}
+          />
+          <Image
+            source={require('../../assets/qr/scanbarcode.png')}
+            style={styles.scanOverlay}
+          />
+          <View style={styles.cancelButtonWrapper}>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setIsScanning(false)}
+            >
+              <Text style={styles.cancelButtonText}>İptal Et</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
     </SafeAreaView>
   );
 }
@@ -141,27 +235,35 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  bottomBar: {
-    position: 'absolute',
-    bottom: 0,
+  scanOverlay: {
+    position: "absolute",
+    width: 220,
+    height: 220,
+    top: "40%",
+    left: "50%",
+    marginLeft: -110,
+    marginTop: -110,
+    zIndex: 2,
+    opacity: 0.9,
+  },
+  cancelButtonWrapper: {
+    position: "absolute",
+    bottom: 130,
     left: 0,
     right: 0,
-    height: 60,
-    backgroundColor: '#7B68EE',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    borderTopWidth: 1,
-    borderTopColor: '#3d3352',
+    alignItems: "center",
+    zIndex: 2,
   },
-  bottomBarButton: {
-    width: 50,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
+  cancelButton: {
+    backgroundColor: "#00000090",
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#fff"
   },
-  bottomBarIcon: {
-    fontSize: 24,
-    color: '#FFFFFF',
-  },
+  cancelButtonText: {
+    color: "#fff",
+    fontSize: 16,
+  }
 });
