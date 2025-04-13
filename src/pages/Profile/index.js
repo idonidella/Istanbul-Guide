@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, StatusBar, ScrollView, Alert } from 'react-native';
 import store from '../../store';
+import { authService } from '../../networking/api';
 import { observer } from 'mobx-react';
 
 @observer
@@ -12,16 +13,30 @@ export default class ProfileScreen extends Component {
       loading: true
     };
   }
+  componentDidMount() {
+    console.log('ProfileScreen mounted');
+    console.log(store.auth.data.token);
+
+  }
+
+
+
 
   handleLogout = async () => {
     try {
+      const token = store.auth.data?.token;
+
+      if (token) {
+        await authService.signOut(token);
+      }
       await store.userDeleteOrOut();
-      this.props.navigation.navigate('Login-Page');
+      this.props.navigation.replace('Login-Page');
     } catch (error) {
       console.error('Çıkış yaparken hata oluştu:', error);
       Alert.alert('Hata', 'Çıkış yapılırken bir sorun oluştu');
     }
   };
+
 
   toggleNotifications = () => {
     this.setState(prevState => ({

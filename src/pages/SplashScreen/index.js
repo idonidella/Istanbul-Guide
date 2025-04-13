@@ -8,17 +8,32 @@ import {
   Dimensions
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { authService } from '../../networking/api';
+import store from '../../store';
 
 const { width, height } = Dimensions.get('window');
 
 const SplashScreen = ({ navigation }) => {
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      navigation.replace('Login-Page');
-    }, 3000);
-
-    return () => clearTimeout(timer);
+    const checkUserSession = async () => {
+      try {
+        const token = store.auth.data.token;
+        console.log('Token:', token);
+        if (token) {
+          const response = await authService.checkSession(token);
+          console.log('Session kontrol sonucu:', response.data);
+          store.signIn(response.data);
+          navigation.navigate('Main');
+        } else {
+          navigation.navigate('Login-Page');
+        }
+      } catch (error) {
+        console.warn('Session kontrol hatası:', error.message);
+        navigation.navigate('Login-Page');
+      }
+    };
+    checkUserSession();
   }, []);
 
   return (
@@ -33,7 +48,7 @@ const SplashScreen = ({ navigation }) => {
         <Text style={styles.subtitle}>Discover the city with QR</Text>
       </View>
       <View style={styles.footer}>
-        <Text style={styles.footerText}>Tüm Hakları Saklıdır</Text>
+        <Text style={styles.footerText}>All Rights Reserved</Text>
       </View>
     </View>
   );

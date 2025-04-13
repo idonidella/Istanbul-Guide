@@ -52,4 +52,32 @@ export const authService = {
       throw error;
     }
   },
+
+  signOut: async (token) => {
+    try {
+      const response = await AxiosInstance.post('/auth/signout', {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Çıkış işlemi hatası:", error);
+      throw error;
+    }
+  },
+
+  checkSession: async (token) => {
+    try {
+      const response = await AxiosInstance.get('/auth/check-session', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Session kontrol hatası:", error);
+      throw error;
+    }
+  },
 };
