@@ -16,6 +16,7 @@ import RecommendedPlaces from "../pages/Main/Recommend/index";
 import Favorites from "../pages/Main/Favorites/index";
 //profile
 import ProfileSettingsScreen from "../pages/Profile/ProfileSettingsScreen";
+import HelpPage from "../pages/Profile/HelpPage";
 
 
 
@@ -68,6 +69,11 @@ export default class MenuScreens extends Component {
             name="Recommended-Places"
             component={RecommendedPlaces}
             key="RecommendedPlaces"
+          />
+          <Stack.Screen
+            name="Help-Page"
+            component={HelpPage}
+            key="Help-Page"
           />
           <Stack.Screen
             name="Favorites-Screen"

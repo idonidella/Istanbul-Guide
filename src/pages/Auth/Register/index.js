@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, View, TextInput, TouchableOpacity, SafeAreaView, Alert, ActivityIndicator } from 'react-native';
 import store from '../../../store';
-
-// API servisi importu - networking klasörünüzde oluşturmanız gerekiyor
 import { authService } from '../../../networking/api';
 
 export default class RegisterScreen extends Component {
@@ -23,10 +21,12 @@ export default class RegisterScreen extends Component {
     // Form validasyonu
     if (!firstname || !lastname || !email || !password || !confirmPassword) {
       Alert.alert('Hata', 'Lütfen tüm alanları doldurun');
+      this.setState({ loading: false });
       return;
     }
     if (password !== confirmPassword) {
       Alert.alert('Hata', 'Şifreler eşleşmiyor');
+      this.setState({ loading: false });
       return;
     }
     // Email formatı kontrolü

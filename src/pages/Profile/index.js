@@ -19,9 +19,6 @@ export default class ProfileScreen extends Component {
 
   }
 
-
-
-
   handleLogout = async () => {
     try {
       const token = store.auth.data?.token;
@@ -66,9 +63,9 @@ export default class ProfileScreen extends Component {
               </TouchableOpacity>
             </View>
             <View style={styles.menuCard}>
-              <TouchableOpacity style={styles.menuCardInner}>
+              <TouchableOpacity style={styles.menuCardInner} onPress={() => this.props.navigation.navigate('Help-Page')}>
                 <Text style={styles.infoIcon}>❓</Text>
-                <Text style={styles.infoText}>Yardım</Text>
+                <Text style={styles.infoText}>Yardım ve Destek</Text>
                 <Text style={styles.arrowIcon}>›</Text>
               </TouchableOpacity>
             </View>

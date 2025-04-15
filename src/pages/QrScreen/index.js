@@ -8,8 +8,9 @@ import {
   ScrollView,
   Image,
   Alert,
+  Dimensions,
+  ActivityIndicator,
 } from 'react-native';
-
 import {
   Camera,
   useCameraDevice,
@@ -20,12 +21,15 @@ import AxiosInstance from '../../networking/AxiosInstance';
 import store from '../../store';
 import Headers from '../../components/Headers';
 import { isEmulatorSync } from 'react-native-device-info';
+import LinearGradient from 'react-native-linear-gradient';
+
+const { width } = Dimensions.get('window');
 
 export default function QRCodeVisualScreen({ navigation }) {
   const [isScanning, setIsScanning] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const device = useCameraDevice('back');
-
   const codeScanner = useCodeScanner({
     codeTypes: ['qr'],
     onCodeScanned: async (codes) => {
@@ -54,13 +58,12 @@ export default function QRCodeVisualScreen({ navigation }) {
     const unsubscribe = navigation.addListener('blur', () => {
       setIsScanning(false);
     });
-  
+
     return unsubscribe;
   }, [navigation]);
-  
 
-  // QR kodu backend'e gönder
   const handleQrScan = async (qrCode) => {
+    setIsLoading(true);
     try {
       const token = store.auth.data.token;
       const response = await AxiosInstance.get('/places/qr', {
@@ -69,74 +72,139 @@ export default function QRCodeVisualScreen({ navigation }) {
           Authorization: `Bearer ${token}`
         }
       });
-
       const place = response.data;
       if (place && place.id) {
         navigation.navigate('Top-Turizm-Areas', { attractionId: place.id });
       } else {
-        Alert.alert('Geçersiz QR', 'Yapı bulunamadı.');
+        Alert.alert(
+          'Geçersiz QR',
+          'Bu QR kod bir yapıyla eşleşmiyor.',
+          [{ text: 'Tamam', style: 'default' }]
+        );
       }
     } catch (error) {
       console.error('QR kod ile yapı getirme hatası:', error);
-      Alert.alert('Hata', 'QR kod geçersiz veya sunucu hatası oluştu.');
+      Alert.alert(
+        'İşlem Başarısız',
+        'QR kod okunamadı veya sunucu yanıt vermiyor. Lütfen tekrar deneyin.',
+        [{ text: 'Tamam', style: 'default' }]
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleStartScan = async () => {
-    if (isEmulatorSync()) {
-      Alert.alert(
-        'Emülatör Uyarısı',
-        'Kamera emülatörde kullanılamaz. Örnek için Ayasofya sayfasına yönlendiriliyorsunuz.',
-        [
-          {
-            text: 'Tamam',
-            onPress: () => handleQrScan('qr_ayasofya_1010'),
-          }
-        ]
-      );
-      return;
-    }
+    // if (isEmulatorSync()) {
+    //   Alert.alert(
+    //     'Emülatör Uyarısı',
+    //     'Kamera emülatörde kullanılamaz. Örnek için Ayasofya sayfasına yönlendiriliyorsunuz.',
+    //     [
+    //       {
+    //         text: 'Tamam',
+    //         onPress: () => handleQrScan('qr_ayasofya_1010'),
+    //       }
+    //     ]
+    //   );
+    //   return;
+    // }
     if (!hasPermission) {
       const newPermission = await Camera.requestCameraPermission();
       if (newPermission !== 'granted') {
-        Alert.alert('Hata', 'Kamera izni verilmedi.');
+        Alert.alert('Kamera İzni Gerekli', 'QR kod taraması için kamera izni vermeniz gerekmektedir.');
         return;
       }
-      setHasPermission(true); 
+      setHasPermission(true);
     }
     if (!device) {
-      Alert.alert('Hata', 'Kamera cihazı bulunamadı.');
+      Alert.alert('Cihaz Hatası', 'Kamera cihazınız bulunamadı veya kullanılamıyor.');
       return;
     }
     setIsScanning(true);
   };
-  
-  
 
   return (
     <SafeAreaView style={styles.container}>
       <Headers navigation={navigation} />
-      <ScrollView style={styles.scrollContent}>
-        <View style={styles.cardContainer}>
-          <View style={styles.card}>
-            <Text style={styles.title}>QR Code</Text>
-            <View style={styles.qrContainer}>
-              <Image
-                source={require('../../assets/qr/sample-qr.png')}
-                style={styles.qrImage}
-                resizeMode="contain"
-              />
-              <Text style={styles.qrLabel}>My QR Code</Text>
-            </View>
-            <View style={styles.form}>
-              <TouchableOpacity style={styles.generateButton} onPress={handleStartScan}>
-                <Text style={styles.generateButtonText}>Generate QR Code</Text>
+      <ScrollView style={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        <LinearGradient
+          colors={['#2A2438', '#2A2438']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.gradient}
+        >
+          <View style={styles.headerSection}></View>
+          <View style={styles.cardContainer}>
+            <LinearGradient
+              colors={['#3F3356', '#2D2342']}
+              style={styles.card}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+            >
+              <View style={styles.qrContainer}>
+                <Image
+                  source={require('../../assets/qr/sample-qr.png')}
+                  style={styles.qrImage}
+                  resizeMode="contain"
+                />
+                <View style={styles.overlayIconContainer}>
+                  <View style={styles.qrCorner} />
+                </View>
+              </View>
+              <TouchableOpacity
+                style={styles.scanButton}
+                onPress={handleStartScan}
+                activeOpacity={0.8}
+                disabled={isLoading}
+              >
+                <LinearGradient
+                  colors={['#8E6CEF', '#7B68EE']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.buttonGradient}
+                >
+                  {isLoading ? (
+                    <ActivityIndicator color="#ffffff" size="small" />
+                  ) : (
+                    <>
+                      <Image
+                        source={require('../../assets/qr/scanbarcode.png')}
+                        style={styles.buttonIcon}
+                        resizeMode="contain"
+                      />
+                      <Text style={styles.scanButtonText}>QR Kodu Tara</Text>
+                    </>
+                  )}
+                </LinearGradient>
               </TouchableOpacity>
+              <Text style={styles.instructionText}>
+                Kameranızı QR kodun üzerine tutun.
+                QR kod tarandığında ilgili içerik otomatik olarak gösterilecektir.
+              </Text>
+            </LinearGradient>
+          </View>
+          <View style={styles.infoSection}>
+            <View style={styles.infoItem}>
+              <View style={[styles.infoIcon, { backgroundColor: '#8E6CEF30' }]}>
+                <Text style={styles.infoIconText}>1</Text>
+              </View>
+              <Text style={styles.infoText}>QR Tara butonuna basın</Text>
+            </View>
+            <View style={styles.infoItem}>
+              <View style={[styles.infoIcon, { backgroundColor: '#FF8C4230' }]}>
+                <Text style={styles.infoIconText}>2</Text>
+              </View>
+              <Text style={styles.infoText}>Kamerayı QR kodun üzerine tutun</Text>
+            </View>
+            <View style={styles.infoItemFinal}>
+              <View style={[styles.infoIcon, { backgroundColor: '#4ECB7130' }]}>
+                <Text style={styles.infoIconText}>3</Text>
+              </View>
+              <Text style={styles.infoText}>Yapı hakkında bilgi alın</Text>
             </View>
           </View>
-        </View>
+        </LinearGradient>
       </ScrollView>
-
       {isScanning && device && hasPermission && (
         <>
           <Camera
@@ -145,14 +213,17 @@ export default function QRCodeVisualScreen({ navigation }) {
             isActive={true}
             codeScanner={codeScanner}
           />
-          <Image
-            source={require('../../assets/qr/scanbarcode.png')}
-            style={styles.scanOverlay}
-          />
+          <View style={styles.scanFrame}>
+            <View style={styles.scanCorner1} />
+            <View style={styles.scanCorner2} />
+            <View style={styles.scanCorner3} />
+            <View style={styles.scanCorner4} />
+          </View>
           <View style={styles.cancelButtonWrapper}>
             <TouchableOpacity
               style={styles.cancelButton}
               onPress={() => setIsScanning(false)}
+              activeOpacity={0.7}
             >
               <Text style={styles.cancelButtonText}>İptal Et</Text>
             </TouchableOpacity>
@@ -170,100 +241,227 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flex: 1,
-    paddingBottom: 80,
+  },
+  gradient: {
+    flex: 1,
+    paddingBottom: 40,
+  },
+  headerSection: {
+    paddingTop: 10,
+  },
+  pageTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  pageSubtitle: {
+    fontSize: 16,
+    color: '#B8B5C0',
+    marginBottom: 20,
   },
   cardContainer: {
-    justifyContent: 'center',
-    marginTop: 50,
+    paddingHorizontal: 20,
+    marginBottom: 25,
   },
   card: {
-    backgroundColor: '#382e48',
-    borderRadius: 15,
-    paddingVertical: 50,
+    borderRadius: 20,
+    paddingVertical: 30,
     paddingHorizontal: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 5,
-    width: '90%',
-    alignSelf: 'center',
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
-    color: '#FFFFFF',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 8,
+    overflow: 'hidden',
   },
   qrContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 40,
-    backgroundColor: '#302942',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#3d3352',
+    paddingVertical: 30,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    position: 'relative',
+    marginBottom: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 4,
   },
   qrImage: {
-    width: 200,
-    height: 200,
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 5,
+    width: 180,
+    height: 180,
   },
-  qrLabel: {
-    marginTop: 15,
-    fontSize: 16,
-    color: '#CCCCCC',
-    fontWeight: '500',
-  },
-  form: {
-    marginTop: 10,
-  },
-  generateButton: {
-    backgroundColor: '#7B68EE',
-    height: 50,
-    borderRadius: 25,
+  overlayIconContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
-    marginHorizontal: 3,
   },
-  generateButtonText: {
-    color: 'white',
-    fontSize: 16,
+  qrCorner: {
+    width: 210,
+    height: 210,
+    borderWidth: 2,
+    borderColor: '#8E6CEF',
+    borderRadius: 16,
+    position: 'absolute',
+  },
+  scanButton: {
+    width: '100%',
+    height: 56,
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginBottom: 20,
+    marginTop: 10,
+    shadowColor: '#8E6CEF',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  buttonGradient: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonIcon: {
+    width: 22,
+    height: 22,
+    marginRight: 8,
+    tintColor: '#FFFFFF',
+  },
+  scanButtonText: {
+    color: '#FFFFFF',
+    fontSize: 17,
     fontWeight: 'bold',
   },
-  scanOverlay: {
-    position: "absolute",
-    width: 220,
-    height: 220,
-    top: "40%",
-    left: "50%",
-    marginLeft: -110,
-    marginTop: -110,
+  instructionText: {
+    fontSize: 14,
+    color: '#B8B5C0',
+    textAlign: 'center',
+    lineHeight: 20,
+  },
+  infoSection: {
+    paddingHorizontal: 20,
+  },
+  infoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 18,
+  },
+  infoItemFinal: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingBottom: 150,
+  },
+  infoIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 14,
+  },
+  infoIconText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
+  infoText: {
+    fontSize: 16,
+    color: '#E0DDE5',
+    flex: 1,
+  },
+  scanFrame: {
+    position: 'absolute',
+    top: '40%',
+    left: '50%',
+    width: 250,
+    height: 250,
+    marginLeft: -125,
+    marginTop: -125,
     zIndex: 2,
-    opacity: 0.9,
+  },
+  scanCorner1: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: 40,
+    height: 40,
+    borderTopWidth: 4,
+    borderLeftWidth: 4,
+    borderColor: '#8E6CEF',
+    borderTopLeftRadius: 10,
+  },
+  scanCorner2: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 40,
+    height: 40,
+    borderTopWidth: 4,
+    borderRightWidth: 4,
+    borderColor: '#8E6CEF',
+    borderTopRightRadius: 10,
+  },
+  scanCorner3: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: 40,
+    height: 40,
+    borderBottomWidth: 4,
+    borderLeftWidth: 4,
+    borderColor: '#8E6CEF',
+    borderBottomLeftRadius: 10,
+  },
+  scanCorner4: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 40,
+    height: 40,
+    borderBottomWidth: 4,
+    borderRightWidth: 4,
+    borderColor: '#8E6CEF',
+    borderBottomRightRadius: 10,
+  },
+  scanningText: {
+    position: 'absolute',
+    top: '60%',
+    width: '100%',
+    textAlign: 'center',
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    zIndex: 2,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
   },
   cancelButtonWrapper: {
-    position: "absolute",
-    bottom: 130,
+    position: 'absolute',
+    bottom: 150,
     left: 0,
     right: 0,
-    alignItems: "center",
+    alignItems: 'center',
     zIndex: 2,
   },
   cancelButton: {
-    backgroundColor: "#00000090",
-    paddingVertical: 10,
-    paddingHorizontal: 25,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "#fff"
+    backgroundColor: 'rgba(30, 27, 38, 0.8)',
+    paddingVertical: 14,
+    paddingHorizontal: 30,
+    borderRadius: 30,
+    borderWidth: 1.5,
+    borderColor: '#8E6CEF',
   },
   cancelButtonText: {
-    color: "#fff",
+    color: '#FFFFFF',
     fontSize: 16,
+    fontWeight: '600',
   }
 });

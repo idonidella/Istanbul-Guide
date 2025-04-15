@@ -115,7 +115,7 @@ const UserFavorites = ({ navigation }) => {
             ) : filteredFavorites.length === 0 ? (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
                     <Text style={{ fontSize: 16, color: '#444', textAlign: 'center', marginBottom: 12 }}>
-                        Henüz favori eklemediniz.
+                        Henüz favoriye eklemediniz.
                     </Text>
                     <TouchableOpacity
                         onPress={fetchFavorites}
