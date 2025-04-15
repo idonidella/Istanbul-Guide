@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const AxiosInstance = axios.create({
-  baseURL: 'http://192.168.1.147:3000', 
+  baseURL: 'http://10.0.2.2:3000', 
   //kendi internetiniz ip adresinizi buraya yazın
 });
 
