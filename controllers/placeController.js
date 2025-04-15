@@ -50,14 +50,15 @@ exports.getPlaceByQrCode = async (req, res) => {
 
 exports.getPlaceById = async (req, res) => {
   const { id } = req.params;
-
+  console.log('Yer ID:', id);
+  //title cekicen = ornek ayasofya // 2500 kelimelik bana bilgi ver diycen api 
   try {
     const [rows] = await db.execute('SELECT * FROM places WHERE id = ?', [id]);
-
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Yer bulunamadı' });
     }
-
+    //Veriyi apiden gelen cevapla beraber diger tablo titleriyle birlestirip
+    //geri dondur yani rows[0] + api description 
     res.status(200).json(rows[0]);
   } catch (error) {
     console.error('Yer getirme hatası:', error);
