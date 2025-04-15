@@ -8,30 +8,23 @@ require('dotenv').config();
 exports.register = async (req, res) => {
   try {
     const { firstname, lastname, email, password } = req.body;
-
     if (!firstname || !email || !password || !lastname) {
       return res.status(400).json({ message: 'İsim, soyisim, email ve şifre zorunludur.' });
     }
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ message: 'Geçerli bir email adresi giriniz' });
     }
-
     const normalizedEmail = email.toLowerCase();
     const existingUserByEmail = await User.findByEmail(normalizedEmail);
-
     if (existingUserByEmail) {
       return res.status(400).json({ message: 'Bu email adresi zaten kullanılıyor' });
     }
-
     // Yeni kullanıcı oluştur
     const userId = await User.create({ firstname, lastname, email: normalizedEmail, password });
     console.log('Yeni kullanıcı oluşturuldu:', userId);
-
     // Kullanıcı bilgilerini tekrar çek
     const user = await User.findByEmail(normalizedEmail);
-
     // JWT token oluştur
     const token = jwt.sign(
       {
@@ -67,7 +60,6 @@ exports.signOut = async (req, res) => {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(400).json({ message: 'Token bulunamadı' });
     }
-
     const token = authHeader.split(' ')[1];
     await db.execute('INSERT INTO revoked_tokens (token) VALUES (?)', [token]);
     console.log('Token iptal edildi ÇIKIŞ YAPILDI:', token);
@@ -84,11 +76,9 @@ exports.checkSession = async (req, res) => {
     const userId = req.user.userId;
     const token = req.token;
     const [revoked] = await db.execute('SELECT id FROM revoked_tokens WHERE token = ?', [token]);
-
     if (revoked.length > 0) {
       return res.status(401).json({ message: 'Token iptal edilmiş' });
     }
-
     const [rows] = await db.execute('SELECT firstname, lastname, email FROM users WHERE id = ?', [userId]);
     const user = rows[0];
     console.log('Kullanıcı bilgileri check-session endpointi kullanıcıya dönen bilgiler:', user);
@@ -112,19 +102,16 @@ exports.login = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ message: 'Email ve şifre gereklidir' });
     }
-
     // Kullanıcıyı e-posta ile bul
     const user = await User.findByEmail(email);
     if (!user) {
-      return res.status(401).json({ message: 'Geçersiz kimlik bilgileri' });
+      return res.status(401).json({ message: 'Email veya şifre yanlış. Lütfen hesap bilgilerinizi kontrol edip tekrar deneyin' });
     }
-
     // Şifreyi kontrol et
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Geçersiz kimlik bilgileri' });
     }
-
     // JWT token oluştur
     const token = jwt.sign(
       {

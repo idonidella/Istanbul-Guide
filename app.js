@@ -5,7 +5,7 @@ const authRoutes = require('./routes/authRoutes');
 const placeRoutes = require('./routes/placeRoutes');
 const userRoutes = require('./routes/userRoutes');
 const favoritesRoutes = require('./routes/favoritesRoutes');
-
+const visitedRoutes = require('./routes/visited');
 
 const app = express();
 
@@ -18,6 +18,7 @@ app.use('/auth', authRoutes);
 app.use('/places', placeRoutes);
 app.use('/user', userRoutes);
 app.use('/favorites', favoritesRoutes);
+app.use('/visited', visitedRoutes);
 
 
 
