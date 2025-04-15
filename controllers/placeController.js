@@ -51,7 +51,8 @@ exports.getPlaceByQrCode = async (req, res) => {
 exports.getPlaceById = async (req, res) => {
   const { id } = req.params;
   console.log('Yer ID:', id);
-  //title cekicen = ornek ayasofya // 2500 kelimelik bana bilgi ver diycen api 
+  //name cekicen = ornek ayasofya // 2500 kelimelik bana bilgi ver diycen api 
+  // const title = id den gelen name 
   try {
     const [rows] = await db.execute('SELECT * FROM places WHERE id = ?', [id]);
     if (rows.length === 0) {
