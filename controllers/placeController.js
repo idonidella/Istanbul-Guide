@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const openai = require('../config/openai');
 
 exports.getPlaceByQrCode = async (req, res) => {
   try {
@@ -51,18 +52,61 @@ exports.getPlaceByQrCode = async (req, res) => {
 exports.getPlaceById = async (req, res) => {
   const { id } = req.params;
   console.log('Yer ID:', id);
-  //name cekicen = ornek ayasofya // 2500 kelimelik bana bilgi ver diycen api 
-  // const title = id den gelen name 
+  
   try {
+    console.log('Veritabanından yer bilgisi alınıyor...');
     const [rows] = await db.execute('SELECT * FROM places WHERE id = ?', [id]);
     if (rows.length === 0) {
+      console.log('Yer bulunamadı, ID:', id);
       return res.status(404).json({ message: 'Yer bulunamadı' });
     }
-    //Veriyi apiden gelen cevapla beraber diger tablo titleriyle birlestirip
-    //geri dondur yani rows[0] + api description 
+    console.log('Yer bulundu:', rows[0].name);
+
+    // Eğer description boşsa veya null ise GPT'den al
+    if (!rows[0].description) {
+      console.log('GPT API\'ye istek gönderiliyor...');
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content: `Sen İstanbul'un tarihi ve kültürel mirası konusunda uzman bir tarihçi ve turizm rehberisin. 
+            Verilen mekanlar hakkında şu başlıklar altında detaylı bilgiler vermelisin:
+            1. Tarihi Geçmiş: Yapının/mekanın kuruluş tarihi, kim tarafından yapıldığı, tarih boyunca geçirdiği önemli değişiklikler
+            2. Mimari Özellikler: Yapının boyutları, kullanılan malzemeler, mimari tarzı, öne çıkan mimari detayları
+            3. Kültürel Önemi: Toplum için önemi, dini veya kültürel değeri, geçmişten günümüze toplumsal rolü
+            4. İlgi Çekici Detaylar: Az bilinen özellikler, ilginç hikayeler, efsaneler
+            5. Pratik Bilgiler: Ziyaret için en uygun zamanlar, dikkat edilmesi gereken kurallar, yakınındaki diğer önemli mekanlar`
+          },
+          {
+            role: "user",
+            content: `İstanbul'daki ${rows[0].name} hakkında kapsamlı bir açıklama yazar mısın? Özellikle tarihi, mimari özellikleri, kültürel önemi ve ziyaretçiler için önemli bilgileri içeren detaylı bir anlatım olsun.`
+          }
+        ],
+        max_tokens: 2000,
+        temperature: 0.7
+      });
+      
+      const description = completion.choices[0].message.content;
+      console.log('GPT API yanıt verdi, açıklama uzunluğu:', description.length);
+
+      // Description'ı direkt places tablosuna kaydet
+      await db.execute(
+        'UPDATE places SET description = ? WHERE id = ?',
+        [description, id]
+      );
+      console.log('Açıklama places tablosuna kaydedildi');
+
+      rows[0].description = description;
+    }
+
     res.status(200).json(rows[0]);
   } catch (error) {
-    console.error('Yer getirme hatası:', error);
-    res.status(500).json({ message: 'Sunucu hatası' });
+    console.error('Hata detayı:', error.message);
+    console.error('Tam hata:', error);
+    res.status(500).json({ 
+      message: 'Sunucu hatası', 
+      error: error.message 
+    });
   }
 };
