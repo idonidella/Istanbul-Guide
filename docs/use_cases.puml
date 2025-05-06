@@ -1,0 +1,29 @@
+@startuml Istanbul Guide Recommender System
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor User
+actor System
+
+rectangle "Istanbul Guide Recommendation System" {
+    User -- (Get Location-Based Recommendations)
+    User -- (View Place Details)
+    User -- (Mark Place as Visited)
+    User -- (Add to Favorites)
+    User -- (Rate Places)
+    
+    (Get Location-Based Recommendations) ..> (Filter by Distance) : includes
+    (Get Location-Based Recommendations) ..> (Filter by Category) : includes
+    (Get Location-Based Recommendations) ..> (Calculate Popularity) : includes
+    
+    (Filter by Distance) -- System
+    (Filter by Category) -- System
+    (Calculate Popularity) -- System
+    
+    (Mark Place as Visited) ..> (Update User Profile) : includes
+    (Add to Favorites) ..> (Update User Preferences) : includes
+    (Rate Places) ..> (Update Place Popularity) : includes
+}
+
+@enduml 
