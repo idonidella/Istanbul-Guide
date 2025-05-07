@@ -1,0 +1,282 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Istanbul Guide API",
+    "version": "1.0.0",
+    "description": "İstanbul Gezi Rehberi API'si - Öneri ve model güncelleme servisleri"
+  },
+  "basePath": "/",
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "tags": [
+    {
+      "name": "öneriler",
+      "description": "Mekan önerileri"
+    },
+    {
+      "name": "model",
+      "description": "Model yönetimi"
+    }
+  ],
+  "paths": {
+    "/recommend": {
+      "post": {
+        "tags": ["öneriler"],
+        "summary": "Kullanıcı için mekan önerisi al",
+        "description": "Kullanıcı id, konum bilgisi ve istenilen öneri sayısına göre mekan önerileri döndürür",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RecommendRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Başarılı öneri",
+            "schema": {
+              "$ref": "#/definitions/RecommendResponse"
+            }
+          },
+          "400": {
+            "description": "Geçersiz istek"
+          },
+          "500": {
+            "description": "Sunucu hatası"
+          }
+        }
+      }
+    },
+    "/api/model/update": {
+      "post": {
+        "tags": ["model"],
+        "summary": "Modeli manuel olarak güncelle",
+        "description": "Eğer yeterli yeni veri varsa modeli günceller",
+        "responses": {
+          "200": {
+            "description": "Model güncelleme durumu",
+            "schema": {
+              "$ref": "#/definitions/ModelUpdateResponse"
+            }
+          },
+          "500": {
+            "description": "Sunucu hatası"
+          }
+        }
+      }
+    },
+    "/api/model/check-update": {
+      "post": {
+        "tags": ["model"],
+        "summary": "Modeli kontrol et ve gerekirse güncelle",
+        "description": "Modelin güncellenmesi gerekip gerekmediğini kontrol eder ve gerekiyorsa günceller",
+        "responses": {
+          "200": {
+            "description": "Model kontrol durumu",
+            "schema": {
+              "$ref": "#/definitions/ModelCheckResponse"
+            }
+          },
+          "500": {
+            "description": "Sunucu hatası"
+          }
+        }
+      }
+    },
+    "/api/model/status": {
+      "get": {
+        "tags": ["model"],
+        "summary": "Model durumunu kontrol et",
+        "description": "Modelin güncel durumunu ve güncelleme gerekip gerekmediğini döndürür",
+        "responses": {
+          "200": {
+            "description": "Model durumu",
+            "schema": {
+              "$ref": "#/definitions/ModelStatusResponse"
+            }
+          },
+          "500": {
+            "description": "Sunucu hatası"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": ["sistem"],
+        "summary": "API sağlık durumu kontrolü",
+        "description": "API'nin çalışıp çalışmadığını kontrol eder",
+        "responses": {
+          "200": {
+            "description": "API sağlık durumu",
+            "schema": {
+              "$ref": "#/definitions/HealthResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/restart": {
+      "post": {
+        "tags": ["sistem"],
+        "summary": "API'yi yeniden başlat",
+        "description": "API'yi yeniden başlatarak en güncel veritabanı verilerini kullanmasını sağlar",
+        "responses": {
+          "200": {
+            "description": "API başarıyla yeniden başlatılıyor",
+            "schema": {
+              "$ref": "#/definitions/RestartResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "RecommendRequest": {
+      "type": "object",
+      "required": ["userId", "latitude", "longitude"],
+      "properties": {
+        "userId": {
+          "type": "integer",
+          "description": "Kullanıcı ID"
+        },
+        "latitude": {
+          "type": "number",
+          "format": "float",
+          "description": "Kullanıcının enlem bilgisi"
+        },
+        "longitude": {
+          "type": "number",
+          "format": "float",
+          "description": "Kullanıcının boylam bilgisi"
+        },
+        "topN": {
+          "type": "integer",
+          "description": "İstenilen öneri sayısı",
+          "default": 5
+        }
+      }
+    },
+    "RecommendationItem": {
+      "type": "object",
+      "properties": {
+        "place_id": {
+          "type": "integer",
+          "description": "Mekan ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Mekan adı"
+        },
+        "category": {
+          "type": "string",
+          "description": "Mekan kategorisi"
+        },
+        "distance": {
+          "type": "number",
+          "description": "Kullanıcıya olan uzaklık (km)"
+        },
+        "score": {
+          "type": "number",
+          "description": "Öneri puanı"
+        }
+      }
+    },
+    "RecommendResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "İşlem durumu"
+        },
+        "recommendations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RecommendationItem"
+          }
+        }
+      }
+    },
+    "ModelUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "İşlem durumu"
+        },
+        "message": {
+          "type": "string",
+          "description": "Durum mesajı"
+        }
+      }
+    },
+    "ModelCheckResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "İşlem durumu"
+        },
+        "message": {
+          "type": "string",
+          "description": "Durum mesajı"
+        },
+        "updated": {
+          "type": "boolean",
+          "description": "Model güncellendi mi?"
+        }
+      }
+    },
+    "ModelStatusResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "İşlem durumu"
+        },
+        "needs_update": {
+          "type": "boolean",
+          "description": "Model güncelleme gerekiyor mu?"
+        },
+        "last_updated": {
+          "type": "string",
+          "description": "Son güncelleme zamanı"
+        }
+      }
+    },
+    "HealthResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "API durumu"
+        },
+        "model_loaded": {
+          "type": "boolean",
+          "description": "Model yüklendi mi?"
+        },
+        "version": {
+          "type": "string",
+          "description": "API versiyonu"
+        }
+      }
+    },
+    "RestartResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "İşlem durumu"
+        },
+        "message": {
+          "type": "string",
+          "description": "Durum mesajı"
+        }
+      }
+    }
+  }
+} 

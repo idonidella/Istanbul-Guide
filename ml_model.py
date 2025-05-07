@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 import os
 from datetime import datetime
 from sklearn.metrics.pairwise import haversine_distances
+import logging
 
 class IstanbulMLRecommender:
     def __init__(self):
@@ -33,6 +34,13 @@ class IstanbulMLRecommender:
         self._center_lat = 41.0082
         self._center_lon = 28.9784
         self.db_connection = None
+        self.reference_user_id = 0
+        self.reference_place_id = 0
+        self.reference_visit_id = 0
+        self.init_reference_ids()
+        self.last_user_id = self.read_last_id('last_user_id.txt')
+        self.last_place_id = self.read_last_id('last_place_id.txt')
+        self.last_visit_id = self.read_last_id('last_visit_id.txt')
         
     def connect_to_database(self):
         load_dotenv()
@@ -42,6 +50,56 @@ class IstanbulMLRecommender:
             password=os.getenv('DB_PASSWORD', ''),
             database=os.getenv('DB_NAME', 'istanbul_guide')
         )
+
+    def init_reference_ids(self):
+        if self.db_connection is None:
+            self.connect_to_database()
+        cursor = self.db_connection.cursor(dictionary=True)
+        
+        # model_metadata tablosundan son id'leri al
+        cursor.execute("""
+            SELECT last_user_id, last_place_id, last_visit_id 
+            FROM model_metadata 
+            ORDER BY id DESC LIMIT 1
+        """)
+        result = cursor.fetchone()
+        
+        if result:
+            self.reference_user_id = result['last_user_id']
+            self.reference_place_id = result['last_place_id']
+            self.reference_visit_id = result['last_visit_id']
+        else:
+            # Eğer tablo boşsa, mevcut max id'leri al ve kaydet
+            self.update_reference_ids()
+        
+        cursor.close()
+
+    def update_reference_ids(self):
+        if self.db_connection is None:
+            self.connect_to_database()
+        cursor = self.db_connection.cursor(dictionary=True)
+        
+        # Önce mevcut max id'leri al
+        cursor.execute("SELECT MAX(id) as max_id FROM users")
+        max_user_id = cursor.fetchone()['max_id'] or 0
+        cursor.execute("SELECT MAX(id) as max_id FROM places")
+        max_place_id = cursor.fetchone()['max_id'] or 0
+        cursor.execute("SELECT MAX(id) as max_id FROM visited_places")
+        max_visit_id = cursor.fetchone()['max_id'] or 0
+        
+        # model_metadata tablosunu güncelle
+        cursor.execute("""
+            INSERT INTO model_metadata (last_user_id, last_place_id, last_visit_id, last_update_time)
+            VALUES (%s, %s, %s, NOW())
+            ON DUPLICATE KEY UPDATE 
+                last_user_id = VALUES(last_user_id),
+                last_place_id = VALUES(last_place_id),
+                last_visit_id = VALUES(last_visit_id),
+                last_update_time = NOW()
+        """, (max_user_id, max_place_id, max_visit_id))
+        
+        self.db_connection.commit()
+        cursor.close()
 
     def load_data_from_db(self):
         if self.db_connection is None:
@@ -203,13 +261,13 @@ class IstanbulMLRecommender:
             verbose=1
         )
 
-    def save_model(self, filename='istanbul_ml_model.h5'):
+    def save_model(self, filename='istanbul_ml_model.keras'):
         self.model.save(filename)
         joblib.dump(self.scaler, 'scaler.joblib')
         joblib.dump(self.feature_names, 'feature_names.joblib')
 
     @classmethod
-    def load_model(cls, model_path='istanbul_ml_model.h5', scaler_path='scaler.joblib', feature_names_path='feature_names.joblib'):
+    def load_model(cls, model_path='istanbul_ml_model.keras', scaler_path='scaler.joblib', feature_names_path='feature_names.joblib'):
         import tensorflow as tf
         instance = cls()
         instance.model = tf.keras.models.load_model(model_path)
@@ -304,26 +362,91 @@ class IstanbulMLRecommender:
             })
         return sorted(scores, key=lambda x: x['score'], reverse=True)[:top_n]
 
+    def read_last_id(self, filename):
+        if os.path.exists(filename):
+            with open(filename, 'r') as f:
+                return int(f.read().strip())
+        return 0
+
+    def write_last_id(self, filename, value):
+        with open(filename, 'w') as f:
+            f.write(str(value))
+
     def should_update_model(self):
         if self.db_connection is None:
             self.connect_to_database()
-        cursor = self.db_connection.cursor(dictionary=True)
-        cursor.execute("""
-            SELECT COUNT(DISTINCT userId) as new_users,
-                   COUNT(DISTINCT placeId) as new_places,
-                   COUNT(*) as new_interactions
-            FROM visited_places
-        """)
-        stats = cursor.fetchone()
-        cursor.close()
-        return (
-            stats['new_users'] >= 10 or
-            stats['new_places'] >= 5 or
-            stats['new_interactions'] >= 100
-        )
+        
+        try:
+            cursor = self.db_connection.cursor(dictionary=True)
+            
+            # Veritabanından güncel max id'leri çek
+            cursor.execute("SELECT MAX(id) as max_id FROM users")
+            max_user_id = cursor.fetchone()['max_id'] or 0
+            
+            cursor.execute("SELECT MAX(id) as max_id FROM places")
+            max_place_id = cursor.fetchone()['max_id'] or 0
+            
+            cursor.execute("SELECT MAX(id) as max_id FROM visited_places")
+            max_visit_id = cursor.fetchone()['max_id'] or 0
+            
+            cursor.close()
+            
+            # ID'lerin farkını al
+            new_users = max_user_id - self.last_user_id
+            new_places = max_place_id - self.last_place_id
+            new_interactions = max_visit_id - self.last_visit_id
+            
+            logging.info(f"Model güncelleme kontrolü: users={new_users}, places={new_places}, interactions={new_interactions}")
+            
+            return (new_users >= 3 or new_places >= 5 or new_interactions >= 100)
+        
+        except Exception as e:
+            logging.error(f"should_update_model hatası: {str(e)}")
+            return False
 
     def update_model_if_needed(self):
         if self.should_update_model():
-            self.load_data_from_db()
-            self.train()
-            self.save_model()
+            try:
+                # Veritabanından en son ID'leri al
+                if self.db_connection is None:
+                    self.connect_to_database()
+                cursor = self.db_connection.cursor(dictionary=True)
+                
+                cursor.execute("SELECT MAX(id) as max_id FROM users")
+                max_user_id = cursor.fetchone()['max_id'] or 0
+                
+                cursor.execute("SELECT MAX(id) as max_id FROM places")
+                max_place_id = cursor.fetchone()['max_id'] or 0
+                
+                cursor.execute("SELECT MAX(id) as max_id FROM visited_places")
+                max_visit_id = cursor.fetchone()['max_id'] or 0
+                
+                cursor.close()
+                
+                # Modeli eğit
+                logging.info(f"[{datetime.now()}] Model güncelleme başladı...")
+                self.load_data_from_db()
+                self.train()
+                self.save_model()
+                
+                # Güncel id'leri dosyaya yaz
+                self.write_last_id('last_user_id.txt', max_user_id)
+                self.write_last_id('last_place_id.txt', max_place_id)
+                self.write_last_id('last_visit_id.txt', max_visit_id)
+                
+                # Referans ID'leri de güncelle (model_metadata tablosu)
+                self.update_reference_ids()
+                
+                # last_* değişkenlerini de RAM'de güncelle
+                self.last_user_id = max_user_id
+                self.last_place_id = max_place_id
+                self.last_visit_id = max_visit_id
+                
+                logging.info(f"[{datetime.now()}] Model başarıyla güncellendi!")
+                return True
+            except Exception as e:
+                logging.error(f"Model güncelleme hatası: {str(e)}")
+                return False
+        else:
+            logging.info(f"[{datetime.now()}] Model güncelleme gerekmiyor.")
+            return False

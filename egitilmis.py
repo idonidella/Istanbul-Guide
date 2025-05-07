@@ -11,7 +11,7 @@ recommender = IstanbulMLRecommender.load_model(
 recommender.load_data_from_db()
 
 # Kullanıcı 1 için öneri alalım (örnek konum: Sultanahmet)
-user_id = 3
+user_id = 7
 user_lat = 41.0082
 user_lon = 28.9784
 
