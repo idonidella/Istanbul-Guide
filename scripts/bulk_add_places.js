@@ -14,7 +14,7 @@ const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 
 // Kategoriler
 const categories = [
-  { id: 1, name: 'Köşkler / Vadi / Tepe' },
+  { id: 1, name: 'Köşkler / Vadi / Tepe / Parklar' },
   { id: 2, name: 'Camiler' },
   { id: 3, name: 'Kiliseler' },
   { id: 4, name: 'Şarküslalar ve Saraylar' },
@@ -144,7 +144,7 @@ async function validateAndCategorizePlace(placeName) {
           Sana verilen yer isimlerinin İstanbul'da gerçekten var olup olmadığını kontrol etmen gerekiyor.
           
           Eğer yer gerçekten varsa, şu kategorilerden birine ata:
-          1: Köşkler / Vadi / Tepe
+          1: Köşkler / Vadi / Tepe / Parklar
           2: Camiler
           3: Kiliseler
           4: Şarküslalar ve Saraylar

@@ -40,6 +40,7 @@ exports.register = async (req, res) => {
       data: {
         message: 'Kullanıcı başarıyla kaydedildi',
         data: {
+          userId: user.id,
           firstname: user.firstname,
           lastname: user.lastname,
           email: user.email,
@@ -79,12 +80,17 @@ exports.checkSession = async (req, res) => {
     if (revoked.length > 0) {
       return res.status(401).json({ message: 'Token iptal edilmiş' });
     }
-    const [rows] = await db.execute('SELECT firstname, lastname, email FROM users WHERE id = ?', [userId]);
+    const [rows] = await db.execute('SELECT id, firstname, lastname, email FROM users WHERE id = ?', [userId]);
     const user = rows[0];
     console.log('Kullanıcı bilgileri check-session endpointi kullanıcıya dönen bilgiler:', user);
     res.status(200).json({
       message: 'Oturum aktif',
-      data: user
+      data: {
+        userId: user.id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email
+      }
     });
   } catch (error) {
     console.error('Session kontrol hatası:', error);
@@ -128,6 +134,7 @@ exports.login = async (req, res) => {
       data: {
         message: 'Giriş başarılı',
         data: {
+          userId: user.id,
           firstname: user.firstname,
           lastname: user.lastname,
           email: user.email,

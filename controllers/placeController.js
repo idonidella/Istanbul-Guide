@@ -80,7 +80,12 @@ exports.getPlaceById = async (req, res) => {
           },
           {
             role: "user",
-            content: `İstanbul'daki ${rows[0].name} hakkında kapsamlı bir açıklama yazar mısın? Özellikle tarihi, mimari özellikleri, kültürel önemi ve ziyaretçiler için önemli bilgileri içeren detaylı bir anlatım olsun.`
+            content: `İstanbul'daki ${rows[0].name} hakkında doğrudan bilgi veren, resmi bir anlatım tarzıyla yazılmış kapsamlı bir açıklama üret. Cevabın giriş cümlesi olarak okuyucuya hitap etme veya sohbet başlatma ifadeleri kullanma. Açıklaman aşağıdaki başlıkları içermeli: 
+            1. Tarihi Geçmiş 
+            2. Mimari Özellikler 
+            3. Kültürel Önemi 
+            4. İlgi Çekici Detaylar 
+            5. Pratik Bilgiler`
           }
         ],
         max_tokens: 2000,

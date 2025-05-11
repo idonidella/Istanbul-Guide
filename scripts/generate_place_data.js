@@ -44,7 +44,7 @@ const longitudeBounds = [28.5, 29.4]; // Boylam (Doğu-Batı)
 
 // Gerçek kategori listesi
 const categories = [
-  { id: 1, name: 'Köşkler / Vadi / Tepe' },
+  { id: 1, name: 'Köşkler / Vadi / Tepe / Parklar' },
   { id: 2, name: 'Camiler' },
   { id: 3, name: 'Kiliseler' },
   { id: 4, name: 'Şarküslalar ve Saraylar' },
