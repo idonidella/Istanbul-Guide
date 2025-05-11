@@ -36,6 +36,7 @@ const AttractionDetailScreen = ({ route, navigation }) => {
     const fetchAttraction = async () => {
       try {
         const data = await placeService.getPlaceById(attractionId, token);
+        console.log("data", data);  
         setAttraction(data);
         const favRes = await favoriteService.checkFavorite(attractionId, token);
         setIsFavorite(favRes.isFavorite);

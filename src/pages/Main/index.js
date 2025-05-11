@@ -14,15 +14,13 @@ const { width } = Dimensions.get('window');
 
 const sliderImages = [
   { id: '1', name: 'Ayasofya', source: require('../../assets/slider/ayasofya.jpg') },
-  { id: '2', name: 'Topkapı Sarayı', source: require('../../assets/slider/topkapisarayi.jpg') },
-  { id: '3', name: 'Galata Kulesi', source: require('../../assets/slider/galatakulesi.jpg') },
-  { id: '4', name: 'Sultanahmet Cami', source: require('../../assets/slider/sultanahmetcami.jpg') },
-  { id: '5', name: 'Dolmabahçe Sarayı', source: require('../../assets/slider/dolmabahcesarayi.jpg') },
-  { id: '6', name: 'Kız Kulesi', source: require('../../assets/slider/kizkulesi.jpg') },
-  { id: '7', name: 'Kapalı Çarşı', source: require('../../assets/slider/kapalicarsi.jpg') },
-  { id: '8', name: 'Yerebatan Sarnıcı', source: require('../../assets/slider/yerebatansarnaci.jpg') },
-  { id: '9', name: 'Taksim Meydanı', source: require('../../assets/slider/taksimmeydani.jpg') },
-  { id: '10', name: 'Pierre Loti Tepesi', source: require('../../assets/slider/pierrelotitepesi.jpg') },
+  { id: '1126', name: 'Topkapı Sarayı', source: require('../../assets/slider/topkapisarayi.jpg') },
+  { id: '1409', name: 'Galata Kulesi', source: require('../../assets/slider/galatakulesi.jpg') },
+  { id: '2', name: 'Sultanahmet Cami', source: require('../../assets/slider/sultanahmetcami.jpg') },
+  { id: '1127', name: 'Dolmabahçe Sarayı', source: require('../../assets/slider/dolmabahcesarayi.jpg') },
+  { id: '1962', name: 'Kapalı Çarşı', source: require('../../assets/slider/kapalicarsi.jpg') },
+  { id: '1411', name: 'Yerebatan Sarnıcı', source: require('../../assets/slider/yerebatansarnaci.jpg') },
+  { id: '1139', name: 'Taksim Meydanı', source: require('../../assets/slider/taksimmeydani.jpg') },
 ];
 
 const menuItems = [
