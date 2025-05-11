@@ -18,7 +18,7 @@ const imageMap = {
   'Ayasofya': require('../../../assets/slider/ayasofya.jpg'),
   'Topkapı Sarayı': require('../../../assets/slider/topkapisarayi.jpg'),
   'Galata Kulesi': require('../../../assets/slider/galatakulesi.jpg'),
-  'Sultanahmet Cami': require('../../../assets/slider/sultanahmetcami.jpg'),
+  'Sultanahmet Camii': require('../../../assets/slider/sultanahmetcami.jpg'),
   'Dolmabahçe Sarayı': require('../../../assets/slider/dolmabahcesarayi.jpg'),
   'Kız Kulesi': require('../../../assets/slider/kizkulesi.jpg'),
   'Kapalı Çarşı': require('../../../assets/slider/kapalicarsi.jpg'),

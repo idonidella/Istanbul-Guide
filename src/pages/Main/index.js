@@ -16,7 +16,7 @@ const sliderImages = [
   { id: '1', name: 'Ayasofya', source: require('../../assets/slider/ayasofya.jpg') },
   { id: '1126', name: 'Topkapı Sarayı', source: require('../../assets/slider/topkapisarayi.jpg') },
   { id: '1409', name: 'Galata Kulesi', source: require('../../assets/slider/galatakulesi.jpg') },
-  { id: '2', name: 'Sultanahmet Cami', source: require('../../assets/slider/sultanahmetcami.jpg') },
+  { id: '2', name: 'Sultanahmet Camii', source: require('../../assets/slider/sultanahmetcami.jpg') },
   { id: '1127', name: 'Dolmabahçe Sarayı', source: require('../../assets/slider/dolmabahcesarayi.jpg') },
   { id: '1962', name: 'Kapalı Çarşı', source: require('../../assets/slider/kapalicarsi.jpg') },
   { id: '1411', name: 'Yerebatan Sarnıcı', source: require('../../assets/slider/yerebatansarnaci.jpg') },

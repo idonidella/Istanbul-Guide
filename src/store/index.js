@@ -11,6 +11,7 @@ class authStore {
       lastname: '',
       email: '',
       token: '',
+      userId: '',
     },
   };
 
@@ -113,6 +114,7 @@ class authStore {
         lastname: '',
         email: '',
         token: '',
+        userId: '',
       };
     });
   }

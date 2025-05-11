@@ -20,16 +20,14 @@ const AttractionDetailScreen = ({ route, navigation }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const imageMap = {
-    'Ayasofya': require('../../../assets/slider/ayasofya.jpg'),
+    'Ayasofya Cami': require('../../../assets/slider/ayasofya.jpg'),
     'Topkapı Sarayı': require('../../../assets/slider/topkapisarayi.jpg'),
     'Galata Kulesi': require('../../../assets/slider/galatakulesi.jpg'),
-    'Sultanahmet Cami': require('../../../assets/slider/sultanahmetcami.jpg'),
+    'Sultanahmet Camii': require('../../../assets/slider/sultanahmetcami.jpg'),
     'Dolmabahçe Sarayı': require('../../../assets/slider/dolmabahcesarayi.jpg'),
-    'Kız Kulesi': require('../../../assets/slider/kizkulesi.jpg'),
-    'Kapalı Çarşı': require('../../../assets/slider/kapalicarsi.jpg'),
+    'Kapalı Çarşı (Grand Bazaar)': require('../../../assets/slider/kapalicarsi.jpg'),
     'Yerebatan Sarnıcı': require('../../../assets/slider/yerebatansarnaci.jpg'),
     'Taksim Meydanı': require('../../../assets/slider/taksimmeydani.jpg'),
-    'Pierre Loti Tepesi': require('../../../assets/slider/pierrelotitepesi.jpg'),
   };
 
   useEffect(() => {
@@ -95,7 +93,7 @@ const AttractionDetailScreen = ({ route, navigation }) => {
         </View>
         <View style={styles.mainImageContainer}>
           <Image
-            source={imageMap[attraction.name] || require('../../../assets/slider/ayasofya.jpg')}
+            source={imageMap[attraction.name] || require('../../../assets/slider/istanbultotal.jpg')}
             style={styles.mainImage}
             resizeMode="cover"
           />
