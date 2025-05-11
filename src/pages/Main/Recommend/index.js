@@ -67,11 +67,9 @@ export default class RecommendedPlaces extends Component {
       <Image source={require("../../../assets/slider/istanbul.jpg")} style={styles.image} />
       <View style={styles.overlay}>
         <Text style={styles.name}>{item.name}</Text>
-        {item.real_distance !== undefined && (
+        {item.distance !== undefined && (
           <Text style={styles.desc}>
-            Mesafe: {item.real_distance >= 1000
-              ? (item.real_distance / 1000).toFixed(2) + ' km'
-              : item.real_distance + ' m'}
+            Aranızdaki Mesafe: {item.distance.toFixed(2)} km
           </Text>
         )}
       </View>
@@ -181,8 +179,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 46,
     paddingBottom: 25,
-    paddingHorizontal: 16,
-    marginBottom: 20,
+    marginBottom: 8,
   },
   backButton: {
     justifyContent: 'center',
