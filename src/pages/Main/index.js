@@ -26,7 +26,7 @@ const sliderImages = [
 const menuItems = [
   { title: 'Favorileriniz', icon: require('../../assets/main/like.png') , navigate: 'Favorites-Screen'},
   { title: 'Senin için Önerilen', icon: require('../../assets/main/recommended.png'), navigate: 'Recommended-Places'},
-  { title: 'Harita', icon: require('../../assets/main/map.png'), navigate: 'Map-Page'},
+
   { title: 'Son Ziyaret Edilen Yerler', icon: require('../../assets/main/nearby.png') , navigate: 'Visited-Place'},
 ];
 
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     alignSelf: 'flex-start',
     marginLeft: 20,
-    marginTop: 25,
+    marginTop: 40,
     marginBottom: 15,
   },
   menuContainer: {
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 16,
     padding: 8,
-    marginVertical: 8,
+    marginVertical: 14,
     borderWidth: 3,
     borderColor: "white",
   },

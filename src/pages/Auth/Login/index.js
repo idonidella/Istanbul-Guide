@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, View, TextInput, TouchableOpacity, SafeAreaView, Image, Alert, ActivityIndicator } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authService } from '../../../networking/api';
 import AxiosInstance from '../../../networking/AxiosInstance';
 import store from '../../../store';
@@ -85,12 +84,11 @@ export default class LoginScreen extends Component {
                 onChangeText={(text) => this.setState({ password: text })}
               />
             </View>
-            <View style={styles.forgotPasswordContainer}>
+            {/* <View style={styles.forgotPasswordContainer}>
               <TouchableOpacity>
                 <Text style={styles.forgotPasswordText}>Şifremi Unuttum?</Text>
               </TouchableOpacity>
-            </View>
-
+            </View> */}
             <TouchableOpacity
               style={styles.loginButton}
               onPress={this.handleLogin}
@@ -179,6 +177,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 20,
+    marginTop: 45,
   },
   loginButtonText: {
     color: '#fff',
