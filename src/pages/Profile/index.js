@@ -58,28 +58,28 @@ export default class ProfileScreen extends Component {
             <View style={styles.menuCard}>
               <TouchableOpacity style={styles.menuCardInner} onPress={() => this.props.navigation.navigate('Profile-Settings-Screen')}>
                 <Text style={styles.infoIcon}>👤</Text>
-                <Text style={styles.infoText}>Profil Ayarları</Text>
+                <Text style={styles.infoText}>Profile Settings</Text>
                 <Text style={styles.arrowIcon}>›</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.menuCard}>
               <TouchableOpacity style={styles.menuCardInner} onPress={() => this.props.navigation.navigate('Help-Page')}>
                 <Text style={styles.infoIcon}>❓</Text>
-                <Text style={styles.infoText}>Yardım ve Destek</Text>
+                <Text style={styles.infoText}>Help and Support</Text>
                 <Text style={styles.arrowIcon}>›</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.menuCard}>
               <TouchableOpacity style={styles.menuCardInner}>
                 <Text style={styles.infoIcon}>📝</Text>
-                <Text style={styles.infoText}>Kullanım Şartları</Text>
+                <Text style={styles.infoText}>Terms of Service</Text>
                 <Text style={styles.arrowIcon}>›</Text>
               </TouchableOpacity>
             </View>
           </View>
           <View style={{ width: "85%", alignSelf: 'center' }}>
             <TouchableOpacity style={styles.editProfileButton} onPress={this.handleLogout}>
-              <Text style={styles.editProfileButtonText}>Çıkış Yap</Text>
+              <Text style={styles.editProfileButtonText}>Logout</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

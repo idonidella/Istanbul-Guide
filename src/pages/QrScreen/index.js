@@ -172,14 +172,14 @@ export default function QRCodeVisualScreen({ navigation }) {
                         style={styles.buttonIcon}
                         resizeMode="contain"
                       />
-                      <Text style={styles.scanButtonText}>QR Kodu Tara</Text>
+                      <Text style={styles.scanButtonText}>Scan QR Code</Text>
                     </>
                   )}
                 </LinearGradient>
               </TouchableOpacity>
               <Text style={styles.instructionText}>
-                Kameranızı QR kodun üzerine tutun.
-                QR kod tarandığında ilgili içerik otomatik olarak gösterilecektir.
+                Hold your camera over the QR code.
+                When the QR code is scanned, the relevant content will be displayed automatically.
               </Text>
             </LinearGradient>
           </View>
@@ -188,19 +188,19 @@ export default function QRCodeVisualScreen({ navigation }) {
               <View style={[styles.infoIcon, { backgroundColor: '#8E6CEF30' }]}>
                 <Text style={styles.infoIconText}>1</Text>
               </View>
-              <Text style={styles.infoText}>QR Tara butonuna basın</Text>
+              <Text style={styles.infoText}>Press the Scan QR button</Text>
             </View>
             <View style={styles.infoItem}>
               <View style={[styles.infoIcon, { backgroundColor: '#FF8C4230' }]}>
                 <Text style={styles.infoIconText}>2</Text>
               </View>
-              <Text style={styles.infoText}>Kamerayı QR kodun üzerine tutun</Text>
+              <Text style={styles.infoText}>Point the camera at the QR code</Text>
             </View>
             <View style={styles.infoItemFinal}>
               <View style={[styles.infoIcon, { backgroundColor: '#4ECB7130' }]}>
                 <Text style={styles.infoIconText}>3</Text>
               </View>
-              <Text style={styles.infoText}>Yapı hakkında bilgi alın</Text>
+              <Text style={styles.infoText}>Get information</Text>
             </View>
           </View>
         </LinearGradient>
@@ -225,7 +225,7 @@ export default function QRCodeVisualScreen({ navigation }) {
               onPress={() => setIsScanning(false)}
               activeOpacity={0.7}
             >
-              <Text style={styles.cancelButtonText}>İptal Et</Text>
+              <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </>

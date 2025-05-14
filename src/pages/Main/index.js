@@ -24,10 +24,10 @@ const sliderImages = [
 ];
 
 const menuItems = [
-  { title: 'Favorileriniz', icon: require('../../assets/main/like.png') , navigate: 'Favorites-Screen'},
-  { title: 'Senin için Önerilen', icon: require('../../assets/main/recommended.png'), navigate: 'Recommended-Places'},
+  { title: 'Your Favorites', icon: require('../../assets/main/like.png') , navigate: 'Favorites-Screen'},
+  { title: 'Recommended For You', icon: require('../../assets/main/recommended.png'), navigate: 'Recommended-Places'},
 
-  { title: 'Son Ziyaret Edilen Yerler', icon: require('../../assets/main/nearby.png') , navigate: 'Visited-Place'},
+  { title: 'Recently Visited Places', icon: require('../../assets/main/nearby.png') , navigate: 'Visited-Place'},
 ];
 
 const HomeScreen = ({ navigation }) => {
@@ -102,7 +102,7 @@ const HomeScreen = ({ navigation }) => {
             />
           ))}
         </View>
-        <Text style={styles.sectionTitle}>İstanbul'u Keşfet</Text>
+        <Text style={styles.sectionTitle}>Discover Istanbul</Text>
         <View style={styles.menuContainer}>
           {menuItems.map((item, index) => (
             <TouchableOpacity

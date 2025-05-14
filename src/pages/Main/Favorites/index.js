@@ -43,7 +43,7 @@ const UserFavorites = ({ navigation }) => {
             const data = await favoriteService.getFavorites(token);
             setFavorites(data);
         } catch (error) {
-            console.log("Favoriler alınamadı", error);
+            console.log("Favorites could not be fetched", error);
         } finally {
             setLoading(false);
         }
@@ -60,7 +60,7 @@ const UserFavorites = ({ navigation }) => {
             await favoriteService.removeFavorite(attractionId, token);
             fetchFavorites();
         } catch (error) {
-            Alert.alert('Hata', 'Favoriden çıkarılamadı');
+            Alert.alert('Error', 'Failed to remove favorite');
         }
     };
 
@@ -94,7 +94,7 @@ const UserFavorites = ({ navigation }) => {
                 <TouchableOpacity style={styles.backButton} onPress={goBack}>
                     <Image source={require("../../../assets/global/goBack.png")} style={{ width: 30, height: 30 }} />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>Favoriler</Text>
+                <Text style={styles.headerTitle}>Favorites</Text>
             </View>
 
             <View style={styles.searchContainer}>
@@ -102,7 +102,7 @@ const UserFavorites = ({ navigation }) => {
                     <Text style={styles.searchIcon}>🔍</Text>
                     <TextInput
                         style={styles.searchInput}
-                        placeholder="Ne arıyorsunuz?"
+                        placeholder="What are you looking for?"
                         placeholderTextColor="#888"
                         value={searchQuery}
                         onChangeText={setSearchQuery}
@@ -115,7 +115,7 @@ const UserFavorites = ({ navigation }) => {
             ) : filteredFavorites.length === 0 ? (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
                     <Text style={{ fontSize: 16, color: '#444', textAlign: 'center', marginBottom: 12 }}>
-                        Henüz favoriye eklemediniz.
+                        You have not added any favorites yet.
                     </Text>
                     <TouchableOpacity
                         onPress={fetchFavorites}
@@ -126,7 +126,7 @@ const UserFavorites = ({ navigation }) => {
                             borderRadius: 20,
                         }}
                     >
-                        <Text style={{ color: '#FFF', fontWeight: 'bold' }}>Yeniden Yükle</Text>
+                        <Text style={{ color: '#FFF', fontWeight: 'bold' }}>Reload</Text>
                     </TouchableOpacity>
                 </View>
             ) : (

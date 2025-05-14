@@ -77,7 +77,7 @@ export default function VisitedPlace({ navigation }) {
         <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.desc} numberOfLines={2}>{item.description}</Text>
         <View style={styles.detailButton}>
-          <Text style={styles.detailButtonText}>Detay Gör</Text>
+          <Text style={styles.detailButtonText}>View Details</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -85,7 +85,7 @@ export default function VisitedPlace({ navigation }) {
 
   const EmptyListComponent = () => (
     <View style={styles.emptyContainer}>
-      <Text style={styles.emptyText}>Henüz ziyaret edilen yer bulunmamaktadır.</Text>
+      <Text style={styles.emptyText}>No visited places found.</Text>
     </View>
   );
 
@@ -96,7 +96,7 @@ export default function VisitedPlace({ navigation }) {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Image source={require("../../../assets/global/goBack.png")} style={{ width: 30, height: 30 }} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Son Ziyaret Edilen Yerler</Text>
+        <Text style={styles.headerTitle}>Visited Places</Text>
       </View>
       {loading ? (
         <View style={styles.loadingContainer}>

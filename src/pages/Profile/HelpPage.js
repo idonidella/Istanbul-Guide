@@ -20,61 +20,61 @@ export default function HelpPage({ navigation }) {
 
     const helpSections = [
         {
-            title: 'QR Kod Tarama',
+            title: 'QR Code Scanning',
             items: [
                 {
-                    title: 'QR Kod Nasıl Taranır?',
-                    content: 'Uygulamanın ana menüsünden "QR Tara" butonuna tıklayın. Kameranız açılacaktır. İstanbul\'daki tarihi yapıların yanında bulunan QR kodları kameranızın görüş alanına getirerek taratın. QR kod başarıyla tarandığında, yapı hakkında detaylı bilgiler ekranınıza gelecektir.',
+                    title: 'How to Scan a QR Code?',
+                    content: 'Click the "Scan QR Code" button in the main menu. Your camera will open. Hold the QR code near the historical structures in Istanbul in your camera\'s viewfinder. When the QR code is successfully scanned, detailed information about the structure will appear on your screen.',
                     icon: 'qr-code',
                 },
                 {
-                    title: 'Tarama Sorunları',
-                    content: 'QR kodu taramakta sorun yaşıyorsanız:\n\n• Kameranızın temiz olduğundan emin olun\n• Yeterli ışık olduğundan emin olun\n• QR kodun tamamının kamera çerçevesinde olduğundan emin olun\n• Telefonu QR koda yaklaştırın veya uzaklaştırın\n• Kamera izinlerinin açık olduğunu kontrol edin',
+                    title: 'Scanning Problems',
+                    content: 'If you are having trouble scanning a QR code:\n\n• Ensure your camera is clean\n• Make sure there is enough light\n• Ensure the QR code is fully within your camera\'s viewfinder\n• Move your phone closer or farther from the QR code\n• Check that your camera permissions are enabled',
                     icon: 'error',
                 },
             ],
         },
         {
-            title: 'Gezdiğim Yerler',
+            title: 'Visited Places',
             items: [
                 {
-                    title: 'Gezdiğim Yerleri Nasıl Görebilirim?',
-                    content: 'Ana menüden "Gezilerim" bölümüne giderek daha önce ziyaret ettiğiniz ve QR kodunu taradığınız tüm tarihi yapıları görebilirsiniz. Bu bölümde gezdiğiniz yerler, ziyaret tarihi ve her yapıya ait kısa bilgilere ulaşabilirsiniz.',
+                    title: 'How to See My Visited Places?',
+                    content: 'Go to the "Visited Places" section in the main menu to see all the historical structures you have visited and scanned the QR code for. In this section, you can see your visits, visit dates, and brief information about each structure.',
                     icon: 'history',
                 },
                 {
-                    title: 'Ziyaret Kaydı Oluşturma',
-                    content: 'Ziyaret kayıtlarınız otomatik olarak oluşturulur. Bir tarihi yapının QR kodunu taradığınızda, bu yapı otomatik olarak gezdiğiniz yerler listesine eklenir. Böylece İstanbul\'da keşfettiğiniz tüm mekânların kaydı tutulur.',
+                    title: 'Creating a Visit Record',
+                    content: 'Your visit records are automatically created. When you scan the QR code of a historical structure, it is automatically added to the list of places you have visited. This way, all the places you have discovered in Istanbul are recorded.',
                     icon: 'bookmark',
                 },
             ],
         },
         {
-            title: 'Öneriler ve Bildirimler',
+            title: 'Recommendations and Notifications',
             items: [
                 {
-                    title: 'Öneriler Nasıl Çalışır?',
-                    content: 'Uygulamamız, daha önce ziyaret ettiğiniz yerlere benzer tarihi yapıları size önerir. Örneğin, bir camii ziyaret ettiyseniz, yakındaki diğer camileri veya benzer mimari eserleri keşfetmeniz için öneriler sunulur. Böylece ilgi alanlarınıza göre şehri keşfedebilirsiniz.',
+                    title: 'How do Recommendations Work?',
+                    content: 'Our app recommends historical structures similar to the ones you have visited before. For example, if you have visited a mosque, you will be recommended other mosques or similar architectural works in your area. This way, you can discover the city based on your interests.',
                     icon: 'lightbulb',
                 },
                 {
-                    title: 'Yakındaki Yerler Bildirimleri',
-                    content: 'Uygulama, konumunuza yakın ilgi çekebilecek yapılar olduğunda size bildirim gönderir. Daha önce ziyaret ettiğiniz ve beğendiğiniz yerlere benzer yapılar yakınınızda olduğunda haberdar olursunuz. Bildirimleri almak için konum izinlerinin açık olduğundan emin olun.',
+                    title: 'Nearby Places Notifications',
+                    content: 'Our app sends you notifications when there are historical structures that might interest you nearby. When you have visited and liked a place before, you will be notified if similar structures are nearby. Make sure your location permissions are enabled to receive notifications.',
                     icon: 'notifications',
                 },
             ],
         },
         {
-            title: 'Hesap ve Gizlilik',
+            title: 'Account and Privacy',
             items: [
                 {
-                    title: 'Konum İzinleri',
-                    content: 'Uygulamamız size yakındaki tarihi yapıları önerebilmek için konum bilginizi kullanır. Konum izinlerini telefon ayarlarınızdan veya uygulama içi ayarlar bölümünden yönetebilirsiniz. Konum bilginiz yalnızca size özel öneriler sunmak için kullanılır ve üçüncü taraflarla paylaşılmaz.',
+                    title: 'Location Permissions',
+                    content: 'Our app uses your location information to provide you with recommendations of historical structures nearby. You can manage your location permissions in your phone settings or in the app settings. Your location information is only used to provide you with personalized recommendations and is not shared with third parties.',
                     icon: 'location',
                 },
                 {
-                    title: 'Hesap Bilgilerim',
-                    content: 'Hesap bilgilerinizi \"Profil\" sekmesinden görüntüleyebilir ve düzenleyebilirsiniz. Şifrenizi değiştirmek, profil fotoğrafınızı güncellemek veya e-posta adresinizi değiştirmek için bu bölümü kullanabilirsiniz.',
+                    title: 'Account Information',
+                    content: 'You can view and edit your account information from the "Profile" tab. You can change your password, update your profile picture, or change your email address using this section.',
                     icon: 'person',
                 },
             ],
@@ -106,8 +106,8 @@ export default function HelpPage({ navigation }) {
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor="#2A2438" />
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>Yardım ve Destek</Text>
-                <Text style={styles.headerSubtitle}>İstanbul'u keşfetmenize yardımcı olalım</Text>
+                <Text style={styles.headerTitle}>Help and Support</Text>
+                <Text style={styles.headerSubtitle}>Let us help you discover Istanbul</Text>
             </View>
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                 {helpSections.map((section, sectionIndex) => (
@@ -118,12 +118,12 @@ export default function HelpPage({ navigation }) {
                     </View>
                 ))}
                 <View style={styles.additionalHelp}>
-                    <Text style={styles.additionalHelpTitle}>Uygulama Hakkında</Text>
+                    <Text style={styles.additionalHelpTitle}>About the Application</Text>
                     <Text style={styles.additionalHelpText}>
-                        Bu uygulama, İstanbul'daki tarihi ve kültürel yapıları keşfetmenizi kolaylaştırmak için tasarlandı. QR kodları tarayarak yapılar hakkında bilgi edinebilir, ziyaret ettiğiniz yerlerin kaydını tutabilir ve ilgi alanınıza göre yeni keşifler yapabilirsiniz.
+                        This application is designed to help you discover historical and cultural structures in Istanbul. You can scan QR codes to learn about the structures, record your visits, and make new discoveries based on your interests.
                     </Text>
                     <TouchableOpacity style={styles.contactButton} activeOpacity={0.8}>
-                        <Text style={styles.contactButtonText}>İletişime Geçin</Text>
+                        <Text style={styles.contactButtonText}>Contact Us</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -152,7 +152,7 @@ export default function HelpPage({ navigation }) {
                             style={styles.modalButton}
                             onPress={() => setModalVisible(false)}
                         >
-                            <Text style={styles.modalButtonText}>Anladım</Text>
+                            <Text style={styles.modalButtonText}>I understand</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
         fontSize: 28,
         fontWeight: 'bold',
         color: '#FFFFFF',
-        marginBottom: 8,
+        marginVertical:12,
     },
     headerSubtitle: {
         fontSize: 16,

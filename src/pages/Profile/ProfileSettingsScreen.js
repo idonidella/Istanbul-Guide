@@ -65,13 +65,13 @@ const ProfileSettingsScreen = ({ navigation }) => {
         style={styles.keyboardAvoid}
       >
         <View style={styles.header}>
-          <Text style={styles.title}>Profil Ayarları</Text>
-          <Text style={styles.subtitle}>Bilgilerinizi güncelleyebilirsiniz</Text>
+          <Text style={styles.title}>Profile Settings</Text>
+          <Text style={styles.subtitle}>Update your information</Text>
         </View>
         
         <View style={styles.formContainer}>
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Adınız</Text>
+            <Text style={styles.label}>Name</Text>
             <TextInput
               style={styles.input}
               value={firstname}
@@ -83,7 +83,7 @@ const ProfileSettingsScreen = ({ navigation }) => {
           </View>
           
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Soyadınız</Text>
+            <Text style={styles.label}>Surname</Text>
             <TextInput
               style={styles.input}
               value={lastname}
@@ -105,7 +105,7 @@ const ProfileSettingsScreen = ({ navigation }) => {
             {loading ? (
               <ActivityIndicator color="#FFFFFF" size="small" />
             ) : (
-              <Text style={styles.buttonText}>Kaydet</Text>
+              <Text style={styles.buttonText}>Save</Text>
             )}
           </TouchableOpacity>
           
@@ -115,7 +115,7 @@ const ProfileSettingsScreen = ({ navigation }) => {
             disabled={loading}
             activeOpacity={0.8}
           >
-            <Text style={styles.buttonOutlineText}>Geri Dön</Text>
+            <Text style={styles.buttonOutlineText}>Back</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

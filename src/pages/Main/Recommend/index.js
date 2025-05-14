@@ -44,13 +44,13 @@ export default class RecommendedPlaces extends Component {
           id: item.place_id
         }));
       } else {
-        console.error('Beklenmeyen response:', response);
+        console.log('Unexpected response:', response);
       }
 
       console.log('Öneriler:', mappedResponse);
       this.setState({ recommendations: mappedResponse, loading: false });
     } catch (error) {
-      console.error('Öneriler alınamadı:', error);
+      console.log('Recommendations could not be fetched:', error);
       this.setState({ loading: false });
     }
   }
@@ -69,7 +69,7 @@ export default class RecommendedPlaces extends Component {
         <Text style={styles.name}>{item.name}</Text>
         {item.distance !== undefined && (
           <Text style={styles.desc}>
-            Aranızdaki Mesafe: {item.distance.toFixed(2)} km
+            Distance: {item.distance.toFixed(2)} km
           </Text>
         )}
       </View>
@@ -136,12 +136,12 @@ export default class RecommendedPlaces extends Component {
           <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigation.goBack()}>
             <Image source={require("../../../assets/global/goBack.png")} style={{ width: 30, height: 30 }} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Senin İçin Önerilen</Text>
+          <Text style={styles.headerTitle}>Recommended for you</Text>
         </View>
         {this.state.loading ? (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#FFFFFF" />
-            <Text style={styles.loadingText}>Öneriler yükleniyor...</Text>
+            <Text style={styles.loadingText}>Loading recommendations...</Text>
           </View>
         ) : this.state.recommendations.length > 0 ? (
           <FlatList
@@ -153,7 +153,7 @@ export default class RecommendedPlaces extends Component {
           />
         ) : (
           <View style={styles.loadingContainer}>
-            <Text style={styles.loadingText}>Henüz senin için önerilen yer bulunamadı</Text>
+            <Text style={styles.loadingText}>No recommendations found for you</Text>
           </View>
         )}
       </SafeAreaView>
@@ -185,10 +185,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
+    marginTop: 12,
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: 'bold',
+    marginTop: 12,
     color: '#FFFFFF',
   },
   list: {

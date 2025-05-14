@@ -86,7 +86,7 @@ const AttractionDetailScreen = ({ route, navigation }) => {
           <TouchableOpacity style={styles.backButton} onPress={goBack}>
             <Image source={require("../../../assets/global/goBack.png")} style={{ width: 30, height: 30 }} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Geri</Text>
+          <Text style={styles.headerTitle}>Back</Text>
           <TouchableOpacity style={styles.favoriteButton} onPress={toggleFavorite}>
             <Text style={styles.favoriteEmoji}>{isFavorite ? '❤️' : '🤍'}</Text>
           </TouchableOpacity>
