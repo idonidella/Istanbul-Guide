@@ -70,22 +70,22 @@ exports.getPlaceById = async (req, res) => {
         messages: [
           {
             role: "system",
-            content: `Sen İstanbul'un tarihi ve kültürel mirası konusunda uzman bir tarihçi ve turizm rehberisin. 
-            Verilen mekanlar hakkında şu başlıklar altında detaylı bilgiler vermelisin:
-            1. Tarihi Geçmiş: Yapının/mekanın kuruluş tarihi, kim tarafından yapıldığı, tarih boyunca geçirdiği önemli değişiklikler
-            2. Mimari Özellikler: Yapının boyutları, kullanılan malzemeler, mimari tarzı, öne çıkan mimari detayları
-            3. Kültürel Önemi: Toplum için önemi, dini veya kültürel değeri, geçmişten günümüze toplumsal rolü
-            4. İlgi Çekici Detaylar: Az bilinen özellikler, ilginç hikayeler, efsaneler
-            5. Pratik Bilgiler: Ziyaret için en uygun zamanlar, dikkat edilmesi gereken kurallar, yakınındaki diğer önemli mekanlar`
+            content: `You are an expert historian and tourism guide in the history and culture of Istanbul. 
+            You should provide detailed information under the following headings for the given places:
+            1. Historical Background: The establishment date of the building/place, who built it, and important changes it has undergone over time
+            2. Architectural Features: The size, materials used, architectural style, and notable architectural details
+            3. Cultural Significance: The importance to the community, its religious or cultural value, and its social role over time
+            4. Interesting Facts: Unknown features, interesting stories, legends
+            5. Practical Information: The best times to visit, important rules to follow, other important places nearby`
           },
           {
             role: "user",
-            content: `İstanbul'daki ${rows[0].name} hakkında doğrudan bilgi veren, resmi bir anlatım tarzıyla yazılmış kapsamlı bir açıklama üret. Cevabın giriş cümlesi olarak sohbet başlatma ifadeleri kullanma. Açıklamanı direkt olarak aşağıdaki başlıklarla başlayarak devam ettir: 
-            I. Tarihi Geçmiş 
-            II. Mimari Özellikler 
-            III. Kültürel Önemi 
-            IV. İlgi Çekici Detaylar 
-            V. Pratik Bilgiler`
+            content: `Generate a comprehensive description written in a formal and informative tone, providing direct information about ${rows[0].name} located in Istanbul. Do not begin your response with conversational phrases. Instead, proceed directly with the following section headings:
+            I. Historical Background
+            II. Architectural Features
+            III. Cultural Significance
+            IV. Interesting Facts
+            V. Practical information`
           }
         ],
         max_tokens: 2000,
