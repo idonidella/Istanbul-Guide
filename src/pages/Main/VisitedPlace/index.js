@@ -24,7 +24,6 @@ const imageMap = {
   'Kapalı Çarşı': require('../../../assets/slider/kapalicarsi.jpg'),
   'Yerebatan Sarnıcı': require('../../../assets/slider/yerebatansarnaci.jpg'),
   'Taksim Meydanı': require('../../../assets/slider/taksimmeydani.jpg'),
-  'Pierre Loti Tepesi': require('../../../assets/slider/pierrelotitepesi.jpg'),
 };
 
 export default function VisitedPlace({ navigation }) {
@@ -68,7 +67,7 @@ export default function VisitedPlace({ navigation }) {
       activeOpacity={0.9}
     >
       <Image
-        source={imageMap[item.name] || imageMap['Ayasofya']}
+        source={imageMap[item.name] || require('../../../assets/slider/istanbul.jpg')}
         style={styles.image}
         resizeMode="cover"
       />
