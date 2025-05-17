@@ -34,7 +34,7 @@ class IstanbulMLRecommender:
         self._center_lat = 41.0082
         self._center_lon = 28.9784
         self.db_connection = None
-        
+        self.init_reference_ids()
         self.reference_user_id = 0
         self.reference_place_id = 0
         self.reference_visit_id = 0
