@@ -39,8 +39,8 @@ const AttractionDetailScreen = ({ route, navigation }) => {
         const favRes = await favoriteService.checkFavorite(attractionId, token);
         setIsFavorite(favRes.isFavorite);
       } catch (error) {
-        console.warn("Yer bilgisi alınamadı", error);
-        Alert.alert('Hata', 'Yer bilgisi alınamadı.');
+        console.warn("Place information not found", error);
+        Alert.alert('Error', 'Place information not found.');
       }
     };
     fetchAttraction();
@@ -62,9 +62,9 @@ const AttractionDetailScreen = ({ route, navigation }) => {
       console.log("Token favori:", token);
       const response = await favoriteService.toggleFavorite(attractionId, token);
       setIsFavorite(response.isFavorite);
-      Alert.alert('Bilgi', response.message);
+      Alert.alert('Info', response.message);
     } catch (error) {
-      Alert.alert('Hata', 'Favori işlemi yapılamadı.');
+      Alert.alert('Error', 'Favorite operation failed.');
     }
   };
 
@@ -73,7 +73,7 @@ const AttractionDetailScreen = ({ route, navigation }) => {
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={{ marginTop: 50, alignItems: 'center' }}>
-          <Text style={{ color: '#fff', fontSize: 16 }}>Yükleniyor...</Text>
+          <Text style={{ color: '#fff', fontSize: 16 }}>Loading...</Text>
         </View>
       </SafeAreaView>
     );
@@ -108,7 +108,7 @@ const AttractionDetailScreen = ({ route, navigation }) => {
           <TouchableOpacity style={styles.infoItem} onPress={openMap}>
             <Text style={styles.infoIcon}>📍</Text>
             <Text style={styles.infoText}>
-              Konum: {attraction.latitude}, {attraction.longitude}
+              Location: {attraction.latitude}, {attraction.longitude}
             </Text>
           </TouchableOpacity>
         </View>

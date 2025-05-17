@@ -29,8 +29,8 @@ export default class ProfileScreen extends Component {
       await store.userDeleteOrOut();
       this.props.navigation.replace('Login-Page');
     } catch (error) {
-      console.error('Çıkış yaparken hata oluştu:', error);
-      Alert.alert('Hata', 'Çıkış yapılırken bir sorun oluştu');
+      console.error('Error logging out:', error);
+      Alert.alert('Error', 'An error occurred while logging out');
     }
   };
 

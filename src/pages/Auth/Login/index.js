@@ -15,12 +15,12 @@ export default class LoginScreen extends Component {
   handleLogin = async () => {
     const { email, password } = this.state;
     if (!email || !password) {
-      Alert.alert('Hata', 'Lütfen e-posta ve şifrenizi girin');
+      Alert.alert('Error', 'Please enter your email and password');
       return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      Alert.alert('Hata', 'Geçerli bir e-posta adresi girin');
+      Alert.alert('Error', 'Please enter a valid email address');
       return;
     }
     this.setState({ loading: true });
@@ -37,7 +37,7 @@ export default class LoginScreen extends Component {
       this.setState({ loading: false });
       console.log('Error SELAM:',);
       console.log('Registering user with data:', AxiosInstance);
-      Alert.alert('Giriş Hatası', error.message);
+      Alert.alert('Login Error', error.message);
     }
   }
 
@@ -58,12 +58,12 @@ export default class LoginScreen extends Component {
                 resizeMode="contain"
               />
             </View>
-            <Text style={styles.headerText}>Giriş Yap</Text>
-            <Text style={styles.inputLabel}>E-Posta Adresi</Text>
+            <Text style={styles.headerText}>Sign In</Text>
+            <Text style={styles.inputLabel}>Email Address</Text>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="E-Posta Adresi"
+                placeholder="Email Address"
                 placeholderTextColor="#999"
                 keyboardType="email-address"
                 autoCapitalize="none"
@@ -72,12 +72,12 @@ export default class LoginScreen extends Component {
               />
             </View>
             <View style={{ marginTop: 13 }}>
-              <Text style={styles.inputLabel}>Şifre</Text>
+              <Text style={styles.inputLabel}>Password</Text>
             </View>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Şifre"
+                placeholder="Password"
                 placeholderTextColor="#999"
                 secureTextEntry={!this.state.showPassword}
                 value={this.state.password}
@@ -86,7 +86,7 @@ export default class LoginScreen extends Component {
             </View>
             {/* <View style={styles.forgotPasswordContainer}>
               <TouchableOpacity>
-                <Text style={styles.forgotPasswordText}>Şifremi Unuttum?</Text>
+                <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
               </TouchableOpacity>
             </View> */}
             <TouchableOpacity
@@ -97,15 +97,15 @@ export default class LoginScreen extends Component {
               {loading ? (
                 <ActivityIndicator color="#fff" />
               ) : (
-                <Text style={styles.loginButtonText}>Giriş Yap</Text>
+                <Text style={styles.loginButtonText}>Sign In</Text>
               )}
             </TouchableOpacity>
 
 
             <View style={styles.signupContainer}>
-              <Text style={styles.noAccountText}>Hesabınız yok mu? </Text>
+              <Text style={styles.noAccountText}>Don't have an account? </Text>
               <TouchableOpacity onPress={() => this.props.navigation.navigate('Register-Page')}>
-                <Text style={styles.signupText}>Kayıt Ol</Text>
+                <Text style={styles.signupText}>Register</Text>
               </TouchableOpacity>
             </View>
           </View>

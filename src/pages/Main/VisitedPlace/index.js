@@ -41,7 +41,7 @@ export default function VisitedPlace({ navigation }) {
       });
       setVisited(response.data);
     } catch (err) {
-      console.log('Ziyaret edilen yer yok', err);
+      console.log('Visited place not found', err);
     } finally {
       setLoading(false);
     }

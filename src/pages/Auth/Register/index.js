@@ -20,19 +20,19 @@ export default class RegisterScreen extends Component {
     const { firstname, lastname, email, password, confirmPassword } = this.state;
     // Form validasyonu
     if (!firstname || !lastname || !email || !password || !confirmPassword) {
-      Alert.alert('Hata', 'Lütfen tüm alanları doldurun');
+      Alert.alert('Error', 'Please fill in all fields');
       this.setState({ loading: false });
       return;
     }
     if (password !== confirmPassword) {
-      Alert.alert('Hata', 'Şifreler eşleşmiyor');
+      Alert.alert('Error', 'Passwords do not match');
       this.setState({ loading: false });
       return;
     }
     // Email formatı kontrolü
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      Alert.alert('Hata', 'Geçerli bir e-posta adresi girin');
+      Alert.alert('Error', 'Please enter a valid email address');
       return;
     }
     try {
@@ -47,13 +47,13 @@ export default class RegisterScreen extends Component {
       console.log("efe register", response.data.data);
       await store.signIn(response.data.data);
       Alert.alert(
-        'Başarılı',
-        'Hesabınız başarıyla oluşturuldu. Şimdi giriş yapabilirsiniz.',
-        [{ text: 'Tamam', onPress: () => this.props.navigation.navigate('Login-Page') }]
+        'Success',
+        'Your account has been created successfully. You can now sign in.',
+        [{ text: 'OK', onPress: () => this.props.navigation.navigate('Login-Page') }]
       );
     } catch (error) {
       this.setState({ loading: false });
-      Alert.alert('Kayıt Hatası', error.message);
+      Alert.alert('Registration Error', error.message);
     }
   }
 
@@ -64,19 +64,19 @@ export default class RegisterScreen extends Component {
       <View style={styles.backgroundContainer}>
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.container}>
-            <Text style={styles.headerText}>Kayıt ol</Text>
-            <Text style={styles.inputLabel}>Ad</Text>
+            <Text style={styles.headerText}>Register</Text>
+            <Text style={styles.inputLabel}>First Name</Text>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Adınızı girin"
+                placeholder="First Name"
                 placeholderTextColor="#999"
                 autoCapitalize="words"
                 value={this.state.name}
                 onChangeText={(text) => this.setState({ firstname: text })}
               />
             </View>
-            <Text style={styles.inputLabel}>Soyad</Text>
+            <Text style={styles.inputLabel}>Last Name</Text>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
@@ -89,11 +89,11 @@ export default class RegisterScreen extends Component {
             </View>
 
             {/* Email Input */}
-            <Text style={styles.inputLabel}>E-posta</Text>
+            <Text style={styles.inputLabel}>Email</Text>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="E-posta adresinizi girin"
+                placeholder="Enter your email"
                 placeholderTextColor="#999"
                 keyboardType="email-address"
                 autoCapitalize="none"
@@ -103,7 +103,7 @@ export default class RegisterScreen extends Component {
             </View>
 
             {/* Password Input */}
-            <Text style={styles.inputLabel}>Şifre</Text>
+            <Text style={styles.inputLabel}>Password</Text>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
@@ -116,11 +116,11 @@ export default class RegisterScreen extends Component {
             </View>
 
             {/* Confirm Password Input */}
-            <Text style={styles.inputLabel}>Şifre Tekrar</Text>
+            <Text style={styles.inputLabel}>Repeat Password</Text>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Şifrenizi tekrar girin"
+                placeholder="Repeat Password"
                 placeholderTextColor="#999"
                 secureTextEntry={!this.state.showConfirmPassword}
                 value={this.state.confirmPassword}
@@ -137,15 +137,15 @@ export default class RegisterScreen extends Component {
               {loading ? (
                 <ActivityIndicator color="#fff" />
               ) : (
-                <Text style={styles.registerButtonText}>Hesap Oluştur</Text>
+                <Text style={styles.registerButtonText}>Create Account</Text>
               )}
             </TouchableOpacity>
 
             {/* Login Option */}
             <View style={styles.loginContainer}>
-              <Text style={styles.haveAccountText}>Zaten hesabınız var mı? </Text>
+              <Text style={styles.haveAccountText}>Already have an account? </Text>
               <TouchableOpacity onPress={() => this.props.navigation.navigate('Login-Page')}>
-                <Text style={styles.loginText}>Giriş Yap</Text>
+                <Text style={styles.loginText}>Sign In</Text>
               </TouchableOpacity>
             </View>
           </View>

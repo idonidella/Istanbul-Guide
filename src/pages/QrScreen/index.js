@@ -20,7 +20,6 @@ import {
 import AxiosInstance from '../../networking/AxiosInstance';
 import store from '../../store';
 import Headers from '../../components/Headers';
-import { isEmulatorSync } from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
 
 const { width } = Dimensions.get('window');
@@ -47,8 +46,8 @@ export default function QRCodeVisualScreen({ navigation }) {
         const permission = await Camera.requestCameraPermission();
         setHasPermission(permission === "granted");
       } catch (error) {
-        console.error("Kamera izni alınamadı:", error);
-        Alert.alert("HATA", "Kamera izni alınamadı");
+        console.error("Camera permission not granted:", error);
+        Alert.alert("Error", "Camera permission not granted");
       }
     };
     requestCameraPermission();
@@ -77,16 +76,16 @@ export default function QRCodeVisualScreen({ navigation }) {
         navigation.navigate('Top-Turizm-Areas', { attractionId: place.id });
       } else {
         Alert.alert(
-          'Geçersiz QR',
-          'Bu QR kod bir yapıyla eşleşmiyor.',
-          [{ text: 'Tamam', style: 'default' }]
+          'Invalid QR',
+          'This QR code does not match a place.',
+          [{ text: 'OK', style: 'default' }]
         );
       }
     } catch (error) {
-      console.error('QR kod ile yapı getirme hatası:', error);
+      console.error('Error fetching place with QR code:', error);
       Alert.alert(
-        'İşlem Başarısız',
-        'QR kod okunamadı veya sunucu yanıt vermiyor. Lütfen tekrar deneyin.',
+        'Operation Failed',
+        'QR code cannot be read or the server is not responding. Please try again.',
         [{ text: 'Tamam', style: 'default' }]
       );
     } finally {
