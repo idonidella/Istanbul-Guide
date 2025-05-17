@@ -37,7 +37,6 @@ class IstanbulMLRecommender:
         self.reference_user_id = 0
         self.reference_place_id = 0
         self.reference_visit_id = 0
-        self.init_reference_ids()
         self.last_user_id = self.read_last_id('last_user_id.txt')
         self.last_place_id = self.read_last_id('last_place_id.txt')
         self.last_visit_id = self.read_last_id('last_visit_id.txt')
@@ -50,29 +49,6 @@ class IstanbulMLRecommender:
             password=os.getenv('DB_PASSWORD', ''),
             database=os.getenv('DB_NAME', 'istanbul_guide')
         )
-
-    def init_reference_ids(self):
-        if self.db_connection is None:
-            self.connect_to_database()
-        cursor = self.db_connection.cursor(dictionary=True)
-        
-        # model_metadata tablosundan son id'leri al
-        cursor.execute("""
-            SELECT last_user_id, last_place_id, last_visit_id 
-            FROM model_metadata 
-            ORDER BY id DESC LIMIT 1
-        """)
-        result = cursor.fetchone()
-        
-        if result:
-            self.reference_user_id = result['last_user_id']
-            self.reference_place_id = result['last_place_id']
-            self.reference_visit_id = result['last_visit_id']
-        else:
-            # Eğer tablo boşsa, mevcut max id'leri al ve kaydet
-            self.update_reference_ids()
-        
-        cursor.close()
 
     def update_reference_ids(self):
         if self.db_connection is None:
