@@ -61,15 +61,25 @@ exports.signOut = async (req, res) => {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(400).json({ message: 'Token bulunamadı' });
     }
+
     const token = authHeader.split(' ')[1];
-    await db.execute('INSERT INTO revoked_tokens (token) VALUES (?)', [token]);
+
+    const userId = req.user.userId;
+
+    await db.execute(
+      'INSERT INTO revoked_tokens (token, userId, revokedAt) VALUES (?, ?, NOW())',
+      [token, userId]
+    );
+
     console.log('Token iptal edildi ÇIKIŞ YAPILDI:', token);
     res.status(200).json({ message: 'Oturum başarıyla sonlandırıldı' });
+
   } catch (error) {
     console.error('Sign out hatası:', error);
     res.status(500).json({ message: 'Sunucu hatası oluştu' });
   }
 };
+
 
 //uygulama otomatik "beni hatırla" isteği için 
 exports.checkSession = async (req, res) => {
@@ -89,7 +99,8 @@ exports.checkSession = async (req, res) => {
         userId: user.id,
         firstname: user.firstname,
         lastname: user.lastname,
-        email: user.email
+        email: user.email,
+        token: token
       }
     });
   } catch (error) {
@@ -104,16 +115,13 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Basit validasyon
     if (!email || !password) {
       return res.status(400).json({ message: 'Email ve şifre gereklidir' });
     }
-    // Kullanıcıyı e-posta ile bul
     const user = await User.findByEmail(email);
     if (!user) {
       return res.status(401).json({ message: 'Email veya şifre yanlış. Lütfen hesap bilgilerinizi kontrol edip tekrar deneyin' });
     }
-    // Şifreyi kontrol et
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Geçersiz kimlik bilgileri' });
