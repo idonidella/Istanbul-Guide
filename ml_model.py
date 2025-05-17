@@ -34,10 +34,6 @@ class IstanbulMLRecommender:
         self._center_lat = 41.0082
         self._center_lon = 28.9784
         self.db_connection = None
-        self.init_reference_ids()
-        self.reference_user_id = 0
-        self.reference_place_id = 0
-        self.reference_visit_id = 0
         self.last_user_id = self.read_last_id('last_user_id.txt')
         self.last_place_id = self.read_last_id('last_place_id.txt')
         self.last_visit_id = self.read_last_id('last_visit_id.txt')
@@ -51,28 +47,7 @@ class IstanbulMLRecommender:
             password=os.getenv('DB_PASSWORD', ''),
             database=os.getenv('DB_NAME', 'istanbul_guide')
         )
-    def init_reference_ids(self):
-        if self.db_connection is None:
-            self.connect_to_database()
-        cursor = self.db_connection.cursor(dictionary=True)
-        
-        # model_metadata tablosundan son id'leri al
-        cursor.execute("""
-            SELECT last_user_id, last_place_id, last_visit_id 
-            FROM model_metadata 
-            ORDER BY id DESC LIMIT 1
-        """)
-        result = cursor.fetchone()
-        
-        if result:
-            self.reference_user_id = result['last_user_id']
-            self.reference_place_id = result['last_place_id']
-            self.reference_visit_id = result['last_visit_id']
-        else:
-            # Eğer tablo boşsa, mevcut max id'leri al ve kaydet
-            self.update_reference_ids()
-        
-        cursor.close()
+    
 
     def update_reference_ids(self):
         if self.db_connection is None:
@@ -87,16 +62,7 @@ class IstanbulMLRecommender:
         cursor.execute("SELECT MAX(id) as max_id FROM visited_places")
         max_visit_id = cursor.fetchone()['max_id'] or 0
         
-        # model_metadata tablosunu güncelle
-        cursor.execute("""
-            INSERT INTO model_metadata (last_user_id, last_place_id, last_visit_id, last_update_time)
-            VALUES (%s, %s, %s, NOW())
-            ON DUPLICATE KEY UPDATE 
-                last_user_id = VALUES(last_user_id),
-                last_place_id = VALUES(last_place_id),
-                last_visit_id = VALUES(last_visit_id),
-                last_update_time = NOW()
-        """, (max_user_id, max_place_id, max_visit_id))
+        
         
         self.db_connection.commit()
         cursor.close()

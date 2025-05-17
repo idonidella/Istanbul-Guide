@@ -263,10 +263,10 @@ if __name__ == '__main__':
     scheduler.add_job(
         recommender.update_model_if_needed, 
         'cron', 
-        hour=21, 
-        minute=43
+        hour=20, 
+        minute=44
     )
     scheduler.start()
     
     # Uygulamayı başlat
-    app.run(host='0.0.0.0', port=5000, debug=True) 
+    app.run(host='0.0.0.0', port=5000, debug=False) 
