@@ -13,11 +13,11 @@ import os
 from datetime import datetime
 from sklearn.metrics.pairwise import haversine_distances
 import logging
+from sklearn.metrics import precision_score, recall_score, f1_score
 
 class IstanbulMLRecommender:
     def __init__(self):
         self.places_df = None
-        self.hobbies_df = None
         self.visited_df = None
         self.scaler = RobustScaler()
         self.model = None
@@ -34,6 +34,7 @@ class IstanbulMLRecommender:
         self._center_lat = 41.0082
         self._center_lon = 28.9784
         self.db_connection = None
+        
         self.reference_user_id = 0
         self.reference_place_id = 0
         self.reference_visit_id = 0
@@ -42,6 +43,7 @@ class IstanbulMLRecommender:
         self.last_place_id = self.read_last_id('last_place_id.txt')
         self.last_visit_id = self.read_last_id('last_visit_id.txt')
         
+
     def connect_to_database(self):
         load_dotenv()
         self.db_connection = mysql.connector.connect(
@@ -50,7 +52,6 @@ class IstanbulMLRecommender:
             password=os.getenv('DB_PASSWORD', ''),
             database=os.getenv('DB_NAME', 'istanbul_guide')
         )
-
     def init_reference_ids(self):
         if self.db_connection is None:
             self.connect_to_database()
@@ -101,12 +102,11 @@ class IstanbulMLRecommender:
         self.db_connection.commit()
         cursor.close()
 
+
     def load_data_from_db(self):
         if self.db_connection is None:
             self.connect_to_database()
         cursor = self.db_connection.cursor(dictionary=True)
-
-        # Places
         places_query = """
             SELECT 
                 p.id,
@@ -126,38 +126,22 @@ class IstanbulMLRecommender:
         """
         cursor.execute(places_query)
         self.places_df = pd.DataFrame(cursor.fetchall())
-
-        # Hobbies
-        cursor.execute("SELECT * FROM hobbies")
-        self.hobbies_df = pd.DataFrame(cursor.fetchall())
-
-        # Visited places
         cursor.execute("SELECT * FROM visited_places")
         self.visited_df = pd.DataFrame(cursor.fetchall())
-
         cursor.close()
-
-        # Radyan cinsinden koordinatları hesapla
         self.places_df['latitude_rad'] = self.places_df['latitude'].apply(radians)
         self.places_df['longitude_rad'] = self.places_df['longitude'].apply(radians)
-
-        # Kategori matrisini oluştur
         self.category_matrix = pd.get_dummies(self.places_df['categoryId'])
-
-        # Ziyaret sayılarını normalize et
         max_visits = self.places_df['visit_count'].max()
         if max_visits > 0:
             self.places_df['normalized_visits'] = self.places_df['visit_count'] / max_visits
         else:
             self.places_df['normalized_visits'] = 0
-
-        # Kategori popülerliğini hesapla
         self._category_popularity = self.visited_df.merge(
             self.places_df[['id', 'categoryId']], 
             left_on='placeId', 
             right_on='id'
         )['categoryId'].value_counts(normalize=True)
-
         self._max_visits = max_visits
 
     def calculate_distance(self, lat1, lon1, lat2, lon2):
@@ -170,22 +154,24 @@ class IstanbulMLRecommender:
         return R * c
 
     def normalize_distance(self, distance):
-        max_distance = 50
+        max_distance = 20  # İstanbul'daki turistik yerler için daha makul bir mesafe
         return 1 - min(distance / max_distance, 1)
 
     def create_features(self):
         user_features = []
         category_popularity = self._category_popularity
         max_visits = self._max_visits if self._max_visits else 1
-
-        for user_id in self.hobbies_df['userId'].unique():
-            user_categories = self.hobbies_df[self.hobbies_df['userId'] == user_id]['categoryId'].value_counts()
-            total_preferences = user_categories.sum()
+        user_ids = self.visited_df['userId'].unique()
+        for user_id in user_ids:
+            user_visits = self.visited_df[self.visited_df['userId'] == user_id]
+            visited_place_ids = user_visits['placeId']
+            visited_categories = self.places_df[self.places_df['id'].isin(visited_place_ids)]['categoryId']
+            category_counts = visited_categories.value_counts()
+            total_preferences = category_counts.sum()
             if total_preferences > 0:
-                user_categories = user_categories / total_preferences
-
-            visited_places = self.visited_df[self.visited_df['userId'] == user_id]
-
+                user_categories = category_counts / total_preferences
+            else:
+                user_categories = pd.Series(dtype=float)
             for _, place in self.places_df.iterrows():
                 category_match = user_categories.get(place['categoryId'], 0)
                 category_popularity_score = category_popularity.get(place['categoryId'], 0)
@@ -202,7 +188,7 @@ class IstanbulMLRecommender:
                     'distance_to_center': distance,
                     'category_popularity': category_popularity_score,
                     'normalized_distance': normalized_distance,
-                    'is_visited': 1 if place['id'] in visited_places['placeId'].values else 0
+                    'is_visited': 1 if place['id'] in visited_place_ids.values else 0
                 }
                 user_features.append(features)
         return pd.DataFrame(user_features)
@@ -276,12 +262,14 @@ class IstanbulMLRecommender:
         return instance
 
     def _get_user_preferences(self, user_id):
-        user_categories = self.hobbies_df[
-            self.hobbies_df['userId'] == user_id
-        ]['categoryId'].value_counts()
-        if len(user_categories) > 0:
-            return user_categories / user_categories.sum()
-        return pd.Series()
+        user_visits = self.visited_df[self.visited_df['userId'] == user_id]
+        if user_visits.empty:
+            return pd.Series()
+        visited_place_ids = user_visits['placeId']
+        visited_categories = self.places_df[self.places_df['id'].isin(visited_place_ids)]['categoryId']
+        category_counts = visited_categories.value_counts()
+        category_weights = category_counts / category_counts.sum()
+        return category_weights
 
     def recommend(self, user_id, user_lat=None, user_lon=None, top_n=5):
         if self.places_df is None:
@@ -371,7 +359,18 @@ class IstanbulMLRecommender:
     def write_last_id(self, filename, value):
         with open(filename, 'w') as f:
             f.write(str(value))
-
+            
+    def evaluate(self):
+        X_train, X_test, y_train, y_test = self.prepare_training_data()
+        y_pred = (self.model.predict(X_test) > 0.5).astype(int)
+        precision = precision_score(y_test, y_pred)
+        recall = recall_score(y_test, y_pred)
+        f1 = f1_score(y_test, y_pred)
+        print(f"Precision: {precision:.4f}")
+        print(f"Recall:    {recall:.4f}")
+        print(f"F1 Score:  {f1:.4f}")
+        return precision, recall, f1
+    
     def should_update_model(self):
         if self.db_connection is None:
             self.connect_to_database()
