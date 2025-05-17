@@ -2,7 +2,7 @@ import requests
 import json
 import sys
 
-API_URL = "http://localhost:5001"
+API_URL = "http://localhost:5000"
 
 def test_health():
     response = requests.get(f"{API_URL}/api/health")
