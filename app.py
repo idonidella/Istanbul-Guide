@@ -91,6 +91,9 @@ def health_check():
 @app.route('/recommend', methods=['POST'])
 def recommend():
     try:
+        # İstek loglaması
+        logging.info(f"[{datetime.now()}] Öneri isteği alındı - Request Body: {request.get_json()}")
+        
         data = request.get_json()
         user_id = data.get('userId')
         user_lat = data.get('latitude')
@@ -117,8 +120,13 @@ def recommend():
             processed_rec = {k: convert_numpy(v) for k, v in rec.items()}
             processed_recommendations.append(processed_rec)
 
+        # Yanıt loglaması
+        logging.info(f"[{datetime.now()}] Öneri yanıtı gönderildi - Response: {processed_recommendations}")
+        
         return jsonify({'recommendations': processed_recommendations})
     except Exception as e:
+        # Hata loglaması
+        logging.error(f"[{datetime.now()}] Öneri isteğinde hata oluştu: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/restart', methods=['POST'])
@@ -127,17 +135,24 @@ def restart_api():
     API'yi yeniden başlatır - Mobil uygulamadan kullanıcı öneri istediğinde çağrılır
     """
     try:
+        # İstek loglaması
+        logging.info(f"[{datetime.now()}] Yeniden başlatma isteği alındı")
+        
         # Asenkron olarak yeniden başlatma işlemini başlat
         thread = threading.Thread(target=restart_app)
         thread.daemon = True
         thread.start()
+        
+        # Yanıt loglaması
+        logging.info(f"[{datetime.now()}] Yeniden başlatma yanıtı gönderildi")
         
         return jsonify({
             'status': 'success',
             'message': 'API yeniden başlatılıyor...'
         })
     except Exception as e:
-        logging.error(f"API yeniden başlatma hatası: {str(e)}")
+        # Hata loglaması
+        logging.error(f"[{datetime.now()}] Yeniden başlatma hatası: {str(e)}")
         return jsonify({
             'status': 'error',
             'message': str(e)
@@ -254,4 +269,4 @@ if __name__ == '__main__':
     scheduler.start()
     
     # Uygulamayı başlat
-    app.run(host='0.0.0.0', port=5000, debug=True) 
+    app.run(host='0.0.0.0', port=5001, debug=True) 

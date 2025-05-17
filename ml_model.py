@@ -38,7 +38,6 @@ class IstanbulMLRecommender:
         self.reference_user_id = 0
         self.reference_place_id = 0
         self.reference_visit_id = 0
-        self.init_reference_ids()
         self.last_user_id = self.read_last_id('last_user_id.txt')
         self.last_place_id = self.read_last_id('last_place_id.txt')
         self.last_visit_id = self.read_last_id('last_visit_id.txt')
