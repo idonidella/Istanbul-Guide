@@ -284,9 +284,9 @@ class IstanbulMLRecommender:
             distance_scores = 1 / (1 + distances)
         popularity_scores = self.places_df['normalized_visits'].values
         final_scores = (
-            0.5 * category_scores +
+            0.65 * category_scores +
             0.3 * distance_scores +
-            0.2 * popularity_scores
+            0.05 * popularity_scores
         )
         return final_scores
 
@@ -302,8 +302,8 @@ class IstanbulMLRecommender:
             popularity_score = place['normalized_visits']
             category_popularity = self._category_popularity.get(place['categoryId'], 0)
             final_score = (
-                0.4 * distance_score +
-                0.4 * popularity_score +
+                0.5 * distance_score +
+                0.3 * popularity_score +
                 0.2 * category_popularity
             )
             scores.append({
@@ -362,7 +362,7 @@ class IstanbulMLRecommender:
             
             logging.info(f"Model güncelleme kontrolü: users={new_users}, places={new_places}, interactions={new_interactions}")
             
-            return (new_users >= 3 or new_places >= 5 or new_interactions >= 100)
+            return (new_users >= 1 or new_places >= 5 or new_interactions >= 100)
         
         except Exception as e:
             logging.error(f"should_update_model hatası: {str(e)}")
