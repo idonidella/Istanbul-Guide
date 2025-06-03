@@ -28,7 +28,8 @@ export default class RecommendedPlaces extends Component {
     console.log("EFE", store.auth.data.userId);
     console.log("EFE", this.state.location?.latitude);  
     try {
-      await pythonApi.restartModel();
+      const responseApı = await pythonApi.restartModel();
+      console.log('Model restarted:', responseApı);
       await new Promise(resolve => setTimeout(resolve, 2000));
       const response = await pythonApi.getRecommendations({
         userId: store.auth.data.userId,
